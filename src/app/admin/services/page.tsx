@@ -50,18 +50,20 @@ export default function AdminServicesPage() {
   };
 
   return (
-    <main className="p-4 sm:p-6 max-w-7xl mx-auto space-y-6">
+    <div className="space-y-6 animate-in fade-in duration-500">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-xl sm:text-2xl font-bold text-white">Services Catalogue Management</h1>
-          <p className="text-xs text-zinc-400 mt-0.5">
+          <h1 className="text-xl sm:text-2xl font-[510] tracking-[-0.015em] text-[#1c1d1f]">
+            Services Catalogue Management
+          </h1>
+          <p className="text-xs text-neutral-500 mt-0.5">
             Configure hair, beard, spa, and beauty packages, durations, and pricing.
           </p>
         </div>
 
         <button
           onClick={() => setShowAddModal(true)}
-          className="bg-amber-500 hover:bg-amber-600 text-zinc-950 font-bold px-4 py-2.5 rounded-xl text-xs flex items-center gap-2 self-start sm:self-auto shadow-lg shadow-amber-500/20"
+          className="bg-neutral-900 hover:bg-black text-white font-[510] px-4 py-2.5 rounded-xl text-xs flex items-center gap-2 self-start sm:self-auto shadow-[0_1px_2px_rgba(0,0,0,0.08)] transition-all hover:scale-[1.01]"
         >
           <span>+</span>
           <span>Add New Service</span>
@@ -75,43 +77,43 @@ export default function AdminServicesPage() {
           return (
             <div
               key={service.id}
-              className={`bg-zinc-900 border rounded-2xl p-5 space-y-3 transition-all ${
-                service.is_active ? "border-zinc-800" : "border-zinc-800/40 opacity-60"
+              className={`rf-card bg-white border rounded-2xl p-5 space-y-3 shadow-[0_1px_3px_rgba(0,0,0,0.03),0_4px_16px_-2px_rgba(0,0,0,0.04)] hover:border-black/[0.14] hover:-translate-y-0.5 transition-all duration-200 ${
+                service.is_active ? "border-black/[0.08]" : "border-black/[0.04] opacity-60"
               }`}
             >
               <div className="flex items-start justify-between gap-2">
                 <div>
                   <div className="flex items-center gap-2">
-                    <h3 className="text-sm font-bold text-white">{service.name}</h3>
-                    <span className="text-[10px] text-zinc-400 bg-zinc-800 px-2 py-0.5 rounded-md font-mono">
+                    <h3 className="text-sm font-[510] text-neutral-900">{service.name}</h3>
+                    <span className="text-[10px] text-neutral-500 bg-neutral-100 border border-black/[0.06] px-2 py-0.5 rounded-md font-mono">
                       {service.duration_minutes}m
                     </span>
                   </div>
-                  <span className="text-[10px] text-amber-400 font-semibold uppercase mt-0.5 block">
+                  <span className="text-[10px] text-neutral-500 font-semibold uppercase mt-0.5 block">
                     {cat?.icon} {cat?.name}
                   </span>
                 </div>
 
                 <div className="text-right">
-                  <span className="text-base font-bold text-white">
+                  <span className="text-base font-[510] text-neutral-900">
                     {formatCurrency(service.price)}
                   </span>
                 </div>
               </div>
 
-              <p className="text-xs text-zinc-400 line-clamp-2">{service.description}</p>
+              <p className="text-xs text-neutral-500 line-clamp-2">{service.description}</p>
 
-              <div className="flex items-center justify-between pt-3 border-t border-zinc-800 text-xs">
-                <span className="capitalize text-zinc-400">
-                  Target: <strong className="text-zinc-200">{service.gender_applicable}</strong>
+              <div className="flex items-center justify-between pt-3 border-t border-black/[0.06] text-xs">
+                <span className="capitalize text-neutral-500">
+                  Target: <strong className="text-neutral-900">{service.gender_applicable}</strong>
                 </span>
 
                 <button
                   onClick={() => toggleStatus(service.id)}
-                  className={`px-3 py-1 rounded-lg font-bold text-[11px] transition-colors ${
+                  className={`px-3 py-1 rounded-lg font-[510] text-[11px] transition-all shadow-xs ${
                     service.is_active
-                      ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
-                      : "bg-zinc-800 text-zinc-400"
+                      ? "bg-neutral-900 text-white font-semibold"
+                      : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200"
                   }`}
                 >
                   {service.is_active ? "Active" : "Disabled"}
@@ -124,35 +126,35 @@ export default function AdminServicesPage() {
 
       {/* Add Service Modal */}
       {showAddModal && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 max-w-md w-full space-y-4">
-            <div className="flex justify-between items-center border-b border-zinc-800 pb-3">
-              <h3 className="text-base font-bold text-white">Add New Salon Service</h3>
-              <button onClick={() => setShowAddModal(false)} className="text-zinc-400 hover:text-white">
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+          <div className="bg-white border border-black/[0.08] rounded-2xl p-6 max-w-md w-full space-y-4 shadow-xl">
+            <div className="flex justify-between items-center border-b border-black/[0.06] pb-3">
+              <h3 className="text-base font-[510] text-neutral-900">Add New Salon Service</h3>
+              <button onClick={() => setShowAddModal(false)} className="text-neutral-400 hover:text-neutral-900">
                 ✕
               </button>
             </div>
 
             <form onSubmit={handleAddService} className="space-y-3.5 text-xs">
               <div>
-                <label className="block text-zinc-400 mb-1">Service Name *</label>
+                <label className="block text-neutral-500 mb-1">Service Name *</label>
                 <input
                   type="text"
                   required
                   placeholder="e.g. Balayage Highlights"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full h-10 px-3 bg-zinc-950 border border-zinc-800 rounded-xl text-white focus:outline-none focus:border-amber-500"
+                  className="w-full h-10 px-3 bg-white border border-black/[0.08] rounded-xl text-neutral-900 focus:outline-none focus:border-neutral-900 shadow-xs"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-zinc-400 mb-1">Category</label>
+                  <label className="block text-neutral-500 mb-1">Category</label>
                   <select
                     value={categoryId}
                     onChange={(e) => setCategoryId(e.target.value)}
-                    className="w-full h-10 px-3 bg-zinc-950 border border-zinc-800 rounded-xl text-white focus:outline-none focus:border-amber-500"
+                    className="w-full h-10 px-3 bg-white border border-black/[0.08] rounded-xl text-neutral-900 focus:outline-none focus:border-neutral-900 shadow-xs"
                   >
                     {DEMO_CATEGORIES.map((c) => (
                       <option key={c.id} value={c.id}>
@@ -163,11 +165,11 @@ export default function AdminServicesPage() {
                 </div>
 
                 <div>
-                  <label className="block text-zinc-400 mb-1">Gender Suitability</label>
+                  <label className="block text-neutral-500 mb-1">Gender Suitability</label>
                   <select
                     value={gender}
                     onChange={(e) => setGender(e.target.value as any)}
-                    className="w-full h-10 px-3 bg-zinc-950 border border-zinc-800 rounded-xl text-white focus:outline-none focus:border-amber-500"
+                    className="w-full h-10 px-3 bg-white border border-black/[0.08] rounded-xl text-neutral-900 focus:outline-none focus:border-neutral-900 shadow-xs"
                   >
                     <option value="all">All / Unisex</option>
                     <option value="male">Gents Only</option>
@@ -178,52 +180,52 @@ export default function AdminServicesPage() {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-zinc-400 mb-1">Price (₹) *</label>
+                  <label className="block text-neutral-500 mb-1">Price (₹) *</label>
                   <input
                     type="number"
                     required
                     placeholder="e.g. 1500"
                     value={price}
                     onChange={(e) => setPrice(e.target.value)}
-                    className="w-full h-10 px-3 bg-zinc-950 border border-zinc-800 rounded-xl text-white focus:outline-none focus:border-amber-500"
+                    className="w-full h-10 px-3 bg-white border border-black/[0.08] rounded-xl text-neutral-900 focus:outline-none focus:border-neutral-900 shadow-xs"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-zinc-400 mb-1">Duration (minutes) *</label>
+                  <label className="block text-neutral-500 mb-1">Duration (Mins) *</label>
                   <input
                     type="number"
                     required
                     placeholder="e.g. 45"
                     value={duration}
                     onChange={(e) => setDuration(e.target.value)}
-                    className="w-full h-10 px-3 bg-zinc-950 border border-zinc-800 rounded-xl text-white focus:outline-none focus:border-amber-500"
+                    className="w-full h-10 px-3 bg-white border border-black/[0.08] rounded-xl text-neutral-900 focus:outline-none focus:border-neutral-900 shadow-xs"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-zinc-400 mb-1">Description</label>
+                <label className="block text-neutral-500 mb-1">Description</label>
                 <textarea
                   rows={2}
-                  placeholder="Describe the service steps and benefits..."
+                  placeholder="Service description and benefits..."
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  className="w-full p-2.5 bg-zinc-950 border border-zinc-800 rounded-xl text-white focus:outline-none focus:border-amber-500 resize-none"
+                  className="w-full p-2.5 bg-white border border-black/[0.08] rounded-xl text-neutral-900 focus:outline-none focus:border-neutral-900 shadow-xs"
                 />
               </div>
 
-              <div className="flex gap-2 pt-2">
+              <div className="pt-2 flex justify-end gap-2">
                 <button
                   type="button"
                   onClick={() => setShowAddModal(false)}
-                  className="flex-1 py-2.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 font-semibold rounded-xl"
+                  className="px-4 py-2 bg-neutral-100 hover:bg-neutral-200 text-neutral-700 rounded-xl"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 py-2.5 bg-amber-500 hover:bg-amber-600 text-zinc-950 font-bold rounded-xl shadow-md"
+                  className="px-5 py-2 bg-neutral-900 hover:bg-black text-white font-[510] rounded-xl shadow-xs"
                 >
                   Save Service ✓
                 </button>
@@ -232,7 +234,6 @@ export default function AdminServicesPage() {
           </div>
         </div>
       )}
-    </main>
+    </div>
   );
 }
-

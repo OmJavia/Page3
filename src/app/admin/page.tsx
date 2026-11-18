@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -35,17 +36,22 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#fafafa] text-[#1c1d1f] flex flex-col justify-center items-center px-4">
+    <div className="min-h-screen bg-[#fafafa] dark:bg-[#0c0d0e] text-[#1c1d1f] dark:text-[#f4f4f5] flex flex-col justify-center items-center px-4 relative transition-colors duration-200">
+      {/* Top Right Theme Toggle */}
+      <div className="absolute top-5 right-5">
+        <ThemeToggle showLabel size="sm" />
+      </div>
+
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <div className="w-12 h-12 bg-neutral-900 text-white rounded-2xl flex items-center justify-center mx-auto mb-3 text-lg font-bold shadow-[0_2px_8px_rgba(0,0,0,0.15)]">
+          <div className="w-12 h-12 bg-neutral-900 dark:bg-white text-white dark:text-neutral-950 rounded-2xl flex items-center justify-center mx-auto mb-3 text-lg font-bold shadow-[0_2px_8px_rgba(0,0,0,0.15)]">
             ✂️
           </div>
-          <h1 className="text-xl font-[510] tracking-tight text-neutral-950">Page 3 Business Hub</h1>
-          <p className="text-xs text-neutral-500 mt-1">Salon Owner & Management Control Panel</p>
+          <h1 className="text-xl font-[510] tracking-tight text-neutral-950 dark:text-white">Page 3 Business Hub</h1>
+          <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-1">Salon Owner &amp; Management Control Panel</p>
         </div>
 
-        <div className="rf-card p-6 space-y-4">
+        <div className="rf-card bg-white dark:bg-[#161719] border border-black/[0.08] dark:border-white/[0.08] p-6 space-y-4 shadow-[0_1px_3px_rgba(0,0,0,0.03),0_4px_16px_-2px_rgba(0,0,0,0.04)]">
           {/* User Requested Exact Rightfit.so Google Login Button */}
           <button
             type="button"
@@ -53,7 +59,7 @@ export default function AdminLoginPage() {
             data-slot="button"
             onClick={handleGoogleLogin}
             disabled={loading}
-            className="inline-flex shrink-0 transform-gpu items-center justify-center gap-2 rounded-2xl text-sm font-[510] tracking-[-0.011em] whitespace-nowrap transition-all duration-200 outline-none focus-visible:ring-[3px] focus-visible:ring-neutral-400/50 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 chroma-text-animate-parent border border-black/[0.08] bg-white text-[#1c1d1f] shadow-[0_1px_2px_rgba(0,0,0,0.05),0_4px_12px_-2px_rgba(0,0,0,0.05)] [--foreground:#1c1d1f] hover:shadow-[0_2px_6px_rgba(0,0,0,0.08),0_8px_20px_-4px_rgba(0,0,0,0.08)] hover:-translate-y-[0.5px] active:translate-y-0 h-10 px-6 py-2.5 has-[>svg]:px-4 w-full"
+            className="inline-flex shrink-0 transform-gpu items-center justify-center gap-2 rounded-2xl text-sm font-[510] tracking-[-0.011em] whitespace-nowrap transition-all duration-200 outline-none focus-visible:ring-[3px] focus-visible:ring-neutral-400/50 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 chroma-text-animate-parent border border-black/[0.08] dark:border-white/[0.12] bg-white dark:bg-[#18191c] text-[#1c1d1f] dark:text-[#f4f4f5] shadow-[0_1px_2px_rgba(0,0,0,0.05),0_4px_12px_-2px_rgba(0,0,0,0.05)] [--foreground:#1c1d1f] dark:[--foreground:#f4f4f5] hover:shadow-[0_2px_6px_rgba(0,0,0,0.08),0_8px_20px_-4px_rgba(0,0,0,0.08)] hover:-translate-y-[0.5px] active:translate-y-0 h-10 px-6 py-2.5 has-[>svg]:px-4 w-full"
           >
             <svg className="w-4 h-4" viewBox="0 0 24 24">
               <path
@@ -79,41 +85,41 @@ export default function AdminLoginPage() {
           </button>
 
           <div className="relative flex items-center justify-center my-3">
-            <div className="border-t border-black/[0.08] w-full" />
-            <span className="bg-white px-2 text-[10px] uppercase text-neutral-400 font-semibold tracking-wider relative">
+            <div className="border-t border-black/[0.08] dark:border-white/[0.08] w-full" />
+            <span className="bg-white dark:bg-[#161719] px-2 text-[10px] uppercase text-neutral-400 dark:text-neutral-500 font-semibold tracking-wider relative">
               Or continue with email
             </span>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-3.5">
             <div>
-              <label className="block text-xs font-medium text-neutral-700 mb-1">
+              <label className="block text-xs font-medium text-neutral-700 dark:text-neutral-300 mb-1">
                 Admin / Staff Email
               </label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full h-10 px-3.5 rounded-xl border border-black/[0.08] text-xs bg-neutral-50/50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-neutral-400"
+                className="w-full h-10 px-3.5 rounded-xl border border-black/[0.08] dark:border-white/[0.12] text-xs bg-neutral-50/50 dark:bg-[#18191c] text-neutral-900 dark:text-white focus:bg-white dark:focus:bg-[#1e1f24] focus:outline-none focus:ring-2 focus:ring-neutral-400"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-neutral-700 mb-1">
+              <label className="block text-xs font-medium text-neutral-700 dark:text-neutral-300 mb-1">
                 Password
               </label>
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full h-10 px-3.5 rounded-xl border border-black/[0.08] text-xs bg-neutral-50/50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-neutral-400"
+                className="w-full h-10 px-3.5 rounded-xl border border-black/[0.08] dark:border-white/[0.12] text-xs bg-neutral-50/50 dark:bg-[#18191c] text-neutral-900 dark:text-white focus:bg-white dark:focus:bg-[#1e1f24] focus:outline-none focus:ring-2 focus:ring-neutral-400"
                 required
               />
             </div>
 
             {error && (
-              <div className="p-3 bg-red-50 border border-red-100 rounded-xl text-xs text-red-600">
+              <div className="p-3 bg-red-50 dark:bg-red-950/40 border border-red-100 dark:border-red-900/40 rounded-xl text-xs text-red-600 dark:text-red-400">
                 {error}
               </div>
             )}
@@ -127,16 +133,16 @@ export default function AdminLoginPage() {
               {loading ? "Authenticating..." : "Access Dashboard →"}
             </Button>
 
-            <div className="p-3 bg-neutral-50 rounded-xl border border-black/[0.06] text-[11px] text-neutral-500 text-center">
-              <span className="font-semibold text-neutral-800">Demo Credentials:</span>
+            <div className="p-3 bg-neutral-50 dark:bg-white/[0.03] rounded-xl border border-black/[0.06] dark:border-white/[0.06] text-[11px] text-neutral-500 dark:text-neutral-400 text-center">
+              <span className="font-semibold text-neutral-800 dark:text-neutral-200">Demo Credentials:</span>
               <br />
-              Email: <code className="text-neutral-900 font-mono">owner@page3salon.com</code> | Pass: <code className="text-neutral-900 font-mono">admin123</code>
+              Email: <code className="text-neutral-900 dark:text-neutral-100 font-mono">owner@page3salon.com</code> | Pass: <code className="text-neutral-900 dark:text-neutral-100 font-mono">admin123</code>
             </div>
           </form>
         </div>
 
         <div className="text-center mt-6">
-          <Link href="/" className="text-xs text-neutral-500 hover:text-neutral-900 transition-colors">
+          <Link href="/" className="text-xs text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors">
             ← Return to Customer Website
           </Link>
         </div>

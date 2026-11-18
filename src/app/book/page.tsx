@@ -7,6 +7,7 @@ import { DEMO_SERVICES, DEMO_CATEGORIES, DEMO_STAFF, DEMO_CUSTOMERS } from "@/li
 import { Service, Staff, Customer } from "@/lib/types";
 import { formatCurrency, formatTime, generateAppointmentCode } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 function StepIndicator({ current, total }: { current: number; total: number }) {
   const steps = ["Services", "Stylist", "Date & Slot", "Details"];
@@ -292,38 +293,41 @@ function BookingContent() {
   }
 
   return (
-    <div className="min-h-screen bg-[#fafafa] text-[#1c1d1f] flex flex-col justify-between">
+    <div className="min-h-screen bg-[#fafafa] dark:bg-[#0c0d0e] text-[#1c1d1f] dark:text-[#f4f4f5] flex flex-col justify-between transition-colors duration-200">
       {/* Top Header */}
       <div>
-        <header className="bg-white border-b border-black/[0.06] px-4 py-3.5 flex items-center justify-between sticky top-0 z-20">
+        <header className="bg-white dark:bg-[#121214] border-b border-black/[0.06] dark:border-white/[0.08] px-4 py-3.5 flex items-center justify-between sticky top-0 z-20 transition-colors duration-200">
           <div className="flex items-center gap-3">
             {step > 1 ? (
               <button
                 type="button"
                 onClick={() => setStep(step - 1)}
-                className="w-8 h-8 rounded-xl border border-black/[0.08] bg-white text-neutral-700 flex items-center justify-center hover:bg-neutral-50 transition-colors text-xs font-bold"
+                className="w-8 h-8 rounded-xl border border-black/[0.08] dark:border-white/[0.12] bg-white dark:bg-[#18191c] text-neutral-700 dark:text-neutral-200 flex items-center justify-center hover:bg-neutral-50 dark:hover:bg-white/[0.06] transition-colors text-xs font-bold"
               >
                 ←
               </button>
             ) : (
               <Link
                 href="/"
-                className="w-8 h-8 rounded-xl border border-black/[0.08] bg-white text-neutral-700 flex items-center justify-center hover:bg-neutral-50 transition-colors text-xs font-bold"
+                className="w-8 h-8 rounded-xl border border-black/[0.08] dark:border-white/[0.12] bg-white dark:bg-[#18191c] text-neutral-700 dark:text-neutral-200 flex items-center justify-center hover:bg-neutral-50 dark:hover:bg-white/[0.06] transition-colors text-xs font-bold"
               >
                 ✕
               </Link>
             )}
             <div>
-              <h1 className="text-sm font-[510] tracking-tight text-neutral-950">Book Appointment</h1>
-              <p className="text-[10px] text-neutral-400 font-medium">Page 3 Salon</p>
+              <h1 className="text-sm font-[510] tracking-tight text-neutral-950 dark:text-white">Book Appointment</h1>
+              <p className="text-[10px] text-neutral-400 dark:text-neutral-500 font-medium">Page 3 Salon</p>
             </div>
           </div>
-          {selectedServices.length > 0 && (
-            <div className="text-right">
-              <span className="text-xs font-bold text-neutral-900">{formatCurrency(totalPrice)}</span>
-              <p className="text-[10px] text-neutral-400">{totalDuration} mins</p>
-            </div>
-          )}
+          <div className="flex items-center gap-2">
+            <ThemeToggle size="sm" />
+            {selectedServices.length > 0 && (
+              <div className="text-right">
+                <span className="text-xs font-bold text-neutral-900 dark:text-white">{formatCurrency(totalPrice)}</span>
+                <p className="text-[10px] text-neutral-400">{totalDuration} mins</p>
+              </div>
+            )}
+          </div>
         </header>
 
         <StepIndicator current={step} total={4} />

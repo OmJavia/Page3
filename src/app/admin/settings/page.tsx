@@ -29,125 +29,123 @@ export default function AdminSettingsPage() {
   };
 
   return (
-    <main className="p-4 sm:p-6 max-w-4xl mx-auto space-y-6">
+    <div className="max-w-4xl mx-auto space-y-6 animate-in fade-in duration-500">
       <div>
-        <h1 className="text-xl sm:text-2xl font-bold text-white">
-          Business Settings & Automated Notifications
+        <h1 className="text-xl sm:text-2xl font-[510] tracking-[-0.015em] text-[#1c1d1f]">
+          Business Settings &amp; Automated Notifications
         </h1>
-        <p className="text-xs text-zinc-400 mt-0.5">
+        <p className="text-xs text-neutral-500 mt-0.5">
           Configure salon identity, operational hours, and automated WhatsApp/SMS notification templates.
         </p>
       </div>
 
       <form onSubmit={handleSave} className="space-y-6">
         {/* Salon Identity Section */}
-        <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-5 sm:p-6 space-y-4">
-          <h2 className="text-sm font-bold text-white flex items-center gap-2">
+        <div className="rf-card bg-white border border-black/[0.08] rounded-2xl p-5 sm:p-6 space-y-4 shadow-[0_1px_3px_rgba(0,0,0,0.03),0_4px_16px_-2px_rgba(0,0,0,0.04)]">
+          <h2 className="text-sm font-[510] text-neutral-900 flex items-center gap-2">
             <span>📍</span> Salon Business Profile
           </h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
             <div>
-              <label className="block text-zinc-400 mb-1">Business Name</label>
+              <label className="block text-neutral-500 mb-1">Business Name</label>
               <input
                 type="text"
                 value={salonName}
                 onChange={(e) => setSalonName(e.target.value)}
-                className="w-full h-10 px-3 bg-zinc-950 border border-zinc-800 rounded-xl text-white focus:outline-none focus:border-amber-500"
+                className="w-full h-10 px-3 bg-white border border-black/[0.08] rounded-xl text-neutral-900 focus:outline-none focus:border-neutral-900 shadow-xs"
               />
             </div>
 
             <div>
-              <label className="block text-zinc-400 mb-1">Official Contact Phone</label>
+              <label className="block text-neutral-500 mb-1">Official Contact Phone</label>
               <input
                 type="text"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                className="w-full h-10 px-3 bg-zinc-950 border border-zinc-800 rounded-xl text-white focus:outline-none focus:border-amber-500"
+                className="w-full h-10 px-3 bg-white border border-black/[0.08] rounded-xl text-neutral-900 focus:outline-none focus:border-neutral-900 shadow-xs"
               />
             </div>
 
             <div className="sm:col-span-2">
-              <label className="block text-zinc-400 mb-1">Salon Address</label>
+              <label className="block text-neutral-500 mb-1">Salon Address</label>
               <input
                 type="text"
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
-                className="w-full h-10 px-3 bg-zinc-950 border border-zinc-800 rounded-xl text-white focus:outline-none focus:border-amber-500"
+                className="w-full h-10 px-3 bg-white border border-black/[0.08] rounded-xl text-neutral-900 focus:outline-none focus:border-neutral-900 shadow-xs"
               />
             </div>
 
             <div className="sm:col-span-2">
-              <label className="block text-zinc-400 mb-1">Google Maps Listing URL</label>
+              <label className="block text-neutral-500 mb-1">Google Maps Listing URL</label>
               <input
                 type="text"
                 value={mapsUrl}
                 onChange={(e) => setMapsUrl(e.target.value)}
-                className="w-full h-10 px-3 bg-zinc-950 border border-zinc-800 rounded-xl text-white focus:outline-none focus:border-amber-500 font-mono text-[11px]"
+                className="w-full h-10 px-3 bg-white border border-black/[0.08] rounded-xl text-neutral-900 focus:outline-none focus:border-neutral-900 font-mono text-[11px] shadow-xs"
               />
             </div>
           </div>
         </div>
 
         {/* Automated WhatsApp / SMS Notification Engine */}
-        <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-5 sm:p-6 space-y-4">
-          <div className="flex justify-between items-center">
-            <div>
-              <h2 className="text-sm font-bold text-white flex items-center gap-2">
-                <span>💬</span> Automated Notification Templates & Timing
-              </h2>
-              <p className="text-xs text-zinc-400 mt-0.5">
-                Dynamic parameters available: <code>{"{name}"}</code>, <code>{"{date}"}</code>, <code>{"{time}"}</code>, <code>{"{stylist}"}</code>, <code>{"{code}"}</code>.
-              </p>
-            </div>
+        <div className="rf-card bg-white border border-black/[0.08] rounded-2xl p-5 sm:p-6 space-y-4 shadow-[0_1px_3px_rgba(0,0,0,0.03),0_4px_16px_-2px_rgba(0,0,0,0.04)]">
+          <div>
+            <h2 className="text-sm font-[510] text-neutral-900 flex items-center gap-2">
+              <span>💬</span> Automated Notification Templates &amp; Timing
+            </h2>
+            <p className="text-xs text-neutral-500 mt-0.5">
+              Dynamic parameters available: <code>{"{name}"}</code>, <code>{"{date}"}</code>, <code>{"{time}"}</code>, <code>{"{stylist}"}</code>, <code>{"{code}"}</code>.
+            </p>
           </div>
 
           <div className="space-y-4 text-xs">
             <div>
-              <label className="block text-zinc-300 font-semibold mb-1">
-                1. Instant Booking Confirmation (WhatsApp & SMS)
+              <label className="block text-neutral-800 font-semibold mb-1">
+                1. Instant Booking Confirmation (WhatsApp &amp; SMS)
               </label>
               <textarea
                 rows={2}
                 value={confirmationTpl}
                 onChange={(e) => setConfirmationTpl(e.target.value)}
-                className="w-full p-3 bg-zinc-950 border border-zinc-800 rounded-xl text-white focus:outline-none focus:border-amber-500 font-mono text-xs"
+                className="w-full p-3 bg-white border border-black/[0.08] rounded-xl text-neutral-900 focus:outline-none focus:border-neutral-900 font-mono text-xs shadow-xs"
               />
             </div>
 
             <div>
-              <label className="block text-zinc-300 font-semibold mb-1">
+              <label className="block text-neutral-800 font-semibold mb-1">
                 2. Reminder 24 Hours Before Appointment
               </label>
               <textarea
                 rows={2}
                 value={reminder24hTpl}
                 onChange={(e) => setReminder24hTpl(e.target.value)}
-                className="w-full p-3 bg-zinc-950 border border-zinc-800 rounded-xl text-white focus:outline-none focus:border-amber-500 font-mono text-xs"
+                className="w-full p-3 bg-white border border-black/[0.08] rounded-xl text-neutral-900 focus:outline-none focus:border-neutral-900 font-mono text-xs shadow-xs"
               />
             </div>
 
             <div>
-              <label className="block text-zinc-300 font-semibold mb-1">
+              <label className="block text-neutral-800 font-semibold mb-1">
                 3. Final Reminder 1 Hour Before Appointment (With Directions)
               </label>
               <textarea
                 rows={2}
                 value={reminder1hTpl}
                 onChange={(e) => setReminder1hTpl(e.target.value)}
-                className="w-full p-3 bg-zinc-950 border border-zinc-800 rounded-xl text-white focus:outline-none focus:border-amber-500 font-mono text-xs"
+                className="w-full p-3 bg-white border border-black/[0.08] rounded-xl text-neutral-900 focus:outline-none focus:border-neutral-900 font-mono text-xs shadow-xs"
               />
             </div>
 
             <div>
-              <label className="block text-zinc-300 font-semibold mb-1">
-                4. Post-Service Thank You & Review Request (After Completed)
+              <label className="block text-neutral-800 font-semibold mb-1">
+                4. Post-Service Thank You &amp; Review Request (After Completed)
               </label>
               <textarea
                 rows={2}
                 value={thankyouTpl}
                 onChange={(e) => setThankyouTpl(e.target.value)}
-                className="w-full p-3 bg-zinc-950 border border-zinc-800 rounded-xl text-white focus:outline-none focus:border-amber-500 font-mono text-xs"
+                className="w-full p-3 bg-white border border-black/[0.08] rounded-xl text-neutral-900 focus:outline-none focus:border-neutral-900 font-mono text-xs shadow-xs"
               />
             </div>
           </div>
@@ -155,12 +153,11 @@ export default function AdminSettingsPage() {
 
         <button
           type="submit"
-          className="w-full h-11 bg-amber-500 hover:bg-amber-600 text-zinc-950 font-bold rounded-xl text-sm transition-colors shadow-lg shadow-amber-500/20"
+          className="w-full h-11 bg-neutral-900 hover:bg-black text-white font-[510] rounded-xl text-sm transition-all shadow-[0_1px_2px_rgba(0,0,0,0.08)] hover:scale-[1.01]"
         >
           Save All Business Configurations ✓
         </button>
       </form>
-    </main>
+    </div>
   );
 }
-

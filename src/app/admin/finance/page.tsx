@@ -88,18 +88,20 @@ export default function AdminFinancePage() {
   };
 
   return (
-    <main className="p-4 sm:p-6 max-w-7xl mx-auto space-y-6">
+    <div className="space-y-6 animate-in fade-in duration-500">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-xl sm:text-2xl font-bold text-white">Financial & Expense Management</h1>
-          <p className="text-xs text-zinc-400 mt-0.5">
+          <h1 className="text-xl sm:text-2xl font-[510] tracking-[-0.015em] text-[#1c1d1f]">
+            Financial &amp; Expense Management
+          </h1>
+          <p className="text-xs text-neutral-500 mt-0.5">
             Track daily gross revenue, payment method distribution, operating expenses, and net profit.
           </p>
         </div>
 
         <button
           onClick={() => alert("Downloading Monthly Profit & Loss Statement (CSV/PDF)...")}
-          className="bg-amber-500 hover:bg-amber-600 text-zinc-950 font-bold px-4 py-2.5 rounded-xl text-xs flex items-center gap-2 self-start sm:self-auto shadow-lg shadow-amber-500/20"
+          className="bg-neutral-900 hover:bg-black text-white font-[510] px-4 py-2.5 rounded-xl text-xs flex items-center gap-2 self-start sm:self-auto shadow-[0_1px_2px_rgba(0,0,0,0.08)] transition-all hover:scale-[1.01]"
         >
           <span>📥</span>
           <span>Download Financial Report</span>
@@ -108,58 +110,58 @@ export default function AdminFinancePage() {
 
       {/* Financial Overview Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-5">
-          <span className="text-xs font-semibold text-zinc-400">Monthly Gross Revenue</span>
-          <p className="text-2xl font-bold text-white mt-1">{formatCurrency(grossRevenue)}</p>
-          <span className="text-[11px] text-emerald-400 font-medium">Completed bookings & retail</span>
+        <div className="rf-card bg-white border border-black/[0.08] rounded-2xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.03),0_4px_16px_-2px_rgba(0,0,0,0.04)] hover:border-black/[0.14] hover:-translate-y-0.5 transition-all duration-200">
+          <span className="text-xs font-[510] text-neutral-500">Monthly Gross Revenue</span>
+          <p className="text-2xl font-[510] tracking-tight text-neutral-900 mt-1">{formatCurrency(grossRevenue)}</p>
+          <span className="text-[11px] text-emerald-700 font-medium">Completed bookings &amp; retail</span>
         </div>
 
-        <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-5">
-          <span className="text-xs font-semibold text-zinc-400">Total Operating Expenses</span>
-          <p className="text-2xl font-bold text-red-400 mt-1">{formatCurrency(totalExpenses)}</p>
-          <span className="text-[11px] text-zinc-400">Rent, power, salaries & stock</span>
+        <div className="rf-card bg-white border border-black/[0.08] rounded-2xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.03),0_4px_16px_-2px_rgba(0,0,0,0.04)] hover:border-black/[0.14] hover:-translate-y-0.5 transition-all duration-200">
+          <span className="text-xs font-[510] text-neutral-500">Total Operating Expenses</span>
+          <p className="text-2xl font-[510] tracking-tight text-neutral-900 mt-1">{formatCurrency(totalExpenses)}</p>
+          <span className="text-[11px] text-neutral-500">Rent, power, salaries &amp; stock</span>
         </div>
 
-        <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-5">
-          <span className="text-xs font-semibold text-zinc-400">Estimated Net Profit</span>
-          <p className="text-2xl font-bold text-emerald-400 mt-1">{formatCurrency(netProfit)}</p>
-          <span className="text-[11px] text-emerald-400 font-medium">
+        <div className="rf-card bg-white border border-black/[0.08] rounded-2xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.03),0_4px_16px_-2px_rgba(0,0,0,0.04)] hover:border-black/[0.14] hover:-translate-y-0.5 transition-all duration-200">
+          <span className="text-xs font-[510] text-neutral-500">Estimated Net Profit</span>
+          <p className="text-2xl font-[510] tracking-tight text-neutral-900 mt-1">{formatCurrency(netProfit)}</p>
+          <span className="text-[11px] text-emerald-700 font-medium">
             Profit margin: {((netProfit / grossRevenue) * 100).toFixed(1)}%
           </span>
         </div>
       </div>
 
       {/* Payment Method Distribution */}
-      <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-5 space-y-4">
-        <h2 className="text-sm font-bold text-white">Payment Method Breakdown</h2>
+      <div className="rf-card bg-white border border-black/[0.08] rounded-2xl p-5 space-y-4 shadow-[0_1px_3px_rgba(0,0,0,0.03),0_4px_16px_-2px_rgba(0,0,0,0.04)]">
+        <h2 className="text-sm font-[510] text-neutral-900">Payment Method Breakdown</h2>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
-          <div className="bg-zinc-950 p-3.5 rounded-xl border border-zinc-800">
-            <span className="text-zinc-400">UPI / QR Code</span>
-            <p className="text-lg font-bold text-white mt-1">
+          <div className="bg-neutral-50 p-3.5 rounded-xl border border-black/[0.06]">
+            <span className="text-neutral-500">UPI / QR Code</span>
+            <p className="text-lg font-[510] text-neutral-900 mt-1">
               {formatCurrency(paymentBreakdown.upi)}
             </p>
-            <span className="text-[10px] text-zinc-500">53.1% of transactions</span>
+            <span className="text-[10px] text-neutral-400">53.1% of transactions</span>
           </div>
-          <div className="bg-zinc-950 p-3.5 rounded-xl border border-zinc-800">
-            <span className="text-zinc-400">Cash in Hand</span>
-            <p className="text-lg font-bold text-white mt-1">
+          <div className="bg-neutral-50 p-3.5 rounded-xl border border-black/[0.06]">
+            <span className="text-neutral-500">Cash in Hand</span>
+            <p className="text-lg font-[510] text-neutral-900 mt-1">
               {formatCurrency(paymentBreakdown.cash)}
             </p>
-            <span className="text-[10px] text-zinc-500">26.6% of transactions</span>
+            <span className="text-[10px] text-neutral-400">26.6% of transactions</span>
           </div>
-          <div className="bg-zinc-950 p-3.5 rounded-xl border border-zinc-800">
-            <span className="text-zinc-400">Credit / Debit Card</span>
-            <p className="text-lg font-bold text-white mt-1">
+          <div className="bg-neutral-50 p-3.5 rounded-xl border border-black/[0.06]">
+            <span className="text-neutral-500">Credit / Debit Card</span>
+            <p className="text-lg font-[510] text-neutral-900 mt-1">
               {formatCurrency(paymentBreakdown.card)}
             </p>
-            <span className="text-[10px] text-zinc-500">16.5% of transactions</span>
+            <span className="text-[10px] text-neutral-400">16.5% of transactions</span>
           </div>
-          <div className="bg-zinc-950 p-3.5 rounded-xl border border-zinc-800">
-            <span className="text-zinc-400">Online Advance (Razorpay)</span>
-            <p className="text-lg font-bold text-white mt-1">
+          <div className="bg-neutral-50 p-3.5 rounded-xl border border-black/[0.06]">
+            <span className="text-neutral-500">Online Advance (Razorpay)</span>
+            <p className="text-lg font-[510] text-neutral-900 mt-1">
               {formatCurrency(paymentBreakdown.online)}
             </p>
-            <span className="text-[10px] text-zinc-500">3.8% of transactions</span>
+            <span className="text-[10px] text-neutral-400">3.8% of transactions</span>
           </div>
         </div>
       </div>
@@ -167,60 +169,60 @@ export default function AdminFinancePage() {
       {/* Expenses Management & Add Form */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         {/* Record Expense Form */}
-        <div className="lg:col-span-5 bg-zinc-900 border border-zinc-800 rounded-2xl p-5 space-y-4">
-          <h2 className="text-sm font-bold text-white">Record Salon Expense</h2>
+        <div className="lg:col-span-5 rf-card bg-white border border-black/[0.08] rounded-2xl p-5 space-y-4 shadow-[0_1px_3px_rgba(0,0,0,0.03),0_4px_16px_-2px_rgba(0,0,0,0.04)]">
+          <h2 className="text-sm font-[510] text-neutral-900">Record Salon Expense</h2>
           <form onSubmit={handleAddExpense} className="space-y-3.5 text-xs">
             <div>
-              <label className="block text-zinc-400 mb-1">Expense Category</label>
+              <label className="block text-neutral-500 mb-1">Expense Category</label>
               <select
                 value={newCat}
                 onChange={(e) => setNewCat(e.target.value as any)}
-                className="w-full h-10 px-3 bg-zinc-950 border border-zinc-800 rounded-xl text-white focus:outline-none focus:border-amber-500"
+                className="w-full h-10 px-3 bg-white border border-black/[0.08] rounded-xl text-neutral-900 focus:outline-none focus:border-neutral-900 shadow-xs"
               >
                 <option value="rent">Commercial Rent</option>
-                <option value="electricity">Electricity / Utility Bills</option>
-                <option value="salary">Staff Salary & Commission</option>
-                <option value="inventory">Inventory / Product Purchases</option>
-                <option value="maintenance">Equipment Repair & Maintenance</option>
-                <option value="marketing">Local Ads & Promotions</option>
-                <option value="other">Other Miscellaneous</option>
+                <option value="electricity">Electricity / Power</option>
+                <option value="salary">Staff Salary / Incentive</option>
+                <option value="inventory">Salon Product Stock</option>
+                <option value="maintenance">Equipment Maintenance</option>
+                <option value="marketing">Local Ads &amp; Marketing</option>
+                <option value="other">Other Operational</option>
               </select>
             </div>
 
             <div>
-              <label className="block text-zinc-400 mb-1">Description</label>
+              <label className="block text-neutral-500 mb-1">Description</label>
               <input
                 type="text"
                 required
-                placeholder="e.g. L'Oreal developer order invoice #229"
+                placeholder="e.g. November electricity bill for AC units"
                 value={newDesc}
                 onChange={(e) => setNewDesc(e.target.value)}
-                className="w-full h-10 px-3 bg-zinc-950 border border-zinc-800 rounded-xl text-white focus:outline-none focus:border-amber-500"
+                className="w-full h-10 px-3 bg-white border border-black/[0.08] rounded-xl text-neutral-900 placeholder-neutral-400 focus:outline-none focus:border-neutral-900 shadow-xs"
               />
             </div>
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-zinc-400 mb-1">Amount (₹)</label>
+                <label className="block text-neutral-500 mb-1">Amount (₹)</label>
                 <input
                   type="number"
                   required
                   placeholder="e.g. 5000"
                   value={newAmount}
                   onChange={(e) => setNewAmount(e.target.value)}
-                  className="w-full h-10 px-3 bg-zinc-950 border border-zinc-800 rounded-xl text-white focus:outline-none focus:border-amber-500"
+                  className="w-full h-10 px-3 bg-white border border-black/[0.08] rounded-xl text-neutral-900 placeholder-neutral-400 focus:outline-none focus:border-neutral-900 shadow-xs"
                 />
               </div>
 
               <div>
-                <label className="block text-zinc-400 mb-1">Payment Method</label>
+                <label className="block text-neutral-500 mb-1">Paid Via</label>
                 <select
                   value={newMethod}
                   onChange={(e) => setNewMethod(e.target.value)}
-                  className="w-full h-10 px-3 bg-zinc-950 border border-zinc-800 rounded-xl text-white focus:outline-none focus:border-amber-500"
+                  className="w-full h-10 px-3 bg-white border border-black/[0.08] rounded-xl text-neutral-900 focus:outline-none focus:border-neutral-900 shadow-xs"
                 >
                   <option value="UPI">UPI</option>
-                  <option value="Bank Transfer">Bank Transfer (NEFT/IMPS)</option>
+                  <option value="Bank Transfer">Bank Transfer</option>
                   <option value="Card">Card</option>
                   <option value="Cash">Cash</option>
                 </select>
@@ -228,55 +230,62 @@ export default function AdminFinancePage() {
             </div>
 
             <div>
-              <label className="block text-zinc-400 mb-1">Expense Date</label>
+              <label className="block text-neutral-500 mb-1">Date</label>
               <input
                 type="date"
                 value={newDate}
                 onChange={(e) => setNewDate(e.target.value)}
-                className="w-full h-10 px-3 bg-zinc-950 border border-zinc-800 rounded-xl text-white focus:outline-none focus:border-amber-500"
+                className="w-full h-10 px-3 bg-white border border-black/[0.08] rounded-xl text-neutral-900 focus:outline-none focus:border-neutral-900 shadow-xs"
               />
             </div>
 
             <button
               type="submit"
-              className="w-full h-10 bg-amber-500 hover:bg-amber-600 text-zinc-950 font-bold rounded-xl transition-colors shadow-md shadow-amber-500/20"
+              className="w-full h-10 bg-neutral-900 hover:bg-black text-white font-[510] rounded-xl shadow-[0_1px_2px_rgba(0,0,0,0.08)] transition-all hover:scale-[1.01]"
             >
               Add Expense Record ✓
             </button>
           </form>
         </div>
 
-        {/* Expenses List */}
-        <div className="lg:col-span-7 bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden">
-          <div className="p-4 border-b border-zinc-800 flex justify-between items-center">
-            <h2 className="text-sm font-bold text-white">Expense Ledger</h2>
-            <span className="text-xs text-zinc-400">{expenses.length} Records</span>
+        {/* Expense History Table */}
+        <div className="lg:col-span-7 rf-card bg-white border border-black/[0.08] rounded-2xl overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.03),0_4px_16px_-2px_rgba(0,0,0,0.04)]">
+          <div className="p-4 border-b border-black/[0.06]">
+            <h2 className="text-sm font-[510] text-neutral-900">Recent Operational Expenses</h2>
           </div>
 
-          <div className="divide-y divide-zinc-800 text-xs">
-            {expenses.map((exp) => (
-              <div key={exp.id} className="p-4 flex items-center justify-between hover:bg-zinc-800/40">
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="font-bold text-white">{exp.description}</span>
-                    <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded-full bg-zinc-800 text-zinc-400">
-                      {exp.category}
-                    </span>
-                  </div>
-                  <p className="text-zinc-500 text-[11px] mt-0.5">
-                    {formatDate(exp.date)} • Paid via {exp.payment_method}
-                  </p>
-                </div>
-                <div className="text-right">
-                  <span className="text-sm font-bold text-red-400">
-                    -{formatCurrency(exp.amount)}
-                  </span>
-                </div>
-              </div>
-            ))}
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs">
+              <thead className="bg-neutral-50 text-neutral-500 border-b border-black/[0.06] uppercase text-[10px] font-semibold">
+                <tr>
+                  <th className="p-3.5">Category</th>
+                  <th className="p-3.5">Description</th>
+                  <th className="p-3.5">Date</th>
+                  <th className="p-3.5">Mode</th>
+                  <th className="p-3.5 text-right">Amount</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-black/[0.06] text-neutral-700">
+                {expenses.map((exp) => (
+                  <tr key={exp.id} className="hover:bg-neutral-50/70 transition-colors">
+                    <td className="p-3.5">
+                      <span className="px-2 py-0.5 rounded-full bg-neutral-100 text-neutral-800 text-[10px] font-semibold uppercase tracking-wider border border-black/[0.06]">
+                        {exp.category}
+                      </span>
+                    </td>
+                    <td className="p-3.5 font-medium text-neutral-900">{exp.description}</td>
+                    <td className="p-3.5 text-neutral-500">{formatDate(exp.date)}</td>
+                    <td className="p-3.5 text-neutral-500">{exp.payment_method}</td>
+                    <td className="p-3.5 text-right font-[510] text-neutral-900">
+                      {formatCurrency(exp.amount)}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
-    </main>
+    </div>
   );
 }

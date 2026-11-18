@@ -6,6 +6,8 @@ import Link from "next/link";
 import { formatCurrency } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
+import { ThemeToggle } from "@/components/theme-toggle";
+
 interface OrderData {
   code: string;
   customerName: string;
@@ -311,19 +313,22 @@ function PaymentContent() {
   }
 
   return (
-    <div className="min-h-screen bg-[#fafafa] text-[#1c1d1f] pb-24">
+    <div className="min-h-screen bg-[#fafafa] dark:bg-[#0c0d0e] text-[#1c1d1f] dark:text-[#f4f4f5] pb-24 transition-colors duration-200">
       {/* Header */}
-      <header className="sticky top-0 z-30 bg-white/90 backdrop-blur-md border-b border-black/[0.06] px-5 py-3.5">
+      <header className="sticky top-0 z-30 bg-white/90 dark:bg-[#121214]/90 backdrop-blur-md border-b border-black/[0.06] dark:border-white/[0.08] px-4 py-3.5 transition-colors duration-200">
         <div className="max-w-md mx-auto flex items-center justify-between">
-          <Link href="/book" className="text-xs text-neutral-500 hover:text-neutral-900 font-medium transition-colors">
+          <Link href="/book" className="text-xs text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white font-medium transition-colors">
             ← Back
           </Link>
           <div className="text-center">
-            <h1 className="text-sm font-[510] tracking-tight text-neutral-900">Secure Payment</h1>
-            <p className="text-[10px] text-neutral-400">Page 3 Salon • Indian Gateway</p>
+            <h1 className="text-sm font-[510] tracking-tight text-neutral-900 dark:text-white">Secure Payment</h1>
+            <p className="text-[10px] text-neutral-400 dark:text-neutral-500">Page 3 Salon • Indian Gateway</p>
           </div>
-          <div className="text-[10px] font-mono text-emerald-600 bg-emerald-50 border border-emerald-100 px-2 py-0.5 rounded-full">
-            256-bit SSL
+          <div className="flex items-center gap-1.5">
+            <ThemeToggle size="sm" />
+            <div className="text-[10px] font-mono text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-100 dark:border-emerald-800/40 px-2 py-0.5 rounded-full">
+              256-bit
+            </div>
           </div>
         </div>
       </header>
