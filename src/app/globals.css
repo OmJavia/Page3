@@ -60,31 +60,135 @@
     border-color: hsl(var(--border));
   }
   body {
-    background-color: #ffffff;
+    background-color: #fafafa;
     color: #1c1d1f;
     letter-spacing: -0.011em;
   }
 }
 
-/* Rightfit.so Hover & Chroma Animations */
-.chroma-text-animate-parent {
+/* ==========================================================================
+   AUTHENTIC RIGHTFIT.SO CHROMA PRISM TEXT ANIMATION (Extracted from source)
+   ========================================================================== */
+.chroma-text,
+.chroma-text-animate,
+.chroma-text-out,
+.chroma-text-out-animate,
+.chroma-text--pro,
+.chroma-text-animate-repeat,
+.chroma-text-loading,
+.pro-chroma-heading {
+  -webkit-text-fill-color: transparent;
+  font: inherit;
+  z-index: 1;
+  -webkit-background-clip: text;
+  background-clip: text;
+  display: inline;
   position: relative;
-  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease, border-color 0.2s ease;
+  font-size: inherit !important;
+  font-weight: inherit !important;
+  line-height: inherit !important;
+  letter-spacing: inherit !important;
+  text-transform: inherit !important;
+  -webkit-text-decoration: inherit !important;
+  text-decoration: inherit !important;
 }
 
-.chroma-text-out-animate {
-  display: inline-block;
-  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease, filter 0.2s ease;
-  will-change: transform, opacity;
+.chroma-text,
+.chroma-text-animate-repeat,
+.chroma-text-loading {
+  background-image: linear-gradient(
+    90deg,
+    var(--foreground, #1c1d1f) 0%,
+    var(--foreground, #1c1d1f) 33.33%,
+    #c679c4 40%,
+    #fa3d1d 45%,
+    #ffb005 50%,
+    #e1e1fe 55%,
+    #0358f7 60%,
+    var(--foreground, #1c1d1f) 66.67%,
+    var(--foreground, #1c1d1f) 100%
+  );
+  will-change: background-position;
+  background-position: 100% 0;
+  background-size: 300% 100%;
 }
 
-.chroma-text-animate-parent:hover .chroma-text-out-animate {
-  transform: translateY(-0.5px);
-  opacity: 0.95;
+.chroma-text-out {
+  background-image:
+    linear-gradient(
+      90deg,
+      transparent 0%,
+      transparent 33.33%,
+      #c679c4 40%,
+      #fa3d1d 45%,
+      #ffb005 50%,
+      #e1e1fe 55%,
+      #0358f7 60%,
+      var(--foreground, #1c1d1f) 66.67%,
+      var(--foreground, #1c1d1f) 100%
+    ),
+    linear-gradient(
+      270deg,
+      transparent 0%,
+      transparent 33.33%,
+      #c679c4 40%,
+      #fa3d1d 45%,
+      #ffb005 50%,
+      #e1e1fe 55%,
+      #0358f7 60%,
+      var(--foreground, #1c1d1f) 66.67%,
+      var(--foreground, #1c1d1f) 100%
+    );
+  background-blend-mode: normal;
+  will-change: background-position;
+  background-position: 100% 0, 100% 0;
+  background-size: 300% 100%, 300% 100%;
 }
 
-.chroma-text-animate-parent:active .chroma-text-out-animate {
-  transform: translateY(0.5px);
+.chroma-text-out-animate:hover,
+.chroma-text-out-animate:focus,
+.chroma-text-animate-parent:hover .chroma-text-out-animate,
+.chroma-text-animate-parent:focus .chroma-text-out-animate {
+  animation: 2s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite chroma-expand-bidirectional-repeat;
+}
+
+@keyframes chroma-expand-bidirectional-repeat {
+  0% {
+    background-position: 100% 0, 100% 0;
+  }
+  50% {
+    background-position: 0 0, 0 0;
+  }
+  50.1% {
+    background-position: 100% 0, 100% 0;
+  }
+  to {
+    background-position: 100% 0, 100% 0;
+  }
+}
+
+@keyframes chroma-sweep-repeat {
+  0% {
+    background-position: 100% 0;
+  }
+  50% {
+    background-position: 0 0;
+  }
+  50.1% {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: 100% 0;
+  }
+}
+
+/* Arrow micro-slide on hover */
+.chroma-text-animate-parent:hover .tabler-icon-arrow-right {
+  transform: translateX(2px);
+}
+
+.tabler-icon-arrow-right {
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Rightfit glass & card styling */
