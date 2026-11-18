@@ -1,0 +1,16 @@
+{
+  "name": "Page 3 Luxury Salon",
+  "short_name": "Page 3 Salon",
+  "description": "Premium hair styling, color, and beauty appointment booking",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#09090b",
+  "theme_color": "#d97706",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    }
+  ]
+}
