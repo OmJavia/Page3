@@ -41,7 +41,9 @@ export default function RootLayout({
             __html: `
               (function() {
                 try {
-                  var storedTheme = localStorage.getItem('p3_theme');
+                  var urlParams = new URLSearchParams(window.location.search);
+                  var paramTheme = urlParams.get('theme');
+                  var storedTheme = paramTheme || localStorage.getItem('p3_theme');
                   if (storedTheme === 'dark') {
                     document.documentElement.classList.add('dark');
                   } else {

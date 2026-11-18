@@ -163,8 +163,15 @@ export default function AdminDashboardPage() {
 
   const stats = PERIOD_DATA[selectedRange];
 
-  // Close dropdown on click outside
+  // Close dropdown on click outside or open via query param
   useEffect(() => {
+    try {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get("dropdown") === "open") {
+        setDropdownOpen(true);
+      }
+    } catch {}
+
     function handleClickOutside(e: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
         setDropdownOpen(false);

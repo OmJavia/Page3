@@ -19,7 +19,9 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     setMounted(true);
     try {
-      const storedTheme = localStorage.getItem("p3_theme") as Theme | null;
+      const urlParams = new URLSearchParams(window.location.search);
+      const themeParam = urlParams.get("theme") as Theme | null;
+      const storedTheme = themeParam || (localStorage.getItem("p3_theme") as Theme | null);
       if (storedTheme === "dark" || storedTheme === "light") {
         setThemeState(storedTheme);
         if (storedTheme === "dark") {
