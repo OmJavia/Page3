@@ -1,13 +1,13 @@
 export const SALON_INFO = {
   name: "Page 3 Salon",
   tagline: "Where Style Meets Excellence",
-  phone: "[PLACEHOLDER — update from business]",
-  whatsapp: "[PLACEHOLDER]",
-  email: "[PLACEHOLDER]",
-  address: "[PLACEHOLDER — update from Google Maps]",
-  city: "[PLACEHOLDER]",
-  state: "[PLACEHOLDER]",
-  pincode: "[PLACEHOLDER]",
+  phone: "9111198911",
+  whatsapp: "919111198911",
+  email: "contact@page3salon.com",
+  address: "Ground Floor, City Center Mall Road, Near Circle",
+  city: "Ahmedabad",
+  state: "Gujarat",
+  pincode: "380015",
   googleMapsUrl: "https://maps.app.goo.gl/obuRuSkPS6QNN6R8A",
   hours: {
     monday: { open: "10:00", close: "20:00", closed: false },
@@ -49,17 +49,13 @@ export const TIME_SLOTS = Array.from({ length: 24 }, (_, i) => {
   const fmtTime = (mins: number) => {
     const h = Math.floor(mins / 60);
     const m = mins % 60;
-    return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
+    const ampm = h >= 12 ? "PM" : "AM";
+    const h12 = h > 12 ? h - 12 : h === 0 ? 12 : h;
+    return `${h12.toString().padStart(2, "0")}:${m.toString().padStart(2, "0")} ${ampm}`;
   };
-  return { start: fmtTime(start), end: fmtTime(end) };
+  return {
+    start: `${Math.floor(start / 60).toString().padStart(2, "0")}:${(start % 60).toString().padStart(2, "0")}`,
+    end: `${Math.floor(end / 60).toString().padStart(2, "0")}:${(end % 60).toString().padStart(2, "0")}`,
+    label: `${fmtTime(start)} - ${fmtTime(end)}`,
+  };
 }).filter(Boolean);
-
-export const INVENTORY_UNITS = ["ml", "grams", "pieces", "bottles", "tubes", "packets"] as const;
-
-export const EXPENSE_CATEGORIES = [
-  "rent", "electricity", "salary", "inventory", "maintenance", "marketing", "other"
-] as const;
-
-export const NOTIFICATION_TYPES = [
-  "confirmation", "reminder_24h", "reminder_1h", "cancellation", "rescheduling", "thankyou", "review_request"
-] as const;
