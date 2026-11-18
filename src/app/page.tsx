@@ -1,206 +1,238 @@
 import Link from "next/link";
 import { SALON_INFO } from "@/lib/constants";
 import { DEMO_SERVICES, DEMO_CATEGORIES } from "@/lib/mock-data";
+import { Button } from "@/components/ui/button";
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-white">
-      {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 text-white overflow-hidden">
-        {/* Decorative gold accent */}
-        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500" />
-        
-        {/* Header */}
-        <header className="relative z-10 flex items-center justify-between px-5 py-4">
-          <div>
-            <h1 className="text-xl font-bold tracking-tight text-white">{SALON_INFO.name}</h1>
-            <p className="text-xs text-amber-400 font-medium tracking-widest uppercase">{SALON_INFO.tagline}</p>
-          </div>
-          <Link href="/admin" className="text-xs border border-zinc-600 rounded-lg px-3 py-1.5 text-zinc-300 hover:border-amber-500 hover:text-amber-400 transition-colors">
-            Owner Login
-          </Link>
-        </header>
+    <div className="min-h-screen bg-[#fafafa] text-[#1c1d1f]">
+      {/* Top Hairline Indicator */}
+      <div className="h-[2px] bg-neutral-900 w-full" />
 
-        {/* Hero Content */}
-        <div className="relative z-10 px-5 py-12 text-center">
-          <div className="inline-flex items-center gap-2 bg-amber-500/20 border border-amber-500/30 rounded-full px-4 py-1.5 mb-6">
-            <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-            <span className="text-xs font-medium text-amber-300">Open Today · 10 AM – 8 PM</span>
+      {/* Header */}
+      <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-black/[0.06] px-5 py-3.5">
+        <div className="max-w-md mx-auto flex items-center justify-between">
+          <div>
+            <h1 className="text-base font-[510] tracking-tight text-neutral-900">{SALON_INFO.name}</h1>
+            <p className="text-[10px] text-neutral-400 uppercase tracking-widest font-medium">
+              {SALON_INFO.tagline}
+            </p>
           </div>
-          <h2 className="text-4xl font-bold tracking-tight mb-3">
-            Look Your <span className="text-amber-400">Best</span>
-          </h2>
-          <p className="text-zinc-400 text-base mb-8 max-w-xs mx-auto leading-relaxed">
-            Professional hair styling, color & grooming services. Book your appointment in 60 seconds.
-          </p>
-          <div className="flex flex-col gap-3 max-w-xs mx-auto">
-            <Link href="/book" className="w-full bg-amber-500 hover:bg-amber-600 text-white font-semibold py-4 rounded-xl text-base transition-colors shadow-lg shadow-amber-500/25">
-              Book Appointment
+          <div className="flex items-center gap-2">
+            <Link href="/payment" className="text-xs text-neutral-600 hover:text-neutral-900 font-medium px-2.5 py-1 rounded-xl border border-black/[0.08] bg-neutral-50 hover:bg-neutral-100 transition-colors">
+              💳 UPI Pay
             </Link>
-            <a href={`tel:${SALON_INFO.phone}`} className="w-full border border-zinc-600 text-zinc-300 font-medium py-3 rounded-xl text-sm transition-colors hover:border-amber-500 hover:text-amber-400">
-              Call Us
-            </a>
+            <Link href="/admin">
+              <Button variant="rightfit" size="sm" className="text-xs h-8 px-3">
+                Owner Portal
+              </Button>
+            </Link>
           </div>
         </div>
+      </header>
 
-        {/* Stats Row */}
-        <div className="relative z-10 grid grid-cols-3 gap-px bg-zinc-700/50 mx-5 mb-8 rounded-xl overflow-hidden">
+      {/* Hero Section */}
+      <section className="px-5 pt-8 pb-10 max-w-md mx-auto text-center">
+        {/* Status Pill */}
+        <div className="inline-flex items-center gap-2 border border-black/[0.08] bg-white rounded-full px-3.5 py-1 mb-6 shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
+          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+          <span className="text-xs font-medium text-neutral-700">Open Today • 10 AM – 8 PM</span>
+        </div>
+
+        <h2 className="text-3xl font-[510] tracking-[-0.025em] text-neutral-950 mb-3 leading-tight">
+          Precision styling. <br />
+          <span className="text-neutral-500">Effortless care.</span>
+        </h2>
+
+        <p className="text-neutral-600 text-sm mb-7 max-w-xs mx-auto leading-relaxed">
+          Bespoke hair design, luxury grooming, and automated customer CRM. Experience salon management reimagined.
+        </p>
+
+        {/* Action Buttons using Rightfit.so Button Specs */}
+        <div className="flex flex-col gap-2.5 max-w-xs mx-auto">
+          {/* Rightfit Primary Dark Button */}
+          <Link href="/book" className="w-full">
+            <Button variant="default" size="lg" className="w-full h-11 text-sm font-semibold">
+              Book Appointment Online →
+            </Button>
+          </Link>
+
+          {/* Rightfit Light White Button (The exact requested component) */}
+          <Link href="/payment" className="w-full">
+            <Button variant="rightfit" size="lg" className="w-full h-11 text-sm">
+              <span className="text-xs">🇮🇳</span> Quick UPI & Card Payment
+            </Button>
+          </Link>
+
+          <a href={`tel:${SALON_INFO.phone}`} className="w-full">
+            <Button variant="outline" size="sm" className="w-full h-9 text-xs text-neutral-600">
+              Call Salon (+91 {SALON_INFO.phone})
+            </Button>
+          </a>
+        </div>
+
+        {/* Minimalist Stats Row */}
+        <div className="grid grid-cols-3 gap-px bg-neutral-200/80 border border-neutral-200/80 rounded-2xl overflow-hidden mt-8 shadow-[0_1px_2px_rgba(0,0,0,0.03)]">
           {[
-            { value: "500+", label: "Happy Clients" },
+            { value: "500+", label: "Regular Clients" },
             { value: "10+", label: "Years Exp." },
             { value: "4.9★", label: "Google Rating" },
           ].map((stat) => (
-            <div key={stat.label} className="bg-zinc-800/80 py-4 text-center">
-              <div className="text-xl font-bold text-amber-400">{stat.value}</div>
-              <div className="text-xs text-zinc-400 mt-0.5">{stat.label}</div>
+            <div key={stat.label} className="bg-white py-3.5 text-center">
+              <div className="text-base font-bold text-neutral-900">{stat.value}</div>
+              <div className="text-[10px] text-neutral-400 mt-0.5 font-medium">{stat.label}</div>
             </div>
           ))}
         </div>
       </section>
 
       {/* Services Section */}
-      <section className="px-5 py-10">
-        <div className="flex items-center justify-between mb-6">
+      <section className="px-5 py-6 max-w-md mx-auto">
+        <div className="flex items-center justify-between mb-4">
           <div>
-            <h2 className="text-xl font-bold text-zinc-900">Our Services</h2>
-            <p className="text-sm text-zinc-500 mt-0.5">Expert care for every style</p>
+            <h3 className="text-lg font-[510] tracking-tight text-neutral-950">Curated Services</h3>
+            <p className="text-xs text-neutral-500">Handcrafted styling by master artists</p>
           </div>
-          <Link href="/book" className="text-sm font-medium text-amber-600 hover:text-amber-700">
-            Book Now →
+          <Link href="/services" className="text-xs font-semibold text-neutral-900 hover:text-neutral-600 transition-colors">
+            All Services →
           </Link>
         </div>
 
-        {/* Category Pills */}
-        <div className="flex gap-2 overflow-x-auto pb-3 mb-5 scrollbar-hide">
-          <button className="flex-shrink-0 bg-zinc-900 text-white text-xs font-medium px-4 py-2 rounded-full">All</button>
+        {/* Category Filter Pills */}
+        <div className="flex gap-1.5 overflow-x-auto pb-3 mb-4 scrollbar-none">
+          <button className="shrink-0 bg-neutral-900 text-white text-xs font-medium px-3.5 py-1.5 rounded-full shadow-xs">
+            All
+          </button>
           {DEMO_CATEGORIES.map((cat) => (
-            <button key={cat.id} className="flex-shrink-0 border border-zinc-200 text-zinc-600 text-xs font-medium px-4 py-2 rounded-full hover:border-amber-400 hover:text-amber-700 transition-colors whitespace-nowrap">
+            <button
+              key={cat.id}
+              className="shrink-0 border border-black/[0.08] bg-white text-neutral-600 text-xs font-medium px-3.5 py-1.5 rounded-full hover:border-black/[0.2] hover:text-neutral-900 transition-all whitespace-nowrap shadow-2xs"
+            >
               {cat.icon} {cat.name}
             </button>
           ))}
         </div>
 
-        {/* Service Cards */}
-        <div className="grid grid-cols-1 gap-3">
-          {DEMO_SERVICES.slice(0, 6).map((service) => (
-            <div key={service.id} className="flex items-center justify-between p-4 border border-zinc-100 rounded-xl hover:border-amber-200 hover:shadow-sm transition-all bg-white">
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 mb-0.5">
-                  <h3 className="font-semibold text-zinc-900 text-sm">{service.name}</h3>
-                  <span className="text-xs text-zinc-400 bg-zinc-50 px-2 py-0.5 rounded-full border">
-                    {service.duration_minutes} min
+        {/* Service Cards with Rightfit styling */}
+        <div className="grid grid-cols-1 gap-2.5">
+          {DEMO_SERVICES.slice(0, 5).map((service) => (
+            <div
+              key={service.id}
+              className="rf-card p-4 flex items-center justify-between group hover:border-black/[0.15] transition-all"
+            >
+              <div className="flex-1 min-w-0 pr-3">
+                <div className="flex items-center gap-2 mb-1">
+                  <h4 className="font-semibold text-neutral-900 text-sm tracking-tight">{service.name}</h4>
+                  <span className="text-[10px] text-neutral-500 bg-neutral-100 px-2 py-0.5 rounded-md font-mono">
+                    {service.duration_minutes}m
                   </span>
                 </div>
-                <p className="text-xs text-zinc-500 truncate">{service.description}</p>
+                <p className="text-xs text-neutral-500 truncate">{service.description}</p>
               </div>
-              <div className="flex items-center gap-3 ml-4 flex-shrink-0">
-                <span className="font-bold text-zinc-900">₹{service.price}</span>
-                <Link
-                  href={`/book?service=${service.id}`}
-                  className="bg-amber-500 hover:bg-amber-600 text-white text-xs font-medium px-3 py-2 rounded-lg transition-colors"
-                >
-                  Book
+              <div className="flex items-center gap-3 shrink-0">
+                <span className="font-bold text-sm text-neutral-900">₹{service.price}</span>
+                <Link href={`/book?service=${service.id}`}>
+                  <Button variant="rightfit" size="sm" className="h-8 px-3 text-xs font-semibold">
+                    Book
+                  </Button>
                 </Link>
               </div>
             </div>
           ))}
         </div>
-        <Link href="/services" className="block text-center mt-5 text-sm font-medium text-amber-600 hover:text-amber-700">
-          View All Services →
-        </Link>
       </section>
 
-      {/* CRM Memory Banner */}
-      <section className="mx-5 mb-8 bg-gradient-to-r from-zinc-900 to-zinc-800 rounded-2xl p-5 text-white">
-        <div className="flex gap-3">
-          <div className="text-3xl">🔖</div>
-          <div>
-            <h3 className="font-bold mb-1">We Remember You</h3>
-            <p className="text-xs text-zinc-400 leading-relaxed">
-              We keep track of your preferred stylist, favorite services, and style preferences so every visit feels personal.
-            </p>
-            <Link href="/book" className="mt-3 inline-flex items-center text-xs font-medium text-amber-400 hover:text-amber-300">
-              Book Your Next Visit →
-            </Link>
+      {/* CRM Customer Memory Section */}
+      <section className="px-5 py-4 max-w-md mx-auto">
+        <div className="rf-card p-5 bg-[#121212] text-white border-neutral-900">
+          <div className="flex items-start gap-3.5">
+            <div className="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center text-lg shrink-0">
+              🔖
+            </div>
+            <div>
+              <h4 className="font-[510] text-sm text-white mb-1">Personalized Client Memory</h4>
+              <p className="text-xs text-neutral-400 leading-relaxed">
+                We remember your previous hair formulas, preferred stylist, visit cadence, and style notes every time you book.
+              </p>
+              <Link href="/book" className="mt-3 inline-flex items-center text-xs font-semibold text-neutral-200 hover:text-white transition-colors">
+                Book with Your Stylist →
+              </Link>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* WhatsApp CTA */}
-      <section className="px-5 mb-8">
+      {/* WhatsApp Concierge */}
+      <section className="px-5 py-2 max-w-md mx-auto">
         <a
           href={`https://wa.me/${SALON_INFO.whatsapp}`}
-          className="flex items-center justify-center gap-3 w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-4 rounded-xl transition-colors shadow-sm"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block w-full"
         >
-          <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current">
-            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-          </svg>
-          Chat on WhatsApp
+          <Button variant="rightfit" className="w-full h-11 text-xs justify-center gap-2 text-neutral-800">
+            <span className="text-base">💬</span> Instant WhatsApp Concierge (+91 {SALON_INFO.phone})
+          </Button>
         </a>
       </section>
 
-      {/* Business Info */}
-      <section className="px-5 pb-10 border-t border-zinc-100 pt-8">
-        <h3 className="font-bold text-zinc-900 mb-4">Visit Us</h3>
-        <div className="space-y-3">
-          <div className="flex items-start gap-3">
-            <span className="text-lg">📍</span>
-            <div>
-              <p className="text-sm font-medium text-zinc-900">Address</p>
-              <p className="text-sm text-zinc-500">{SALON_INFO.address}</p>
-            </div>
-          </div>
-          <div className="flex items-start gap-3">
-            <span className="text-lg">📞</span>
-            <div>
-              <p className="text-sm font-medium text-zinc-900">Phone</p>
-              <a href={`tel:${SALON_INFO.phone}`} className="text-sm text-amber-600">{SALON_INFO.phone}</a>
-            </div>
-          </div>
-          <div className="flex items-start gap-3">
-            <span className="text-lg">🕐</span>
-            <div>
-              <p className="text-sm font-medium text-zinc-900">Hours</p>
-              <p className="text-sm text-zinc-500">Mon–Fri: 10 AM – 8 PM</p>
-              <p className="text-sm text-zinc-500">Sat: 9 AM – 9 PM · Sun: 10 AM – 7 PM</p>
-            </div>
+      {/* Location & Directions */}
+      <section className="px-5 py-6 max-w-md mx-auto border-t border-black/[0.06] mt-4">
+        <h4 className="text-xs font-bold uppercase tracking-wider text-neutral-400 mb-3">Salon Location</h4>
+        <div className="space-y-2 text-xs text-neutral-600">
+          <p className="font-medium text-neutral-900">{SALON_INFO.name}</p>
+          <p className="text-neutral-500 leading-relaxed">{SALON_INFO.address}</p>
+          <div className="pt-2 flex gap-4 text-[11px] text-neutral-500">
+            <span>Mon–Fri: 10 AM – 8 PM</span>
+            <span>Sat–Sun: 9 AM – 9 PM</span>
           </div>
         </div>
         <a
           href={SALON_INFO.googleMapsUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-4 flex items-center justify-center gap-2 w-full border border-zinc-200 text-zinc-700 font-medium py-3 rounded-xl text-sm hover:border-amber-400 hover:text-amber-700 transition-colors"
+          className="block mt-4"
         >
-          📌 Get Directions on Google Maps
+          <Button variant="outline" className="w-full h-10 text-xs">
+            📍 Open in Google Maps
+          </Button>
         </a>
       </section>
 
-      {/* Bottom Nav */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-zinc-100 safe-area pb-safe z-50">
-        <div className="grid grid-cols-4 py-2">
+      {/* Bottom Navigation */}
+      <nav className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-black/[0.06] safe-area pb-safe z-50">
+        <div className="max-w-md mx-auto grid grid-cols-4 py-2">
           {[
-            { href: "/", label: "Home", icon: "🏠" },
+            { href: "/", label: "Home", icon: "🏠", active: true },
             { href: "/services", label: "Services", icon: "✂️" },
             { href: "/book", label: "Book", icon: "📅", highlight: true },
             { href: "/profile", label: "Profile", icon: "👤" },
           ].map((item) => (
-            <Link key={item.href} href={item.href} className="flex flex-col items-center gap-1 py-2">
+            <Link
+              key={item.href}
+              href={item.href}
+              className="flex flex-col items-center gap-1 py-1 text-center"
+            >
               {item.highlight ? (
-                <span className="bg-amber-500 text-white text-base w-10 h-10 rounded-full flex items-center justify-center -mt-6 shadow-lg shadow-amber-500/30 border-2 border-white">
+                <span className="w-10 h-10 rounded-full bg-neutral-900 text-white flex items-center justify-center text-sm shadow-[0_2px_8px_rgba(0,0,0,0.2)] -mt-5 border-2 border-white">
                   {item.icon}
                 </span>
               ) : (
-                <span className="text-xl">{item.icon}</span>
+                <span className="text-base">{item.icon}</span>
               )}
-              <span className={`text-[10px] font-medium ${item.highlight ? "text-amber-600" : "text-zinc-500"}`}>
+              <span
+                className={`text-[10px] font-medium ${
+                  item.active ? "text-neutral-950 font-bold" : "text-neutral-400"
+                }`}
+              >
                 {item.label}
               </span>
             </Link>
           ))}
         </div>
       </nav>
-      <div className="h-20" />
+
+      <div className="h-16" />
     </div>
   );
 }

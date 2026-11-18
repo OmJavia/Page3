@@ -26,38 +26,38 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   }
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100 flex">
+    <div className="min-h-screen bg-[#fafafa] text-[#1c1d1f] flex">
       {/* Mobile Drawer Overlay */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 bg-black/80 backdrop-blur-sm z-40 lg:hidden"
+          className="fixed inset-0 bg-black/40 backdrop-blur-xs z-40 lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
 
       {/* Sidebar */}
       <aside
-        className={`fixed lg:sticky top-0 left-0 h-screen w-64 bg-zinc-900 border-r border-zinc-800 z-50 flex flex-col justify-between transition-transform duration-200 ${
+        className={`fixed lg:sticky top-0 left-0 h-screen w-64 bg-white border-r border-black/[0.08] z-50 flex flex-col justify-between transition-transform duration-200 ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         }`}
       >
         <div>
           {/* Brand header */}
-          <div className="p-4 border-b border-zinc-800 flex items-center justify-between">
+          <div className="p-4 border-b border-black/[0.06] flex items-center justify-between">
             <Link href="/admin/dashboard" className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-600 to-amber-400 text-zinc-950 font-black text-lg flex items-center justify-center">
+              <div className="w-8 h-8 rounded-xl bg-neutral-900 text-white font-bold text-sm flex items-center justify-center shadow-xs">
                 ✂️
               </div>
               <div>
-                <h2 className="text-sm font-bold text-white leading-tight">Page 3 Salon</h2>
-                <span className="text-[10px] text-amber-400 font-medium uppercase tracking-wider">
+                <h2 className="text-sm font-[510] text-neutral-900 leading-tight">Page 3 Salon</h2>
+                <span className="text-[10px] text-neutral-400 font-medium uppercase tracking-wider">
                   Admin System
                 </span>
               </div>
             </Link>
             <button
               onClick={() => setSidebarOpen(false)}
-              className="lg:hidden text-zinc-400 hover:text-white"
+              className="lg:hidden text-neutral-400 hover:text-neutral-900"
             >
               ✕
             </button>
@@ -72,13 +72,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                   key={item.href}
                   href={item.href}
                   onClick={() => setSidebarOpen(false)}
-                  className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all ${
+                  className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-[510] transition-all ${
                     active
-                      ? "bg-amber-500 text-zinc-950 font-bold shadow-md shadow-amber-500/15"
-                      : "text-zinc-400 hover:text-white hover:bg-zinc-800/60"
+                      ? "bg-neutral-900 text-white shadow-xs font-semibold"
+                      : "text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100/70"
                   }`}
                 >
-                  <span className="text-base">{item.icon}</span>
+                  <span className="text-sm">{item.icon}</span>
                   <span>{item.label}</span>
                 </Link>
               );
@@ -87,66 +87,50 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </div>
 
         {/* User footer */}
-        <div className="p-3 border-t border-zinc-800 bg-zinc-950/40">
-          <div className="flex items-center justify-between p-2 rounded-xl bg-zinc-900 border border-zinc-800">
+        <div className="p-3 border-t border-black/[0.06] bg-neutral-50/50">
+          <div className="flex items-center justify-between p-2 rounded-xl bg-white border border-black/[0.06]">
             <div className="flex items-center gap-2.5 min-w-0">
-              <div className="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-400 font-bold flex items-center justify-center text-xs">
+              <div className="w-7 h-7 rounded-lg bg-neutral-100 text-neutral-800 font-bold flex items-center justify-center text-xs">
                 OW
               </div>
               <div className="min-w-0">
-                <p className="text-xs font-bold text-white truncate">Salon Owner</p>
-                <p className="text-[10px] text-zinc-400 truncate">owner@page3salon.com</p>
+                <p className="text-xs font-semibold text-neutral-900 truncate">Salon Owner</p>
+                <p className="text-[10px] text-neutral-400 truncate">owner@page3salon.com</p>
               </div>
             </div>
             <Link
-              href="/admin"
-              title="Sign Out"
-              className="text-zinc-500 hover:text-red-400 text-xs p-1"
+              href="/"
+              className="text-[10px] text-neutral-500 hover:text-neutral-900 font-medium ml-2 shrink-0 border border-black/[0.08] px-2 py-1 rounded-lg hover:bg-neutral-50"
             >
-              🚪
+              Exit
             </Link>
           </div>
         </div>
       </aside>
 
-      {/* Main Area */}
+      {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0">
-        {/* Top Navbar */}
-        <header className="bg-zinc-900/90 backdrop-blur-md border-b border-zinc-800 px-4 py-3 sticky top-0 z-30 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => setSidebarOpen(true)}
-              className="lg:hidden p-2 rounded-lg bg-zinc-800 text-zinc-300 hover:text-white"
-            >
-              ☰
-            </button>
-            <span className="text-xs font-semibold text-zinc-400 hidden sm:inline">
-              Page 3 Salon Operating Platform
-            </span>
+        {/* Mobile top bar */}
+        <header className="lg:hidden bg-white border-b border-black/[0.06] px-4 py-3 flex items-center justify-between sticky top-0 z-30">
+          <button
+            onClick={() => setSidebarOpen(true)}
+            className="p-1.5 rounded-xl border border-black/[0.08] bg-white text-neutral-700 text-xs"
+          >
+            ☰ Menu
+          </button>
+          <div className="text-center">
+            <span className="text-xs font-bold text-neutral-900">Page 3 Business Hub</span>
           </div>
-
-          <div className="flex items-center gap-3">
-            <Link
-              href="/admin/appointments/new"
-              className="bg-amber-500 hover:bg-amber-600 text-zinc-950 font-bold px-3 py-1.5 rounded-lg text-xs flex items-center gap-1.5 shadow-md shadow-amber-500/10"
-            >
-              <span>+</span>
-              <span>Walk-in / New</span>
-            </Link>
-            <Link
-              href="/"
-              target="_blank"
-              className="text-xs text-zinc-400 hover:text-amber-400 border border-zinc-800 px-2.5 py-1.5 rounded-lg hidden md:inline-block"
-            >
-              Preview Website ↗
-            </Link>
-          </div>
+          <Link
+            href="/"
+            className="text-[11px] text-neutral-500 hover:text-neutral-900 font-medium"
+          >
+            Client App →
+          </Link>
         </header>
 
-        {/* Child Pages */}
-        <div className="flex-1 overflow-auto">{children}</div>
+        <main className="flex-1 p-4 lg:p-8 max-w-7xl w-full mx-auto">{children}</main>
       </div>
     </div>
   );
 }
-

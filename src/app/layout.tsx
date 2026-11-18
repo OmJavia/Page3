@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import "./compiled.css";
 
 export const metadata: Metadata = {
@@ -19,7 +20,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#09090b",
+  themeColor: "#121212",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
@@ -33,8 +34,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="font-sans antialiased bg-zinc-950 text-zinc-100 selection:bg-amber-500 selection:text-zinc-950">
+      <body className="font-sans antialiased bg-[#fafafa] text-[#1c1d1f] selection:bg-neutral-900 selection:text-white">
         {children}
+        <Analytics />
       </body>
     </html>
   );
