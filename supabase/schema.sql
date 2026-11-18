@@ -364,3 +364,4 @@ CREATE TRIGGER trg_appointment_completed_inventory
 AFTER UPDATE OF status ON appointments
 FOR EACH ROW
 EXECUTE FUNCTION fn_deduct_inventory_on_completed_service();
+
