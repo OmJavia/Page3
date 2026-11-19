@@ -2398,6 +2398,9 @@
         background-color: color-mix(in oklab, var(--color-neutral-200) 80%, transparent);
       }
     }
+    .hover\:bg-neutral-800:hover {
+      background-color: var(--color-neutral-800);
+    }
     .hover\:bg-neutral-900:hover {
       background-color: var(--color-neutral-900);
     }
@@ -3380,11 +3383,10 @@
 .chroma-text-animate-repeat,
 .chroma-text-loading,
 .pro-chroma-heading {
-  -webkit-text-fill-color: transparent;
+  -webkit-text-fill-color: currentColor;
+  color: inherit;
   font: inherit;
   z-index: 1;
-  -webkit-background-clip: text;
-  background-clip: text;
   display: inline;
   position: relative;
   font-size: inherit !important;

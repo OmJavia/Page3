@@ -99,7 +99,7 @@ export default function HomePage() {
                 className="inline-flex shrink-0 items-center justify-center gap-1 rounded-xl text-xs font-[510] tracking-[-0.011em] border border-black/[0.08] dark:border-white/[0.12] bg-white dark:bg-[#18191c] text-[#1c1d1f] dark:text-[#f4f4f5] shadow-2xs hover:bg-neutral-50 dark:hover:bg-white/[0.06] h-8 px-2.5 transition-all"
                 title="Management Console"
               >
-                <span className="chroma-text-out chroma-text-out-animate">{t.staffLogin}</span>
+                <span>{t.staffLogin}</span>
               </button>
             </Link>
           </div>
@@ -203,11 +203,9 @@ export default function HomePage() {
           <Link href="/book" className="block w-full">
             <button
               type="button"
-              className="inline-flex shrink-0 items-center justify-center gap-2 rounded-2xl text-sm font-[510] tracking-[-0.011em] border border-black/[0.08] dark:border-white/[0.12] bg-white dark:bg-[#18191c] text-[#1c1d1f] dark:text-[#f4f4f5] shadow-[0_1px_2px_rgba(0,0,0,0.05),0_4px_12px_-2px_rgba(0,0,0,0.05)] hover:shadow-[0_2px_6px_rgba(0,0,0,0.08),0_8px_20px_-4px_rgba(0,0,0,0.08)] h-12 px-6 py-2.5 w-full chroma-text-animate-parent"
+              className="inline-flex shrink-0 items-center justify-center gap-2 rounded-2xl text-sm font-bold tracking-[-0.011em] bg-neutral-950 dark:bg-white text-white dark:text-neutral-950 hover:bg-neutral-800 dark:hover:bg-neutral-100 shadow-[0_2px_8px_rgba(0,0,0,0.15)] h-12 px-6 py-2.5 w-full transition-all cursor-pointer"
             >
-              <span className="chroma-text-out chroma-text-out-animate font-bold">
-                {t.bookNow}
-              </span>
+              <span>{t.bookNow}</span>
               <span className="text-sm">→</span>
             </button>
           </Link>
@@ -215,7 +213,7 @@ export default function HomePage() {
           <Link href="/services" className="block w-full">
             <button
               type="button"
-              className="inline-flex shrink-0 items-center justify-center gap-2 rounded-2xl text-xs font-semibold border border-black/[0.08] dark:border-white/[0.12] bg-white dark:bg-[#18191c] text-neutral-800 dark:text-neutral-200 hover:bg-neutral-50 dark:hover:bg-white/[0.06] h-10 px-4 w-full transition-colors shadow-2xs"
+              className="inline-flex shrink-0 items-center justify-center gap-2 rounded-2xl text-xs font-semibold border border-black/[0.08] dark:border-white/[0.12] bg-white dark:bg-[#18191c] text-neutral-800 dark:text-neutral-200 hover:bg-neutral-50 dark:hover:bg-white/[0.06] h-10 px-4 w-full transition-colors shadow-2xs cursor-pointer"
             >
               <span>Explore Services &amp; Pricing</span>
             </button>
@@ -392,9 +390,9 @@ export default function HomePage() {
                 <Link href={`/book?service=${service.id}`}>
                   <button
                     type="button"
-                    className="inline-flex shrink-0 items-center justify-center gap-1 rounded-xl text-xs font-semibold border border-black/[0.08] dark:border-white/[0.12] bg-white dark:bg-[#18191c] text-[#1c1d1f] dark:text-[#f4f4f5] shadow-2xs hover:shadow-xs h-8 px-3 transition-all"
+                    className="inline-flex shrink-0 items-center justify-center gap-1 rounded-xl text-xs font-semibold bg-neutral-900 dark:bg-white text-white dark:text-neutral-950 hover:bg-black dark:hover:bg-neutral-100 shadow-2xs h-8 px-3 transition-all cursor-pointer"
                   >
-                    <span className="chroma-text-out chroma-text-out-animate">Book</span>
+                    <span>Book</span>
                   </button>
                 </Link>
               </div>
