@@ -1,67 +1,100 @@
+"use client";
+
 import Link from "next/link";
 import { SALON_INFO } from "@/lib/constants";
 import { DEMO_SERVICES } from "@/lib/mock-data";
 import { VideoGallery } from "@/components/video-gallery";
 import { ReviewsMarquee } from "@/components/reviews-marquee";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { LanguageToggle } from "@/components/language-toggle";
+import { useLanguage } from "@/lib/language-context";
 
 export default function HomePage() {
+  const { t } = useLanguage();
+
   return (
     <div className="min-h-screen bg-[#fafafa] dark:bg-[#0c0d0e] text-[#1c1d1f] dark:text-[#f4f4f5] transition-colors duration-200">
       {/* Top Hairline Indicator */}
       <div className="h-[2px] bg-neutral-900 dark:bg-white w-full" />
 
       {/* Header */}
-      <header className="sticky top-0 z-40 bg-white/90 dark:bg-[#121214]/90 backdrop-blur-md border-b border-black/[0.06] dark:border-white/[0.08] px-5 py-3.5 transition-colors duration-200">
+      <header className="sticky top-0 z-40 bg-white/90 dark:bg-[#121214]/90 backdrop-blur-md border-b border-black/[0.06] dark:border-white/[0.08] px-5 py-3 transition-colors duration-200">
         <div className="max-w-md mx-auto flex items-center justify-between">
           <div>
-            <h1 className="text-base font-[510] tracking-tight text-neutral-900 dark:text-white">{SALON_INFO.name}</h1>
+            <h1 className="text-base font-[510] tracking-tight text-neutral-900 dark:text-white">
+              {t.brandTitle}
+            </h1>
             <p className="text-[10px] text-neutral-400 dark:text-neutral-500 uppercase tracking-widest font-medium">
-              Luxury Hair &amp; Grooming
+              {t.brandTagline}
             </p>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            {/* Language Switcher */}
+            <LanguageToggle />
+
             {/* Theme Toggle Button */}
             <ThemeToggle size="sm" />
 
-            <a
-              href={`tel:${SALON_INFO.phone}`}
-              className="text-xs text-neutral-700 dark:text-neutral-200 hover:text-neutral-950 dark:hover:text-white font-semibold px-2.5 py-1.5 rounded-xl border border-black/[0.08] dark:border-white/[0.12] bg-white dark:bg-[#18191c] hover:bg-neutral-50 dark:hover:bg-white/[0.06] transition-colors flex items-center gap-1.5 shadow-2xs"
-            >
-              <span className="text-xs">📞</span>
-              <span>{SALON_INFO.phone}</span>
-            </a>
+            {/* Admin / Staff Login Portal */}
             <Link href="/admin">
               <button
                 type="button"
                 tabIndex={0}
                 data-slot="button"
-                className="inline-flex shrink-0 transform-gpu items-center justify-center gap-1.5 rounded-xl text-xs font-[510] tracking-[-0.011em] whitespace-nowrap transition-all duration-200 outline-none border border-black/[0.08] dark:border-white/[0.12] bg-white dark:bg-[#18191c] text-[#1c1d1f] dark:text-[#f4f4f5] shadow-[0_1px_2px_rgba(0,0,0,0.05),0_4px_12px_-2px_rgba(0,0,0,0.05)] [--foreground:#1c1d1f] dark:[--foreground:#f4f4f5] hover:shadow-[0_2px_6px_rgba(0,0,0,0.08),0_8px_20px_-4px_rgba(0,0,0,0.08)] h-8 px-3"
+                className="inline-flex shrink-0 transform-gpu items-center justify-center gap-1 rounded-xl text-xs font-[510] tracking-[-0.011em] whitespace-nowrap transition-all duration-200 outline-none border border-black/[0.08] dark:border-white/[0.12] bg-white dark:bg-[#18191c] text-[#1c1d1f] dark:text-[#f4f4f5] shadow-[0_1px_2px_rgba(0,0,0,0.05),0_4px_12px_-2px_rgba(0,0,0,0.05)] [--foreground:#1c1d1f] dark:[--foreground:#f4f4f5] hover:shadow-[0_2px_6px_rgba(0,0,0,0.08),0_8px_20px_-4px_rgba(0,0,0,0.08)] h-8 px-2.5"
+                title="Management Console"
               >
-                <span className="chroma-text-out chroma-text-out-animate">Staff</span>
+                <span className="chroma-text-out chroma-text-out-animate">{t.staffLogin}</span>
               </button>
             </Link>
           </div>
         </div>
       </header>
 
+      {/* FIRST-TIME CUSTOMER OFFER BANNER */}
+      <div className="px-5 pt-3 max-w-md mx-auto">
+        <div className="bg-neutral-900 dark:bg-white/[0.08] text-white p-3.5 rounded-2xl border border-black/[0.1] dark:border-white/[0.12] shadow-sm flex items-center justify-between gap-3">
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-1.5">
+              <span className="text-[9px] font-bold uppercase tracking-wider bg-white/20 text-white px-2 py-0.5 rounded-md">
+                {t.firstTimeOfferBadge}
+              </span>
+              <span className="text-xs font-bold text-amber-300">FLAT 20% OFF</span>
+            </div>
+            <p className="text-xs text-neutral-200 dark:text-neutral-300 font-medium mt-1 leading-snug">
+              {t.firstTimeOfferText}
+            </p>
+          </div>
+          <Link
+            href="/book?promo=FIRST20"
+            className="shrink-0 bg-white text-neutral-950 hover:bg-neutral-100 font-bold text-xs px-3 py-2 rounded-xl transition-all shadow-xs"
+          >
+            {t.claimOffer} →
+          </Link>
+        </div>
+      </div>
+
       {/* Hero Section: Tailored for First-Time Clients */}
-      <section className="px-5 pt-8 pb-8 max-w-md mx-auto text-center">
+      <section className="px-5 pt-6 pb-8 max-w-md mx-auto text-center">
         {/* Open Status & Rating Pill */}
         <div className="inline-flex items-center gap-2 border border-black/[0.08] dark:border-white/[0.1] bg-white dark:bg-[#161719] rounded-full px-3.5 py-1 mb-5 shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
           <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-          <span className="text-xs font-medium text-neutral-700 dark:text-neutral-300">Open Today • 10 AM – 8 PM</span>
+          <span className="text-xs font-medium text-neutral-700 dark:text-neutral-300">
+            {t.openToday}
+          </span>
           <span className="text-neutral-300 dark:text-neutral-600">•</span>
-          <span className="text-xs font-semibold text-neutral-900 dark:text-white">4.9 ★ Google</span>
+          <span className="text-xs font-semibold text-neutral-900 dark:text-white">
+            {t.googleRating}
+          </span>
         </div>
 
         <h2 className="text-3xl font-[510] tracking-[-0.025em] text-neutral-950 dark:text-white mb-3 leading-tight">
-          Precision styling. <br />
-          <span className="text-neutral-500 dark:text-neutral-400">Book your first visit.</span>
+          {t.heroTitle} <br />
+          <span className="text-neutral-500 dark:text-neutral-400">{t.heroSubtitle}</span>
         </h2>
 
         <p className="text-neutral-600 dark:text-neutral-400 text-sm mb-7 max-w-xs mx-auto leading-relaxed">
-          First time here? Pick your service, choose an expert stylist, and lock in your slot in 60 seconds with zero wait.
+          {t.heroDescription}
         </p>
 
         {/* PRIMARY CALL-TO-ACTION: Rightfit.so Authentic Chroma Button */}
@@ -73,7 +106,9 @@ export default function HomePage() {
               data-slot="button"
               className="inline-flex shrink-0 transform-gpu items-center justify-center gap-2 rounded-2xl text-sm font-[510] tracking-[-0.011em] whitespace-nowrap transition-all duration-200 outline-none focus-visible:ring-[3px] focus-visible:ring-neutral-400/50 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 chroma-text-animate-parent border border-black/[0.08] dark:border-white/[0.12] bg-white dark:bg-[#18191c] text-[#1c1d1f] dark:text-[#f4f4f5] shadow-[0_1px_2px_rgba(0,0,0,0.05),0_4px_12px_-2px_rgba(0,0,0,0.05)] [--foreground:#1c1d1f] dark:[--foreground:#f4f4f5] hover:shadow-[0_2px_6px_rgba(0,0,0,0.08),0_8px_20px_-4px_rgba(0,0,0,0.08)] h-11 px-6 py-2.5 has-[>svg]:px-4 w-full"
             >
-              <span className="chroma-text-out chroma-text-out-animate font-bold">Book Your Appointment</span>
+              <span className="chroma-text-out chroma-text-out-animate font-bold">
+                {t.bookNow}
+              </span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
@@ -100,7 +135,7 @@ export default function HomePage() {
               className="flex-1 inline-flex items-center justify-center gap-1.5 h-10 px-3 rounded-2xl border border-black/[0.08] dark:border-white/[0.12] bg-white dark:bg-[#18191c] hover:bg-neutral-50 dark:hover:bg-white/[0.06] text-xs font-semibold text-neutral-800 dark:text-neutral-200 transition-colors shadow-2xs"
             >
               <span>📞</span>
-              <span>Call {SALON_INFO.phone}</span>
+              <span>{t.callUs}</span>
             </a>
 
             <a
@@ -110,7 +145,7 @@ export default function HomePage() {
               className="flex-1 inline-flex items-center justify-center gap-1.5 h-10 px-3 rounded-2xl border border-black/[0.08] dark:border-white/[0.12] bg-white dark:bg-[#18191c] hover:bg-neutral-50 dark:hover:bg-white/[0.06] text-xs font-semibold text-neutral-800 dark:text-neutral-200 transition-colors shadow-2xs"
             >
               <span>💬</span>
-              <span>WhatsApp</span>
+              <span>{t.whatsapp}</span>
             </a>
           </div>
         </div>
@@ -168,9 +203,9 @@ export default function HomePage() {
               key={service.id}
               className="rf-card p-3.5 flex items-center justify-between bg-white dark:bg-[#161719] border border-black/[0.08] dark:border-white/[0.08]"
             >
-              <div className="flex-1 min-w-0 pr-3">
+              <Link href={`/services/${service.id}`} className="flex-1 min-w-0 pr-3 block group">
                 <div className="flex items-center gap-2 mb-0.5">
-                  <h4 className="font-semibold text-neutral-900 dark:text-white text-xs tracking-tight truncate">
+                  <h4 className="font-semibold text-neutral-900 dark:text-white text-xs tracking-tight truncate group-hover:underline">
                     {service.name}
                   </h4>
                   <span className="text-[9px] text-neutral-500 dark:text-neutral-400 bg-neutral-100 dark:bg-white/[0.08] px-1.5 py-0.2 rounded font-mono">
@@ -178,7 +213,7 @@ export default function HomePage() {
                   </span>
                 </div>
                 <p className="text-[11px] text-neutral-500 dark:text-neutral-400 truncate">{service.description}</p>
-              </div>
+              </Link>
               <div className="flex items-center gap-2.5 shrink-0">
                 <span className="font-bold text-xs text-neutral-900 dark:text-white">₹{service.price}</span>
                 <Link href={`/book?service=${service.id}`}>
@@ -225,7 +260,7 @@ export default function HomePage() {
           <div className="pt-2 border-t border-black/[0.06] dark:border-white/[0.06] text-neutral-500 dark:text-neutral-400 space-y-1">
             <div className="flex justify-between">
               <span>Mon – Fri:</span>
-              <span className="font-medium text-neutral-800 dark:text-neutral-200">10:00 AM – 08:00 PM</span>
+              <span className="font-medium text-neutral-800 dark:text-neutral-200">10:00 AM – 08:30 PM</span>
             </div>
             <div className="flex justify-between">
               <span>Sat – Sun:</span>
@@ -244,7 +279,7 @@ export default function HomePage() {
             type="button"
             className="w-full h-10 rounded-2xl border border-black/[0.08] dark:border-white/[0.12] bg-white dark:bg-[#18191c] text-neutral-800 dark:text-neutral-200 text-xs font-semibold hover:bg-neutral-50 dark:hover:bg-white/[0.06] transition-colors shadow-2xs"
           >
-            📍 Open Directions in Google Maps
+            {t.directions}
           </button>
         </a>
       </section>
@@ -263,7 +298,7 @@ export default function HomePage() {
               data-slot="button"
               className="inline-flex shrink-0 transform-gpu items-center justify-center gap-1.5 rounded-2xl text-xs font-bold tracking-[-0.011em] whitespace-nowrap transition-all duration-200 outline-none border border-black/[0.08] dark:border-white/[0.12] bg-white dark:bg-[#18191c] text-[#1c1d1f] dark:text-[#f4f4f5] shadow-[0_1px_2px_rgba(0,0,0,0.05),0_4px_12px_-2px_rgba(0,0,0,0.05)] [--foreground:#1c1d1f] dark:[--foreground:#f4f4f5] hover:shadow-[0_2px_6px_rgba(0,0,0,0.08),0_8px_20px_-4px_rgba(0,0,0,0.08)] h-10 px-4 w-full chroma-text-animate-parent"
             >
-              <span className="chroma-text-out chroma-text-out-animate">Book Appointment</span>
+              <span className="chroma-text-out chroma-text-out-animate">{t.bookNow}</span>
               <span>→</span>
             </button>
           </Link>

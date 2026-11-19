@@ -37,8 +37,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
+  const handleSignOut = () => {
+    document.cookie = "p3_admin_session=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+    window.location.href = "/admin/login";
+  };
+
   // If on login page, don't wrap with dashboard chrome
-  if (pathname === "/admin") {
+  if (pathname === "/admin" || pathname === "/admin/login") {
     return <>{children}</>;
   }
 
@@ -141,12 +146,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 <p className="text-[10px] text-neutral-400 dark:text-neutral-500 truncate">owner@page3salon.com</p>
               </div>
             </div>
-            <Link
-              href="/"
-              className="text-[10px] text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white font-medium ml-2 shrink-0 border border-black/[0.08] dark:border-white/[0.12] px-2 py-1 rounded-lg hover:bg-neutral-50 dark:hover:bg-white/[0.06]"
+            <button
+              type="button"
+              onClick={handleSignOut}
+              className="text-[10px] text-neutral-500 dark:text-neutral-400 hover:text-rose-600 dark:hover:text-rose-400 font-medium ml-2 shrink-0 border border-black/[0.08] dark:border-white/[0.12] px-2 py-1 rounded-lg hover:bg-neutral-50 dark:hover:bg-white/[0.06] transition-colors"
+              title="Sign Out of Console"
             >
-              Exit
-            </Link>
+              Sign Out
+            </button>
           </div>
         </div>
       </aside>

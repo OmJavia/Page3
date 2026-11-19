@@ -5,6 +5,7 @@ import Link from "next/link";
 import { DEMO_SERVICES, DEMO_CATEGORIES } from "@/lib/mock-data";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { LanguageToggle } from "@/components/language-toggle";
 
 export default function ServicesPage() {
   const [activeCategory, setActiveCategory] = useState("all");
@@ -28,7 +29,10 @@ export default function ServicesPage() {
               </Link>
               <h1 className="text-base font-[510] tracking-tight text-neutral-950 dark:text-white">Services Menu</h1>
             </div>
-            <ThemeToggle size="sm" />
+            <div className="flex items-center gap-2">
+              <LanguageToggle />
+              <ThemeToggle size="sm" />
+            </div>
           </div>
           {/* Gender Filter */}
           <div className="flex gap-2">
@@ -88,7 +92,9 @@ export default function ServicesPage() {
               <div className="flex items-start justify-between gap-3">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
-                    <h3 className="font-semibold text-neutral-900 dark:text-white text-sm tracking-tight">{service.name}</h3>
+                    <Link href={`/services/${service.id}`} className="hover:underline">
+                      <h3 className="font-semibold text-neutral-900 dark:text-white text-sm tracking-tight">{service.name}</h3>
+                    </Link>
                     <span className="text-[10px] text-neutral-500 dark:text-neutral-400 bg-neutral-100 dark:bg-white/[0.08] border border-neutral-200 dark:border-white/[0.1] px-2 py-0.5 rounded-md whitespace-nowrap font-mono">
                       {service.duration_minutes} min
                     </span>
@@ -100,9 +106,12 @@ export default function ServicesPage() {
                 </div>
               </div>
               <div className="mt-3 pt-3 border-t border-black/[0.06] dark:border-white/[0.06] flex items-center justify-between">
-                <span className="text-[10px] text-neutral-400 dark:text-neutral-500">
-                  {service.gender_applicable === "all" ? "Unisex Service" : `${service.gender_applicable} Only`}
-                </span>
+                <Link
+                  href={`/services/${service.id}`}
+                  className="text-xs text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white font-medium"
+                >
+                  View Details →
+                </Link>
                 <Link href={`/book?service=${service.id}`}>
                   <Button variant="default" size="sm" className="h-8 px-4 text-xs font-semibold">
                     Book Now

@@ -20,6 +20,7 @@ export default function AdminLoginPage() {
 
     setTimeout(() => {
       if (email === "owner@page3salon.com" && password === "admin123") {
+        document.cookie = "p3_admin_session=authenticated; Path=/; Max-Age=86400; SameSite=Lax";
         router.push("/admin/dashboard");
       } else {
         setError("Invalid credentials. Please use owner@page3salon.com and password admin123");
@@ -30,6 +31,7 @@ export default function AdminLoginPage() {
 
   const handleGoogleLogin = () => {
     setLoading(true);
+    document.cookie = "p3_admin_session=authenticated; Path=/; Max-Age=86400; SameSite=Lax";
     setTimeout(() => {
       router.push("/admin/dashboard");
     }, 400);

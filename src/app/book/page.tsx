@@ -4,16 +4,19 @@ import { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { DEMO_SERVICES, DEMO_CATEGORIES, DEMO_STAFF, DEMO_CUSTOMERS } from "@/lib/mock-data";
-import { Service, Staff, Customer } from "@/lib/types";
+import { Service, Staff, Customer, Appointment } from "@/lib/types";
 import { formatCurrency, formatTime, generateAppointmentCode } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { isSlotBooked, createAndPersistAppointment, STORE_PHONE } from "@/lib/appointments-store";
+import { LanguageToggle } from "@/components/language-toggle";
+import { useLanguage } from "@/lib/language-context";
+import { isSlotBooked, createAndPersistAppointment, getStoredAppointments, STORE_PHONE } from "@/lib/appointments-store";
 
 function StepIndicator({ current, total }: { current: number; total: number }) {
-  const steps = ["Services", "Stylist", "Date & Slot", "Details"];
+  const { t } = useLanguage();
+  const steps = [t.stepServices, t.stepStylist, t.stepSlot, t.stepDetails];
   return (
-    <div className="bg-white px-4 py-3 border-b border-black/[0.06]">
+    <div className="bg-white dark:bg-[#121214] px-4 py-3 border-b border-black/[0.06] dark:border-white/[0.08] transition-colors duration-200">
       <div className="flex items-center justify-between max-w-md mx-auto">
         {steps.map((label, i) => {
           const stepNum = i + 1;
@@ -25,17 +28,19 @@ function StepIndicator({ current, total }: { current: number; total: number }) {
                 {i > 0 && (
                   <div
                     className={`h-[1px] flex-1 transition-colors ${
-                      stepNum <= current ? "bg-neutral-900" : "bg-neutral-200"
+                      stepNum <= current
+                        ? "bg-neutral-900 dark:bg-white"
+                        : "bg-neutral-200 dark:bg-white/[0.12]"
                     }`}
                   />
                 )}
                 <div
                   className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold transition-all ${
                     isDone
-                      ? "bg-neutral-900 text-white"
+                      ? "bg-neutral-900 dark:bg-white text-white dark:text-neutral-950"
                       : isCurrent
-                      ? "bg-neutral-900 text-white ring-2 ring-neutral-300 shadow-xs"
-                      : "bg-neutral-100 text-neutral-400"
+                      ? "bg-neutral-900 dark:bg-white text-white dark:text-neutral-950 ring-2 ring-neutral-300 dark:ring-white/40 shadow-xs"
+                      : "bg-neutral-100 dark:bg-white/[0.08] text-neutral-400 dark:text-neutral-500"
                   }`}
                 >
                   {isDone ? "✓" : stepNum}
@@ -43,14 +48,20 @@ function StepIndicator({ current, total }: { current: number; total: number }) {
                 {i < steps.length - 1 && (
                   <div
                     className={`h-[1px] flex-1 transition-colors ${
-                      stepNum < current ? "bg-neutral-900" : "bg-neutral-200"
+                      stepNum < current
+                        ? "bg-neutral-900 dark:bg-white"
+                        : "bg-neutral-200 dark:bg-white/[0.12]"
                     }`}
                   />
                 )}
               </div>
               <span
                 className={`text-[10px] mt-1 font-[510] ${
-                  isCurrent ? "text-neutral-900 font-bold" : isDone ? "text-neutral-700" : "text-neutral-400"
+                  isCurrent
+                    ? "text-neutral-900 dark:text-white font-bold"
+                    : isDone
+                    ? "text-neutral-700 dark:text-neutral-300"
+                    : "text-neutral-400 dark:text-neutral-500"
                 }`}
               >
                 {label}
@@ -67,12 +78,24 @@ function BookingContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const preselectedServiceId = searchParams.get("service");
+  const { t } = useLanguage();
 
   const [step, setStep] = useState(1);
   const [selectedServices, setSelectedServices] = useState<Service[]>([]);
   const [selectedStaff, setSelectedStaff] = useState<Staff | null>(null);
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedSlot, setSelectedSlot] = useState<{ start: string; end: string } | null>(null);
+
+  // Promo state (FIRST20 for 20% off)
+  const initialPromo = (searchParams.get("promo") || "").toUpperCase();
+  const [promoCode, setPromoCode] = useState(initialPromo);
+  const [promoApplied, setPromoApplied] = useState(initialPromo === "FIRST20");
+  const [promoMessage, setPromoMessage] = useState(
+    initialPromo === "FIRST20" ? "20% First-Time discount applied!" : ""
+  );
+
+  // One-Click Rebooking State
+  const [pastAppointment, setPastAppointment] = useState<Appointment | null>(null);
 
   // Customer form fields
   const [customerPhone, setCustomerPhone] = useState("");
@@ -127,6 +150,26 @@ function BookingContent() {
     }
   }, [availableDates, selectedDate]);
 
+  // Check returning client from phone or stored phone
+  useEffect(() => {
+    try {
+      const storedPhone = localStorage.getItem("p3_client_phone") || "";
+      const phoneToCheck = customerPhone.length === 10 ? customerPhone : storedPhone;
+      if (phoneToCheck && phoneToCheck.length === 10) {
+        const allApts = getStoredAppointments();
+        const past = allApts.find(
+          (a) => a.customer?.phone?.replace(/\D/g, "").slice(-10) === phoneToCheck.slice(-10)
+        );
+        if (past) {
+          setPastAppointment(past);
+          if (!customerPhone && storedPhone) {
+            setCustomerPhone(storedPhone);
+          }
+        }
+      }
+    } catch {}
+  }, [customerPhone]);
+
   // Phone number lookup for returning customers (CRM Memory)
   useEffect(() => {
     if (customerPhone.length === 10) {
@@ -143,6 +186,32 @@ function BookingContent() {
     }
   }, [customerPhone]);
 
+  const handleApplyPromo = () => {
+    if (promoCode.trim().toUpperCase() === "FIRST20") {
+      setPromoApplied(true);
+      setPromoMessage("🎉 20% First-Time discount applied!");
+    } else {
+      setPromoApplied(false);
+      setPromoMessage("Invalid promo code. Use code FIRST20 for 20% off");
+    }
+  };
+
+  const handleOneClickRebook = () => {
+    if (!pastAppointment) return;
+    if (pastAppointment.services && pastAppointment.services.length > 0) {
+      const svcs = pastAppointment.services.map((as) => as.service).filter(Boolean) as Service[];
+      if (svcs.length > 0) setSelectedServices(svcs);
+    }
+    if (pastAppointment.staff) {
+      setSelectedStaff(pastAppointment.staff);
+    }
+    if (pastAppointment.customer) {
+      setCustomerName(pastAppointment.customer.full_name);
+      setCustomerPhone(pastAppointment.customer.phone);
+    }
+    setStep(3); // Jump straight to date and slot selection!
+  };
+
   const toggleService = (svc: Service) => {
     if (selectedServices.some((s) => s.id === svc.id)) {
       setSelectedServices(selectedServices.filter((s) => s.id !== svc.id));
@@ -151,7 +220,9 @@ function BookingContent() {
     }
   };
 
-  const totalPrice = selectedServices.reduce((sum, s) => sum + s.price, 0);
+  const rawTotalPrice = selectedServices.reduce((sum, s) => sum + s.price, 0);
+  const discountAmount = promoApplied ? Math.round(rawTotalPrice * 0.2) : 0;
+  const totalPrice = Math.max(0, rawTotalPrice - discountAmount);
   const totalDuration = selectedServices.reduce((sum, s) => sum + s.duration_minutes, 0);
 
   const filteredServices =
@@ -198,6 +269,10 @@ function BookingContent() {
       slot: selectedSlot!,
       totalAmount: totalPrice,
     });
+
+    if (typeof window !== "undefined" && customerPhone) {
+      localStorage.setItem("p3_client_phone", customerPhone);
+    }
 
     setConfirmedBooking({
       code: appointment.appointment_code,
@@ -364,7 +439,8 @@ function BookingContent() {
               <p className="text-[10px] text-neutral-400 dark:text-neutral-500 font-medium">Page 3 Salon</p>
             </div>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <LanguageToggle />
             <ThemeToggle size="sm" />
             {selectedServices.length > 0 && (
               <div className="text-right">
@@ -381,9 +457,45 @@ function BookingContent() {
         {step === 1 && (
           <main className="p-4 max-w-lg mx-auto pb-28">
             <div className="mb-4">
-              <h2 className="text-base font-[510] tracking-tight text-neutral-950">Select Services</h2>
-              <p className="text-xs text-neutral-500">Choose one or multiple services for your styling session.</p>
+              <h2 className="text-base font-[510] tracking-tight text-neutral-950 dark:text-white">
+                {t.stepServices}
+              </h2>
+              <p className="text-xs text-neutral-500 dark:text-neutral-400">
+                {t.chooseServicesSubtitle}
+              </p>
             </div>
+
+            {/* 1-Click Rebooking Banner for Returning Client */}
+            {pastAppointment && (
+              <div className="bg-neutral-900 dark:bg-white/[0.08] text-white p-3.5 rounded-2xl mb-4 border border-black/[0.1] dark:border-white/[0.12] flex items-center justify-between gap-3 shadow-xs">
+                <div className="min-w-0">
+                  <span className="text-[9px] font-bold uppercase tracking-wider text-amber-300">
+                    ⚡ {t.rebookLastTitle}
+                  </span>
+                  <div className="text-xs font-bold truncate mt-0.5 text-white">
+                    {pastAppointment.services?.map((s) => s.service?.name).join(", ") || "Signature Service"}
+                  </div>
+                  <div className="text-[10px] text-neutral-300 dark:text-neutral-400">
+                    Stylist: {pastAppointment.staff?.full_name || "Any Stylist"}
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={handleOneClickRebook}
+                  className="shrink-0 bg-white text-neutral-950 hover:bg-neutral-100 font-bold text-xs px-3 py-1.5 rounded-xl transition-all shadow-xs"
+                >
+                  {t.rebookLastBtn}
+                </button>
+              </div>
+            )}
+
+            {/* Promo Banner if applied */}
+            {promoApplied && (
+              <div className="p-2.5 mb-4 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 text-amber-900 dark:text-amber-200 text-xs font-medium flex items-center justify-between">
+                <span>✨ <strong>FIRST20</strong> Applied: 20% discount on entire bill!</span>
+                <span className="font-bold text-emerald-600 dark:text-emerald-400">-20%</span>
+              </div>
+            )}
 
             {/* Categories */}
             <div className="flex gap-1.5 overflow-x-auto pb-2 mb-4 scrollbar-none">
@@ -764,26 +876,71 @@ function BookingContent() {
               </div>
             </div>
 
+            {/* Promo Code Box */}
+            <div className="rf-card p-3.5 mt-4 bg-white dark:bg-[#161719] border border-black/[0.08] dark:border-white/[0.08]">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-xs font-semibold text-neutral-900 dark:text-white">Have a Promo Code?</span>
+                <span className="text-[10px] text-amber-500 font-mono font-bold">Use FIRST20</span>
+              </div>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  placeholder={t.promoPlaceholder}
+                  value={promoCode}
+                  onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
+                  className="flex-1 h-9 px-3 rounded-xl border border-black/[0.08] dark:border-white/[0.1] text-xs font-mono uppercase bg-neutral-50/50 dark:bg-[#1b1c20]"
+                />
+                <button
+                  type="button"
+                  onClick={handleApplyPromo}
+                  className="px-3.5 h-9 bg-neutral-900 hover:bg-black dark:bg-white dark:hover:bg-neutral-100 text-white dark:text-neutral-950 rounded-xl text-xs font-semibold transition-all"
+                >
+                  {t.applyPromo}
+                </button>
+              </div>
+              {promoMessage && (
+                <p
+                  className={`text-[11px] mt-1.5 font-medium ${
+                    promoApplied
+                      ? "text-emerald-600 dark:text-emerald-400"
+                      : "text-rose-500 dark:text-rose-400"
+                  }`}
+                >
+                  {promoMessage}
+                </p>
+              )}
+            </div>
+
             {/* Booking Summary Card */}
-            <div className="rf-card p-4 mt-4 space-y-2 text-xs">
-              <div className="flex justify-between text-neutral-500">
-                <span>Date & Slot</span>
-                <span className="text-neutral-900 font-medium">
+            <div className="rf-card p-4 mt-4 space-y-2 text-xs bg-white dark:bg-[#161719] border border-black/[0.08] dark:border-white/[0.08]">
+              <div className="flex justify-between text-neutral-500 dark:text-neutral-400">
+                <span>Date &amp; Slot</span>
+                <span className="text-neutral-900 dark:text-white font-medium">
                   {selectedDate} at {selectedSlot?.start}
                 </span>
               </div>
-              <div className="flex justify-between text-neutral-500">
+              <div className="flex justify-between text-neutral-500 dark:text-neutral-400">
                 <span>Assigned Stylist</span>
-                <span className="text-neutral-900 font-medium">
+                <span className="text-neutral-900 dark:text-white font-medium">
                   {selectedStaff?.full_name || "Any Available Master Stylist"}
                 </span>
               </div>
-              <div className="flex justify-between text-neutral-500">
+              <div className="flex justify-between text-neutral-500 dark:text-neutral-400">
                 <span>Duration</span>
-                <span className="text-neutral-900 font-medium">{totalDuration} minutes</span>
+                <span className="text-neutral-900 dark:text-white font-medium">{totalDuration} minutes</span>
               </div>
-              <div className="flex justify-between text-sm font-bold text-neutral-950 pt-2 border-t border-black/[0.06]">
-                <span>Total Amount</span>
+              <div className="flex justify-between text-neutral-500 dark:text-neutral-400">
+                <span>Subtotal</span>
+                <span className="text-neutral-900 dark:text-white font-medium">{formatCurrency(rawTotalPrice)}</span>
+              </div>
+              {promoApplied && (
+                <div className="flex justify-between text-emerald-600 dark:text-emerald-400 font-medium">
+                  <span>First-Time Offer (20% off)</span>
+                  <span>-{formatCurrency(discountAmount)}</span>
+                </div>
+              )}
+              <div className="flex justify-between text-sm font-bold text-neutral-950 dark:text-white pt-2 border-t border-black/[0.06] dark:border-white/[0.08]">
+                <span>{t.totalPrice}</span>
                 <span>{formatCurrency(totalPrice)}</span>
               </div>
             </div>
