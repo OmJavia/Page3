@@ -5,13 +5,31 @@ import { generateCustomerCode } from "@/lib/utils";
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const phone = searchParams.get("phone");
+  const authHeader = request.headers.get("authorization");
 
   if (phone) {
     const customer = DEMO_CUSTOMERS.find((c) => c.phone.includes(phone));
     if (!customer) {
       return NextResponse.json({ customer: null, found: false });
     }
-    return NextResponse.json({ customer, found: true });
+    // Mask / sanitize sensitive CRM memory for public client checks
+    return NextResponse.json({
+      customer: {
+        id: customer.id,
+        full_name: customer.full_name,
+        customer_category: customer.customer_category,
+        loyalty_points: customer.loyalty_points,
+      },
+      found: true,
+    });
+  }
+
+  // Bulk customer directory access requires authorization in production
+  if (process.env.NODE_ENV === "production" && !authHeader) {
+    return NextResponse.json(
+      { error: "Unauthorized. Bulk customer directory requires admin authorization." },
+      { status: 401 }
+    );
   }
 
   return NextResponse.json({ customers: DEMO_CUSTOMERS, count: DEMO_CUSTOMERS.length });

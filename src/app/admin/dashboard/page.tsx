@@ -7,6 +7,7 @@ import { formatCurrency, formatTime, getDaysSince } from "@/lib/utils";
 import { APPOINTMENT_STATUSES } from "@/lib/constants";
 import { AppointmentStatus } from "@/lib/types";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { getStoredAppointments, updateStoredAppointmentStatus } from "@/lib/appointments-store";
 
 type DateRangeOption =
   | "Today"
@@ -161,6 +162,22 @@ export default function AdminDashboardPage() {
   const [appointments, setAppointments] = useState(DEMO_APPOINTMENTS);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
+  // Sync with persistent store and listen for live booking events
+  useEffect(() => {
+    setAppointments(getStoredAppointments());
+
+    const handleUpdate = () => {
+      setAppointments(getStoredAppointments());
+    };
+
+    window.addEventListener("page3_appointment_update", handleUpdate);
+    window.addEventListener("storage", handleUpdate);
+    return () => {
+      window.removeEventListener("page3_appointment_update", handleUpdate);
+      window.removeEventListener("storage", handleUpdate);
+    };
+  }, []);
+
   const stats = PERIOD_DATA[selectedRange];
 
   // Close dropdown on click outside or open via query param
@@ -182,9 +199,8 @@ export default function AdminDashboardPage() {
   }, []);
 
   const updateStatus = (id: string, newStatus: AppointmentStatus) => {
-    setAppointments((prev) =>
-      prev.map((a) => (a.id === id ? { ...a, status: newStatus } : a))
-    );
+    const updated = updateStoredAppointmentStatus(id, newStatus);
+    setAppointments(updated);
   };
 
   return (
@@ -450,6 +466,7 @@ export default function AdminDashboardPage() {
                     <a
                       href={`https://wa.me/91${apt.customer?.phone}`}
                       target="_blank"
+                      rel="noopener noreferrer"
                       className="p-2 bg-white dark:bg-[#1a1b1e] border border-black/[0.08] dark:border-white/[0.12] hover:bg-neutral-100 dark:hover:bg-white/[0.08] rounded-lg text-xs transition-all text-neutral-800 dark:text-neutral-200"
                       title="Direct WhatsApp"
                     >
@@ -523,6 +540,7 @@ export default function AdminDashboardPage() {
                 <a
                   href={`https://wa.me/91${c.phone}?text=Hi%20${c.full_name},%20we%20miss%20you%20at%20Page%203%20Salon!%20Enjoy%20a%20special%2020%%20off%20on%20your%20next%20haircut.`}
                   target="_blank"
+                  rel="noopener noreferrer"
                   className="px-2.5 py-1 bg-neutral-900 hover:bg-black dark:bg-white dark:hover:bg-neutral-200 text-white dark:text-neutral-950 rounded-lg font-medium text-[11px] shadow-xs transition-all"
                 >
                   WhatsApp Offer

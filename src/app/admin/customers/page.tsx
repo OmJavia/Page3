@@ -1,18 +1,44 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { DEMO_CUSTOMERS } from "@/lib/mock-data";
 import { CUSTOMER_CATEGORIES } from "@/lib/constants";
 import { CustomerCategory, Customer } from "@/lib/types";
 import { formatCurrency, formatDate, getDaysSince } from "@/lib/utils";
+import { getStoredCustomers, saveStoredCustomers } from "@/lib/appointments-store";
 
 export default function AdminCustomersPage() {
-  const [customers, setCustomers] = useState(DEMO_CUSTOMERS);
+  const [customers, setCustomers] = useState<Customer[]>(DEMO_CUSTOMERS);
   const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState<CustomerCategory | "all">("all");
-  const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(DEMO_CUSTOMERS[0]);
+  const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
   const [ownerNote, setOwnerNote] = useState("");
+
+  // Sync with persistent store and live bookings
+  useEffect(() => {
+    const list = getStoredCustomers();
+    setCustomers(list);
+    if (list.length > 0 && !selectedCustomer) {
+      setSelectedCustomer(list[0]);
+    }
+
+    const handleUpdate = () => {
+      const updated = getStoredCustomers();
+      setCustomers(updated);
+      setSelectedCustomer((curr) => {
+        if (!curr) return updated[0] || null;
+        return updated.find((c) => c.id === curr.id) || curr;
+      });
+    };
+
+    window.addEventListener("page3_appointment_update", handleUpdate);
+    window.addEventListener("storage", handleUpdate);
+    return () => {
+      window.removeEventListener("page3_appointment_update", handleUpdate);
+      window.removeEventListener("storage", handleUpdate);
+    };
+  }, []);
 
   const filtered = customers.filter((c) => {
     const matchCat = categoryFilter === "all" || c.customer_category === categoryFilter;
@@ -31,7 +57,9 @@ export default function AdminCustomersPage() {
       notes: selectedCustomer.notes ? `${selectedCustomer.notes} • ${ownerNote}` : ownerNote,
     };
     setSelectedCustomer(updated);
-    setCustomers((prev) => prev.map((c) => (c.id === updated.id ? updated : c)));
+    const updatedList = customers.map((c) => (c.id === updated.id ? updated : c));
+    setCustomers(updatedList);
+    saveStoredCustomers(updatedList);
     setOwnerNote("");
   };
 
@@ -216,6 +244,7 @@ export default function AdminCustomersPage() {
                   <a
                     href={`https://wa.me/91${selectedCustomer.phone}`}
                     target="_blank"
+                    rel="noopener noreferrer"
                     className="px-3 py-2 bg-white dark:bg-[#1a1b1e] border border-black/[0.08] dark:border-white/[0.1] hover:bg-neutral-50 dark:hover:bg-white/[0.04] text-xs font-[510] rounded-xl text-neutral-800 dark:text-neutral-200 shadow-xs transition-all"
                   >
                     💬 WhatsApp

@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { DEMO_APPOINTMENTS, DEMO_STAFF } from "@/lib/mock-data";
 import { formatCurrency, formatTime, formatDate } from "@/lib/utils";
 import { APPOINTMENT_STATUSES } from "@/lib/constants";
 import { AppointmentStatus, Appointment } from "@/lib/types";
+import { getStoredAppointments, updateStoredAppointmentStatus } from "@/lib/appointments-store";
 
 // Hours to display in the day timeline grid
 const TIMELINE_HOURS = [
@@ -28,6 +29,22 @@ export default function AdminAppointmentsPage() {
   const [viewMode, setViewMode] = useState<"list" | "calendar">("calendar"); // default to calendar timeline view!
   const [selectedApt, setSelectedApt] = useState<Appointment | null>(null);
 
+  // Sync with persistent store and listen for live booking events
+  useEffect(() => {
+    setAppointments(getStoredAppointments());
+
+    const handleUpdate = () => {
+      setAppointments(getStoredAppointments());
+    };
+
+    window.addEventListener("page3_appointment_update", handleUpdate);
+    window.addEventListener("storage", handleUpdate);
+    return () => {
+      window.removeEventListener("page3_appointment_update", handleUpdate);
+      window.removeEventListener("storage", handleUpdate);
+    };
+  }, []);
+
   const filtered = appointments.filter((a) => {
     const matchStatus = statusFilter === "all" || a.status === statusFilter;
     const matchSearch =
@@ -39,9 +56,8 @@ export default function AdminAppointmentsPage() {
   });
 
   const updateStatus = (id: string, newStatus: AppointmentStatus) => {
-    setAppointments((prev) =>
-      prev.map((a) => (a.id === id ? { ...a, status: newStatus } : a))
-    );
+    const updated = updateStoredAppointmentStatus(id, newStatus);
+    setAppointments(updated);
     if (selectedApt && selectedApt.id === id) {
       setSelectedApt((prev) => (prev ? { ...prev, status: newStatus } : null));
     }
@@ -383,6 +399,7 @@ export default function AdminAppointmentsPage() {
                   <a
                     href={`https://wa.me/91${apt.customer?.phone}`}
                     target="_blank"
+                    rel="noopener noreferrer"
                     className="px-3 py-2 bg-white dark:bg-[#161719] border border-black/[0.08] dark:border-white/[0.1] hover:bg-neutral-50 dark:hover:bg-white/[0.04] rounded-xl text-xs font-[510] text-neutral-800 dark:text-neutral-200 shadow-xs transition-all"
                   >
                     💬 WhatsApp

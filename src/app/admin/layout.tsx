@@ -5,6 +5,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { CommandPalette } from "@/components/admin/command-palette";
+import { NotificationBell } from "@/components/admin/notification-bell";
+import { STORE_PHONE } from "@/lib/appointments-store";
 
 const navItems = [
   { href: "/admin/dashboard", label: "Dashboard", icon: "📊" },
@@ -151,31 +153,53 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0">
-        {/* Mobile top bar */}
-        <header className="lg:hidden bg-white dark:bg-[#121214] border-b border-black/[0.06] dark:border-white/[0.06] px-4 py-3 flex items-center justify-between sticky top-0 z-30">
-          <button
-            onClick={() => setSidebarOpen(true)}
-            className="p-1.5 rounded-xl border border-black/[0.08] dark:border-white/[0.12] bg-white dark:bg-[#18191c] text-neutral-700 dark:text-neutral-300 text-xs"
-          >
-            ☰ Menu
-          </button>
-          <div className="text-center">
-            <span className="text-xs font-bold text-neutral-900 dark:text-white">Page 3 Business Hub</span>
+        {/* Top bar for all screens */}
+        <header className="bg-white dark:bg-[#121214] border-b border-black/[0.06] dark:border-white/[0.06] px-4 py-2.5 flex items-center justify-between sticky top-0 z-30 transition-colors duration-200">
+          <div className="flex items-center gap-2.5">
+            <button
+              onClick={() => setSidebarOpen(true)}
+              className="lg:hidden p-1.5 rounded-xl border border-black/[0.08] dark:border-white/[0.12] bg-white dark:bg-[#18191c] text-neutral-700 dark:text-neutral-300 text-xs"
+            >
+              ☰ Menu
+            </button>
+            <div className="hidden lg:flex items-center gap-2">
+              <span className="text-xs font-semibold text-neutral-900 dark:text-white">Page 3 Management Console</span>
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-neutral-100 dark:bg-white/[0.06] text-neutral-500 dark:text-neutral-400">
+                Store #{STORE_PHONE}
+              </span>
+            </div>
+            <div className="lg:hidden text-center">
+              <span className="text-xs font-bold text-neutral-900 dark:text-white">Page 3 Hub</span>
+            </div>
           </div>
+
           <div className="flex items-center gap-2">
+            {/* Quick search button */}
             <button
               onClick={() => setPaletteOpen(true)}
-              className="p-1.5 rounded-xl border border-black/[0.08] dark:border-white/[0.12] bg-white dark:bg-[#18191c] text-neutral-700 dark:text-neutral-300 text-xs"
-              title="Search"
+              className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl border border-black/[0.08] dark:border-white/[0.1] bg-neutral-50 dark:bg-white/[0.04] text-neutral-500 dark:text-neutral-400 text-xs hover:border-black/[0.15] dark:hover:border-white/[0.15] transition-all"
             >
-              🔍
+              <span>🔍</span>
+              <span className="text-[11px]">Jump to...</span>
+              <kbd className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-white dark:bg-white/[0.08] border border-black/[0.08] dark:border-white/[0.1]">
+                ⌘K
+              </kbd>
             </button>
+
+            {/* Notification Bell */}
+            <NotificationBell />
+
+            {/* Theme Toggle */}
             <ThemeToggle size="sm" />
+
+            {/* Storefront Link */}
             <Link
               href="/"
-              className="text-[11px] text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white font-medium"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden sm:inline-flex text-[11px] font-[510] text-neutral-600 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white border border-black/[0.08] dark:border-white/[0.1] px-2.5 py-1.5 rounded-xl hover:bg-neutral-50 dark:hover:bg-white/[0.04] transition-all"
             >
-              App →
+              Storefront ↗
             </Link>
           </div>
         </header>

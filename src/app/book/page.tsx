@@ -8,6 +8,7 @@ import { Service, Staff, Customer } from "@/lib/types";
 import { formatCurrency, formatTime, generateAppointmentCode } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { isSlotBooked, createAndPersistAppointment, STORE_PHONE } from "@/lib/appointments-store";
 
 function StepIndicator({ current, total }: { current: number; total: number }) {
   const steps = ["Services", "Stylist", "Date & Slot", "Details"];
@@ -96,9 +97,22 @@ function BookingContent() {
     slot: { start: string; end: string };
     total: number;
     phone: string;
+    ownerWhatsAppUrl?: string;
   } | null>(null);
 
   const [activeCategory, setActiveCategory] = useState("all");
+
+  // Dates for next 7 days
+  const availableDates = Array.from({ length: 7 }).map((_, i) => {
+    const d = new Date();
+    d.setDate(d.getDate() + i);
+    return {
+      iso: d.toISOString().split("T")[0],
+      dayName: d.toLocaleDateString("en-IN", { weekday: "short" }),
+      dayNum: d.getDate(),
+      label: d.toLocaleDateString("en-IN", { weekday: "short", day: "numeric", month: "short" }),
+    };
+  });
 
   useEffect(() => {
     if (preselectedServiceId) {
@@ -106,6 +120,12 @@ function BookingContent() {
       if (found) setSelectedServices([found]);
     }
   }, [preselectedServiceId]);
+
+  useEffect(() => {
+    if (!selectedDate && availableDates.length > 0) {
+      setSelectedDate(availableDates[0].iso);
+    }
+  }, [availableDates, selectedDate]);
 
   // Phone number lookup for returning customers (CRM Memory)
   useEffect(() => {
@@ -139,18 +159,6 @@ function BookingContent() {
       ? DEMO_SERVICES
       : DEMO_SERVICES.filter((s) => s.category_id === activeCategory);
 
-  // Dates for next 7 days
-  const availableDates = Array.from({ length: 7 }).map((_, i) => {
-    const d = new Date();
-    d.setDate(d.getDate() + i);
-    return {
-      iso: d.toISOString().split("T")[0],
-      dayName: d.toLocaleDateString("en-IN", { weekday: "short" }),
-      dayNum: d.getDate(),
-      label: d.toLocaleDateString("en-IN", { weekday: "short", day: "numeric", month: "short" }),
-    };
-  });
-
   const timeSlots = [
     { start: "10:00", end: "10:30", label: "10:00 AM" },
     { start: "10:30", end: "11:00", label: "10:30 AM" },
@@ -178,15 +186,28 @@ function BookingContent() {
   };
 
   const handleFinalBooking = () => {
-    const code = generateAppointmentCode();
-    setConfirmedBooking({
-      code,
+    const activeDate = selectedDate || availableDates[0].iso;
+    const { appointment, ownerWhatsAppUrl } = createAndPersistAppointment({
+      customerName: customerName.trim() || (existingCustomer ? existingCustomer.full_name : "Guest Client"),
+      customerPhone,
+      customerGender,
+      customerNotes,
       services: selectedServices,
       staff: selectedStaff,
-      date: selectedDate,
+      date: activeDate,
+      slot: selectedSlot!,
+      totalAmount: totalPrice,
+    });
+
+    setConfirmedBooking({
+      code: appointment.appointment_code,
+      services: selectedServices,
+      staff: selectedStaff,
+      date: activeDate,
       slot: selectedSlot!,
       total: totalPrice,
       phone: customerPhone,
+      ownerWhatsAppUrl,
     });
   };
 
@@ -255,6 +276,30 @@ function BookingContent() {
               <span>Total Bill</span>
               <span>{formatCurrency(confirmedBooking.total)}</span>
             </div>
+          </div>
+
+          {/* Slot Locked & Salon Owner Alert Confirmation */}
+          <div className="rf-card p-4 mt-4 bg-emerald-50/70 border border-emerald-200 text-left space-y-2.5">
+            <div className="flex items-center gap-2">
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+              <h3 className="text-xs font-[510] text-emerald-950 font-bold">
+                🔒 Slot Locked &amp; Salon Manager Alerted
+              </h3>
+            </div>
+            <p className="text-[11px] text-emerald-800 leading-relaxed">
+              Your appointment is officially registered on the salon calendar and locked against double-booking. The store owner has been automatically informed at <strong>+91 {STORE_PHONE}</strong>.
+            </p>
+            {confirmedBooking.ownerWhatsAppUrl && (
+              <a
+                href={confirmedBooking.ownerWhatsAppUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center justify-center gap-2 w-full py-2.5 px-3 rounded-xl bg-neutral-900 hover:bg-black text-white text-xs font-[510] shadow-xs transition-all"
+              >
+                <span>💬</span>
+                <span>Send WhatsApp Alert to Salon (+91 {STORE_PHONE})</span>
+              </a>
+            )}
           </div>
 
           {/* Indian Payment Option Banner */}
@@ -520,22 +565,37 @@ function BookingContent() {
 
             {/* Time Slot Grid */}
             <div>
-              <p className="text-xs font-semibold text-neutral-600 mb-2">Available Slots</p>
+              <div className="flex items-center justify-between mb-2">
+                <p className="text-xs font-semibold text-neutral-600 dark:text-neutral-400">Available Slots</p>
+                <span className="text-[10px] text-neutral-400">Double-booking protection active</span>
+              </div>
               <div className="grid grid-cols-3 gap-2">
                 {timeSlots.map((slot) => {
                   const isSelected = selectedSlot?.start === slot.start;
+                  const activeDate = selectedDate || availableDates[0].iso;
+                  const booked = isSlotBooked(activeDate, slot.start, selectedStaff?.id);
                   return (
                     <button
                       key={slot.start}
                       type="button"
-                      onClick={() => setSelectedSlot(slot)}
-                      className={`py-2.5 px-3 rounded-xl text-xs font-semibold border transition-all ${
-                        isSelected
-                          ? "bg-neutral-900 text-white border-neutral-900 shadow-sm"
-                          : "border-black/[0.08] bg-white text-neutral-800 hover:bg-neutral-50"
+                      disabled={booked}
+                      onClick={() => !booked && setSelectedSlot(slot)}
+                      className={`py-2 px-2.5 rounded-xl text-xs font-semibold border transition-all text-center flex flex-col items-center justify-center ${
+                        booked
+                          ? "bg-neutral-100 dark:bg-white/[0.04] text-neutral-400 dark:text-neutral-500 border-dashed border-black/[0.1] dark:border-white/[0.1] cursor-not-allowed opacity-60"
+                          : isSelected
+                          ? "bg-neutral-900 text-white dark:bg-white dark:text-neutral-950 border-neutral-900 dark:border-white shadow-xs"
+                          : "border-black/[0.08] dark:border-white/[0.08] bg-white dark:bg-[#161719] text-neutral-800 dark:text-neutral-200 hover:bg-neutral-50 dark:hover:bg-white/[0.04]"
                       }`}
                     >
-                      {slot.label}
+                      <span>{slot.label}</span>
+                      {booked ? (
+                        <span className="text-[9px] font-mono font-bold text-red-500 dark:text-red-400 mt-0.5">
+                          Booked 🔒
+                        </span>
+                      ) : (
+                        <span className="text-[9px] font-normal opacity-70 mt-0.5">Available</span>
+                      )}
                     </button>
                   );
                 })}
