@@ -211,69 +211,69 @@ function PaymentContent() {
 
   if (paymentSuccess) {
     return (
-      <div className="min-h-screen bg-[#fafafa] text-[#1c1d1f] flex flex-col justify-between py-10 px-4 max-w-lg mx-auto">
+      <div className="min-h-screen bg-[#fafafa] dark:bg-[#0c0d0e] text-[#1c1d1f] dark:text-[#f4f4f5] flex flex-col justify-between py-10 px-4 max-w-lg mx-auto transition-colors duration-200">
         <div className="text-center pt-4">
           {/* Animated checkmark */}
-          <div className="w-16 h-16 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-600 flex items-center justify-center mx-auto text-2xl font-bold shadow-sm mb-4">
+          <div className="w-16 h-16 rounded-full bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto text-2xl font-bold shadow-sm mb-4">
             ✓
           </div>
-          <span className="text-[11px] font-semibold tracking-wider uppercase text-emerald-600 bg-emerald-50 border border-emerald-100 px-3 py-1 rounded-full">
+          <span className="text-[11px] font-semibold tracking-wider uppercase text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-100 dark:border-emerald-800/40 px-3 py-1 rounded-full">
             Payment Successful
           </span>
-          <h1 className="text-2xl font-[510] tracking-tight text-[#1c1d1f] mt-3">
+          <h1 className="text-2xl font-[510] tracking-tight text-[#1c1d1f] dark:text-white mt-3">
             {formatCurrency(paymentSuccess.amountPaid)} Paid
           </h1>
-          <p className="text-xs text-neutral-500 mt-1">
-            Transaction Reference: <span className="font-mono font-medium text-neutral-800">{paymentSuccess.txnId}</span>
+          <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-1">
+            Transaction Reference: <span className="font-mono font-medium text-neutral-800 dark:text-neutral-200">{paymentSuccess.txnId}</span>
           </p>
 
           {/* Receipt card */}
-          <div className="rf-card p-6 mt-6 text-left space-y-4">
-            <div className="flex justify-between items-center pb-3 border-b border-neutral-100">
+          <div className="rf-card p-6 mt-6 text-left space-y-4 bg-white dark:bg-[#161719] border border-black/[0.08] dark:border-white/[0.08] rounded-2xl">
+            <div className="flex justify-between items-center pb-3 border-b border-black/[0.06] dark:border-white/[0.06]">
               <div>
-                <span className="text-xs text-neutral-400">Appointment Code</span>
-                <p className="text-sm font-mono font-bold text-neutral-900">{appointmentCode}</p>
+                <span className="text-xs text-neutral-400 dark:text-neutral-500">Appointment Code</span>
+                <p className="text-sm font-mono font-bold text-neutral-900 dark:text-white">{appointmentCode}</p>
               </div>
               <div className="text-right">
-                <span className="text-xs text-neutral-400">Time & Date</span>
-                <p className="text-xs font-medium text-neutral-800">{dateStr} • {timeSlot}</p>
+                <span className="text-xs text-neutral-400 dark:text-neutral-500">Time & Date</span>
+                <p className="text-xs font-medium text-neutral-800 dark:text-neutral-200">{dateStr} • {timeSlot}</p>
               </div>
             </div>
 
             <div className="space-y-2 text-xs">
               <div className="flex justify-between">
-                <span className="text-neutral-500">Salon Name</span>
-                <span className="font-medium text-neutral-800">Page 3 Salon</span>
+                <span className="text-neutral-500 dark:text-neutral-400">Salon Name</span>
+                <span className="font-medium text-neutral-800 dark:text-neutral-200">Page 3 – The Family Salon, Dewas</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-neutral-500">Client</span>
-                <span className="font-medium text-neutral-800">{customerName} (+91 {customerPhone})</span>
+                <span className="text-neutral-500 dark:text-neutral-400">Client</span>
+                <span className="font-medium text-neutral-800 dark:text-neutral-200">{customerName} (+91 {customerPhone})</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-neutral-500">Service</span>
-                <span className="font-medium text-neutral-800">{serviceName}</span>
+                <span className="text-neutral-500 dark:text-neutral-400">Service</span>
+                <span className="font-medium text-neutral-800 dark:text-neutral-200">{serviceName}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-neutral-500">Stylist</span>
-                <span className="font-medium text-neutral-800">{stylistName}</span>
+                <span className="text-neutral-500 dark:text-neutral-400">Stylist</span>
+                <span className="font-medium text-neutral-800 dark:text-neutral-200">{stylistName}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-neutral-500">Payment Mode</span>
-                <span className="font-medium text-neutral-800">{paymentSuccess.method}</span>
+                <span className="text-neutral-500 dark:text-neutral-400">Payment Mode</span>
+                <span className="font-medium text-neutral-800 dark:text-neutral-200">{paymentSuccess.method}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-neutral-500">Bank RRN / UTR</span>
-                <span className="font-mono text-neutral-700">{paymentSuccess.rrn}</span>
+                <span className="text-neutral-500 dark:text-neutral-400">Bank RRN / UTR</span>
+                <span className="font-mono text-neutral-700 dark:text-neutral-300">{paymentSuccess.rrn}</span>
               </div>
               {paymentSuccess.balanceDue > 0 && (
-                <div className="flex justify-between pt-2 border-t border-neutral-100 text-amber-700 font-medium">
+                <div className="flex justify-between pt-2 border-t border-black/[0.06] dark:border-white/[0.06] text-amber-600 dark:text-amber-400 font-medium">
                   <span>Balance Due at Reception</span>
                   <span>{formatCurrency(paymentSuccess.balanceDue)}</span>
                 </div>
               )}
             </div>
 
-            <div className="pt-3 border-t border-neutral-100 flex justify-between items-center text-sm font-bold text-neutral-900">
+            <div className="pt-3 border-t border-black/[0.06] dark:border-white/[0.06] flex justify-between items-center text-sm font-bold text-neutral-900 dark:text-white">
               <span>Amount Paid Now</span>
               <span>{formatCurrency(paymentSuccess.amountPaid)}</span>
             </div>
@@ -298,15 +298,15 @@ function PaymentContent() {
             </Link>
 
             <Link href="/" className="block w-full">
-              <Button variant="ghost" className="w-full text-xs text-neutral-500 hover:text-neutral-900">
+              <Button variant="ghost" className="w-full text-xs text-neutral-500 hover:text-neutral-900 dark:hover:text-white">
                 Return to Salon Home
               </Button>
             </Link>
           </div>
         </div>
 
-        <div className="text-center text-[11px] text-neutral-400 pb-2">
-          Page 3 Salon • GSTIN: 24AAACP1234F1Z8 • RBI Verified Gateway
+        <div className="text-center text-[11px] text-neutral-400 dark:text-neutral-500 pb-2">
+          Page 3 – The Family Salon, Dewas • GSTIN: 23AAACP1234F1Z8 • Verified Gateway
         </div>
       </div>
     );

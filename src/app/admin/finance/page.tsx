@@ -90,7 +90,7 @@ export default function AdminFinancePage() {
   const [newCat, setNewCat] = useState<Expense["category"]>("inventory");
   const [newDesc, setNewDesc] = useState("");
   const [newAmount, setNewAmount] = useState("");
-  const [newDate, setNewDate] = useState("2024-11-18");
+  const [newDate, setNewDate] = useState(() => new Date().toISOString().split("T")[0]);
   const [newMethod, setNewMethod] = useState("UPI");
 
   const metrics = PERIOD_METRICS[period];
