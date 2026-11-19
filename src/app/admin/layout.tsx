@@ -1,16 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { CommandPalette } from "@/components/admin/command-palette";
 
 const navItems = [
   { href: "/admin/dashboard", label: "Dashboard", icon: "📊" },
   { href: "/admin/appointments", label: "Appointments", icon: "📅" },
+  { href: "/admin/checkout", label: "POS & Billing", icon: "🧾" },
   { href: "/admin/customers", label: "Customer CRM", icon: "👥" },
   { href: "/admin/inventory", label: "Inventory & Recipes", icon: "📦" },
-  { href: "/admin/retention", label: "Retention & Reactivation", icon: "🔄" },
+  { href: "/admin/retention", label: "Retention & Loyalty", icon: "🔄" },
   { href: "/admin/finance", label: "Sales & Finances", icon: "💰" },
   { href: "/admin/services", label: "Services Menu", icon: "✂️" },
   { href: "/admin/staff", label: "Staff & Attendance", icon: "👨‍💼" },
@@ -20,6 +22,18 @@ const navItems = [
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [paletteOpen, setPaletteOpen] = useState(false);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        setPaletteOpen((prev) => !prev);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   // If on login page, don't wrap with dashboard chrome
   if (pathname === "/admin") {
@@ -28,6 +42,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   return (
     <div className="min-h-screen bg-[#fafafa] dark:bg-[#0c0d0e] text-[#1c1d1f] dark:text-[#f4f4f5] flex transition-colors duration-200">
+      <CommandPalette isOpen={paletteOpen} onClose={() => setPaletteOpen(false)} />
+
       {/* Mobile Drawer Overlay */}
       {sidebarOpen && (
         <div
@@ -42,7 +58,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         }`}
       >
-        <div>
+        <div className="overflow-y-auto">
           {/* Brand header */}
           <div className="p-4 border-b border-black/[0.06] dark:border-white/[0.06] flex items-center justify-between">
             <Link href="/admin/dashboard" className="flex items-center gap-3">
@@ -61,6 +77,22 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               className="lg:hidden text-neutral-400 hover:text-neutral-900 dark:hover:text-white"
             >
               ✕
+            </button>
+          </div>
+
+          {/* Quick jump command search in sidebar */}
+          <div className="p-3 pb-1">
+            <button
+              onClick={() => setPaletteOpen(true)}
+              className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-[510] bg-neutral-100/80 dark:bg-white/[0.06] text-neutral-500 dark:text-neutral-400 border border-black/[0.06] dark:border-white/[0.08] hover:border-black/[0.12] dark:hover:border-white/[0.14] transition-all"
+            >
+              <div className="flex items-center gap-2">
+                <span>🔍</span>
+                <span>Quick jump...</span>
+              </div>
+              <kbd className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-white dark:bg-white/[0.08] border border-black/[0.08] dark:border-white/[0.1] text-neutral-400 dark:text-neutral-500">
+                ⌘K
+              </kbd>
             </button>
           </div>
 
@@ -131,6 +163,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <span className="text-xs font-bold text-neutral-900 dark:text-white">Page 3 Business Hub</span>
           </div>
           <div className="flex items-center gap-2">
+            <button
+              onClick={() => setPaletteOpen(true)}
+              className="p-1.5 rounded-xl border border-black/[0.08] dark:border-white/[0.12] bg-white dark:bg-[#18191c] text-neutral-700 dark:text-neutral-300 text-xs"
+              title="Search"
+            >
+              🔍
+            </button>
             <ThemeToggle size="sm" />
             <Link
               href="/"
