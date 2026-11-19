@@ -12,9 +12,15 @@ export interface Translations {
   googleRating: string;
   staffLogin: string;
   bookNow: string;
+  exploreServices: string;
   callUs: string;
   whatsapp: string;
   directions: string;
+  dewasLocation: string;
+  whyChooseUs: string;
+  workGallery: string;
+  verifiedReviews: string;
+  specialOffers: string;
 
   // Hero & Offer
   heroTitle: string;
@@ -56,20 +62,26 @@ export interface Translations {
 
 const TRANSLATIONS: Record<Language, Translations> = {
   en: {
-    brandTitle: "Page 3 Salon",
-    brandTagline: "Luxury Hair & Grooming",
-    openToday: "Open Today • 10 AM – 8:30 PM",
+    brandTitle: "Page 3 – The Family Salon",
+    brandTagline: "Where Style Meets Excellence • Dewas",
+    openToday: "Open Today • 10:00 AM – 8:30 PM",
     googleRating: "4.9 ★ Google (480+ Reviews)",
     staffLogin: "Staff",
     bookNow: "Book Appointment",
+    exploreServices: "Explore Services",
     callUs: "Call 9111198911",
     whatsapp: "WhatsApp",
-    directions: "Open Directions in Google Maps",
+    directions: "Get Directions on Google Maps",
+    dewasLocation: "Dewas, Madhya Pradesh",
+    whyChooseUs: "Why Choose Page 3?",
+    workGallery: "Our Work Gallery",
+    verifiedReviews: "Verified Google Reviews",
+    specialOffers: "Exclusive Offers",
 
-    heroTitle: "Precision styling.",
-    heroSubtitle: "Book your first visit.",
+    heroTitle: "Your Style. Your Confidence.",
+    heroSubtitle: "Your Page 3.",
     heroDescription:
-      "First time here? Pick your service, choose an expert stylist, and lock in your slot in 60 seconds with zero wait.",
+      "Premium grooming, expert styling and personalised care. Your perfect look starts here in Dewas.",
     firstTimeOfferBadge: "FIRST-TIME OFFER",
     firstTimeOfferText: "Enjoy 20% off your first appointment with code FIRST20",
     claimOffer: "Claim 20% Off",
@@ -103,20 +115,26 @@ const TRANSLATIONS: Record<Language, Translations> = {
     promoApplied: "20% First-Time Discount Applied!",
   },
   hi: {
-    brandTitle: "पेज 3 सैलून",
-    brandTagline: "प्रीमियम हेयर और ग्रूमिंग",
-    openToday: "आज खुला है • सुबह 10 से रात 8:30",
+    brandTitle: "पेज 3 – द फैमिली सैलून",
+    brandTagline: "स्टाइल और उत्कृष्टता का संगम • देवास",
+    openToday: "आज खुला है • सुबह 10:00 से रात 8:30",
     googleRating: "4.9 ★ गूगल (480+ समीक्षाएं)",
     staffLogin: "स्टाफ लॉगिन",
     bookNow: "अपॉइंटमेंट बुक करें",
+    exploreServices: "सेवाएं देखें",
     callUs: "कॉल करें 9111198911",
     whatsapp: "व्हाट्सएप",
     directions: "गूगल मैप्स पर रास्ता देखें",
+    dewasLocation: "देवास, मध्य प्रदेश",
+    whyChooseUs: "पेज 3 क्यों चुनें?",
+    workGallery: "हमारा वर्क गैलरी",
+    verifiedReviews: "सत्यापित गूगल समीक्षाएं",
+    specialOffers: "विशेष ऑफर्स",
 
-    heroTitle: "प्रीमियम हेयर स्टाइलिंग।",
-    heroSubtitle: "अपनी पहली विज़िट बुक करें।",
+    heroTitle: "आपका स्टाइल। आपका आत्मविश्वास।",
+    heroSubtitle: "आपका पेज 3।",
     heroDescription:
-      "पहली बार आ रहे हैं? अपनी पसंद की सर्विस और एक्सपर्ट स्टाइलिस्ट चुनें और 60 सेकंड में बिना इंतज़ार अपना स्लॉट पक्का करें।",
+      "प्रीमियम ग्रूमिंग, एक्सपर्ट स्टाइलिंग और पर्सनलाइज्ड केयर। आपका परफेक्ट लुक यहीं से देवास में शुरू होता है।",
     firstTimeOfferBadge: "पहली विज़िट ऑफर",
     firstTimeOfferText: "कोड FIRST20 के साथ अपनी पहली सर्विस पर फ्लैट 20% की छूट पाएं",
     claimOffer: "20% छूट पाएं",

@@ -1,17 +1,43 @@
 {
-  "name": "Page 3 Luxury Salon",
+  "name": "Page 3 – The Family Salon",
   "short_name": "Page 3 Salon",
-  "description": "Premium hair styling, color, and beauty appointment booking",
+  "description": "Premium hair styling, grooming, and luxury salon appointment booking in Dewas, MP.",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
-  "background_color": "#09090b",
-  "theme_color": "#d97706",
+  "orientation": "portrait-primary",
+  "background_color": "#0c0d0e",
+  "theme_color": "#0c0d0e",
+  "categories": ["lifestyle", "beauty", "shopping"],
+  "shortcuts": [
+    {
+      "name": "Book Appointment",
+      "short_name": "Book",
+      "description": "Book a hair styling appointment in 60 seconds",
+      "url": "/book",
+      "icons": [{ "src": "/favicon.ico", "sizes": "64x64" }]
+    },
+    {
+      "name": "Our Services",
+      "short_name": "Services",
+      "description": "Explore services and pricing",
+      "url": "/services",
+      "icons": [{ "src": "/favicon.ico", "sizes": "64x64" }]
+    },
+    {
+      "name": "Client Portal",
+      "short_name": "Profile",
+      "description": "View past appointments and reschedule",
+      "url": "/profile",
+      "icons": [{ "src": "/favicon.ico", "sizes": "64x64" }]
+    }
+  ],
   "icons": [
     {
       "src": "/favicon.ico",
       "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
+      "type": "image/x-icon",
+      "purpose": "any"
     }
   ]
 }
-

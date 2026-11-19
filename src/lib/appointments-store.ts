@@ -299,3 +299,116 @@ export function updateStoredAppointmentStatus(
   return updated;
 }
 
+/**
+ * Reschedule an existing appointment to a new date and time
+ */
+export function rescheduleStoredAppointment(
+  codeOrId: string,
+  newDate: string,
+  newSlot: { start: string; end: string }
+): { success: boolean; appointment?: Appointment; message?: string } {
+  const current = getStoredAppointments();
+  const targetIdx = current.findIndex(
+    (a) => a.id === codeOrId || a.appointment_code === codeOrId
+  );
+
+  if (targetIdx === -1) {
+    return { success: false, message: "Appointment not found." };
+  }
+
+  const existing = current[targetIdx];
+
+  // Revalidate slot availability before rescheduling
+  if (isSlotBooked(newDate, newSlot.start, existing.staff_id)) {
+    return { success: false, message: "Selected time slot is already booked. Please choose another slot." };
+  }
+
+  const updatedAppointment: Appointment = {
+    ...existing,
+    appointment_date: newDate,
+    start_time: newSlot.start,
+    end_time: newSlot.end || `${newSlot.start.slice(0, 2)}:45`,
+    status: "confirmed",
+  };
+
+  current[targetIdx] = updatedAppointment;
+
+  if (typeof window !== "undefined") {
+    localStorage.setItem(STORAGE_KEY_APPOINTMENTS, JSON.stringify(current));
+
+    // Add owner alert
+    const notifs = getOwnerNotifications();
+    const rescheduleNotif: OwnerNotification = {
+      id: `notif-${Date.now()}`,
+      title: "Appointment Rescheduled",
+      message: `${existing.customer?.full_name || "Client"} rescheduled ${existing.appointment_code} to ${newDate} at ${newSlot.start}`,
+      appointmentCode: existing.appointment_code,
+      timestamp: new Date().toISOString(),
+      read: false,
+      customerName: existing.customer?.full_name || "Client",
+      customerPhone: existing.customer?.phone || "",
+      serviceName: existing.services?.map((s) => s.service?.name).join(", ") || "Service",
+      stylistName: existing.staff?.full_name || "Any Stylist",
+      date: newDate,
+      time: newSlot.start,
+      amount: existing.total_amount,
+    };
+    localStorage.setItem(STORAGE_KEY_NOTIFICATIONS, JSON.stringify([rescheduleNotif, ...notifs]));
+    window.dispatchEvent(new CustomEvent("page3_appointment_update", { detail: updatedAppointment }));
+  }
+
+  return { success: true, appointment: updatedAppointment };
+}
+
+/**
+ * Cancel an appointment and free up the slot
+ */
+export function cancelStoredAppointment(
+  codeOrId: string,
+  reason?: string
+): { success: boolean; appointment?: Appointment; message?: string } {
+  const current = getStoredAppointments();
+  const targetIdx = current.findIndex(
+    (a) => a.id === codeOrId || a.appointment_code === codeOrId
+  );
+
+  if (targetIdx === -1) {
+    return { success: false, message: "Appointment not found." };
+  }
+
+  const existing = current[targetIdx];
+  const cancelledAppointment: Appointment = {
+    ...existing,
+    status: "cancelled",
+    notes: reason ? `${existing.notes || ""} [Cancelled: ${reason}]`.trim() : existing.notes,
+  };
+
+  current[targetIdx] = cancelledAppointment;
+
+  if (typeof window !== "undefined") {
+    localStorage.setItem(STORAGE_KEY_APPOINTMENTS, JSON.stringify(current));
+
+    // Add owner alert
+    const notifs = getOwnerNotifications();
+    const cancelNotif: OwnerNotification = {
+      id: `notif-${Date.now()}`,
+      title: "Appointment Cancelled",
+      message: `${existing.customer?.full_name || "Client"} cancelled appointment ${existing.appointment_code}`,
+      appointmentCode: existing.appointment_code,
+      timestamp: new Date().toISOString(),
+      read: false,
+      customerName: existing.customer?.full_name || "Client",
+      customerPhone: existing.customer?.phone || "",
+      serviceName: existing.services?.map((s) => s.service?.name).join(", ") || "Service",
+      stylistName: existing.staff?.full_name || "Any Stylist",
+      date: existing.appointment_date,
+      time: existing.start_time,
+      amount: existing.total_amount,
+    };
+    localStorage.setItem(STORAGE_KEY_NOTIFICATIONS, JSON.stringify([cancelNotif, ...notifs]));
+    window.dispatchEvent(new CustomEvent("page3_appointment_update", { detail: cancelledAppointment }));
+  }
+
+  return { success: true, appointment: cancelledAppointment };
+}
+

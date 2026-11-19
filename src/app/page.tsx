@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { SALON_INFO } from "@/lib/constants";
 import { DEMO_SERVICES } from "@/lib/mock-data";
@@ -8,25 +9,70 @@ import { ReviewsMarquee } from "@/components/reviews-marquee";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { LanguageToggle } from "@/components/language-toggle";
 import { useLanguage } from "@/lib/language-context";
+import { getStoredAppointments, getStoredCustomers, STORE_PHONE } from "@/lib/appointments-store";
+import { Appointment, Customer } from "@/lib/types";
 
 export default function HomePage() {
   const { t } = useLanguage();
 
+  // Returning customer state
+  const [returningCustomer, setReturningCustomer] = useState<Customer | null>(null);
+  const [lastAppointment, setLastAppointment] = useState<Appointment | null>(null);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      const storedPhone = localStorage.getItem("p3_client_phone");
+      const appointments = getStoredAppointments();
+      const customers = getStoredCustomers();
+
+      if (storedPhone) {
+        const cleanPhone = storedPhone.replace(/\D/g, "").slice(-10);
+        const matchedCust = customers.find(
+          (c) => c.phone.replace(/\D/g, "").slice(-10) === cleanPhone
+        );
+        if (matchedCust) setReturningCustomer(matchedCust);
+
+        const matchedApt = appointments.find(
+          (a) => a.customer?.phone?.replace(/\D/g, "").slice(-10) === cleanPhone
+        );
+        if (matchedApt) setLastAppointment(matchedApt);
+      } else if (appointments.length > 0) {
+        // Fallback to most recent booked appointment
+        const latest = appointments[0];
+        if (latest && latest.customer) {
+          setReturningCustomer(latest.customer);
+          setLastAppointment(latest);
+        }
+      }
+    } catch (e) {
+      console.error("Error retrieving returning customer", e);
+    }
+  }, []);
+
+  const whatsappGeneralUrl = `https://wa.me/${SALON_INFO.whatsapp}?text=${encodeURIComponent(
+    "Hi Page 3 Salon Dewas, I'd like to book an appointment / ask a question."
+  )}`;
+
   return (
-    <div className="min-h-screen bg-[#fafafa] dark:bg-[#0c0d0e] text-[#1c1d1f] dark:text-[#f4f4f5] transition-colors duration-200">
+    <div className="min-h-screen bg-[#fafafa] dark:bg-[#0c0d0e] text-[#1c1d1f] dark:text-[#f4f4f5] transition-colors duration-200 selection:bg-neutral-900 selection:text-white dark:selection:bg-white dark:selection:text-black">
       {/* Top Hairline Indicator */}
       <div className="h-[2px] bg-neutral-900 dark:bg-white w-full" />
 
       {/* Header */}
-      <header className="sticky top-0 z-40 bg-white/90 dark:bg-[#121214]/90 backdrop-blur-md border-b border-black/[0.06] dark:border-white/[0.08] px-5 py-3 transition-colors duration-200">
-        <div className="max-w-md mx-auto flex items-center justify-between">
+      <header className="sticky top-0 z-40 bg-white/90 dark:bg-[#121214]/90 backdrop-blur-md border-b border-black/[0.06] dark:border-white/[0.08] px-4 sm:px-6 py-3 transition-colors duration-200">
+        <div className="max-w-4xl mx-auto flex items-center justify-between">
           <div>
-            <h1 className="text-base font-[510] tracking-tight text-neutral-900 dark:text-white">
-              {t.brandTitle}
-            </h1>
-            <p className="text-[10px] text-neutral-400 dark:text-neutral-500 uppercase tracking-widest font-medium">
-              {t.brandTagline}
-            </p>
+            <Link href="/" className="group block">
+              <h1 className="text-base sm:text-lg font-[510] tracking-tight text-neutral-900 dark:text-white group-hover:opacity-80 transition-opacity">
+                {t.brandTitle}
+              </h1>
+              <p className="text-[10px] text-neutral-400 dark:text-neutral-500 uppercase tracking-widest font-semibold flex items-center gap-1.5">
+                <span>📍 Dewas, MP</span>
+                <span>•</span>
+                <span>The Family Salon</span>
+              </p>
+            </Link>
           </div>
           <div className="flex items-center gap-1.5 sm:gap-2">
             {/* Language Switcher */}
@@ -35,13 +81,22 @@ export default function HomePage() {
             {/* Theme Toggle Button */}
             <ThemeToggle size="sm" />
 
-            {/* Admin / Staff Login Portal */}
+            {/* Client Portal / Admin Portal */}
+            <Link href="/profile">
+              <button
+                type="button"
+                className="inline-flex shrink-0 items-center justify-center gap-1 rounded-xl text-xs font-[510] tracking-[-0.011em] border border-black/[0.08] dark:border-white/[0.12] bg-white dark:bg-[#18191c] text-[#1c1d1f] dark:text-[#f4f4f5] shadow-2xs hover:bg-neutral-50 dark:hover:bg-white/[0.06] h-8 px-2.5 transition-all"
+                title="Client Portal"
+              >
+                <span>👤</span>
+                <span className="hidden sm:inline">Profile</span>
+              </button>
+            </Link>
+
             <Link href="/admin">
               <button
                 type="button"
-                tabIndex={0}
-                data-slot="button"
-                className="inline-flex shrink-0 transform-gpu items-center justify-center gap-1 rounded-xl text-xs font-[510] tracking-[-0.011em] whitespace-nowrap transition-all duration-200 outline-none border border-black/[0.08] dark:border-white/[0.12] bg-white dark:bg-[#18191c] text-[#1c1d1f] dark:text-[#f4f4f5] shadow-[0_1px_2px_rgba(0,0,0,0.05),0_4px_12px_-2px_rgba(0,0,0,0.05)] [--foreground:#1c1d1f] dark:[--foreground:#f4f4f5] hover:shadow-[0_2px_6px_rgba(0,0,0,0.08),0_8px_20px_-4px_rgba(0,0,0,0.08)] h-8 px-2.5"
+                className="inline-flex shrink-0 items-center justify-center gap-1 rounded-xl text-xs font-[510] tracking-[-0.011em] border border-black/[0.08] dark:border-white/[0.12] bg-white dark:bg-[#18191c] text-[#1c1d1f] dark:text-[#f4f4f5] shadow-2xs hover:bg-neutral-50 dark:hover:bg-white/[0.06] h-8 px-2.5 transition-all"
                 title="Management Console"
               >
                 <span className="chroma-text-out chroma-text-out-animate">{t.staffLogin}</span>
@@ -51,8 +106,53 @@ export default function HomePage() {
         </div>
       </header>
 
+      {/* RETURNING CUSTOMER PERSONALIZED MEMORY BANNER */}
+      {returningCustomer && (
+        <div className="px-4 sm:px-6 pt-3 max-w-lg mx-auto">
+          <div className="bg-gradient-to-r from-neutral-900 to-neutral-800 dark:from-[#18191c] dark:to-[#121214] text-white p-4 rounded-2xl border border-black/[0.1] dark:border-white/[0.12] shadow-sm">
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <span className="text-[9px] font-bold uppercase tracking-wider bg-white/20 text-white px-2 py-0.5 rounded-md inline-block mb-1">
+                  Welcome Back
+                </span>
+                <h3 className="text-sm font-bold text-white">
+                  Welcome back, {returningCustomer.full_name}!
+                </h3>
+                <p className="text-xs text-neutral-300 mt-0.5">
+                  {lastAppointment && lastAppointment.services && lastAppointment.services.length > 0
+                    ? `Your last visit was for ${lastAppointment.services[0].service?.name || "Styling"}`
+                    : "Ready for your next fresh look at Page 3?"}
+                </p>
+              </div>
+              <span className="text-xs bg-amber-400/20 text-amber-300 font-mono font-bold px-2 py-1 rounded-lg">
+                ★ {returningCustomer.loyalty_points || 50} pts
+              </span>
+            </div>
+
+            <div className="flex items-center gap-2 mt-3 pt-3 border-t border-white/10">
+              <Link
+                href={`/book${
+                  lastAppointment && lastAppointment.services && lastAppointment.services[0]
+                    ? `?service=${lastAppointment.services[0].service_id}`
+                    : ""
+                }`}
+                className="flex-1 bg-white hover:bg-neutral-100 text-neutral-950 font-bold text-xs py-2 px-3 rounded-xl text-center transition-all shadow-xs"
+              >
+                ⚡ Book Same Service
+              </Link>
+              <Link
+                href="/services"
+                className="flex-1 bg-white/10 hover:bg-white/20 text-white font-medium text-xs py-2 px-3 rounded-xl text-center border border-white/15 transition-all"
+              >
+                Explore Menu
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* FIRST-TIME CUSTOMER OFFER BANNER */}
-      <div className="px-5 pt-3 max-w-md mx-auto">
+      <div className="px-4 sm:px-6 pt-3 max-w-lg mx-auto">
         <div className="bg-neutral-900 dark:bg-white/[0.08] text-white p-3.5 rounded-2xl border border-black/[0.1] dark:border-white/[0.12] shadow-sm flex items-center justify-between gap-3">
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-1.5">
@@ -67,17 +167,17 @@ export default function HomePage() {
           </div>
           <Link
             href="/book?promo=FIRST20"
-            className="shrink-0 bg-white text-neutral-950 hover:bg-neutral-100 font-bold text-xs px-3 py-2 rounded-xl transition-all shadow-xs"
+            className="shrink-0 bg-white text-neutral-950 hover:bg-neutral-100 font-bold text-xs px-3.5 py-2 rounded-xl transition-all shadow-xs"
           >
             {t.claimOffer} →
           </Link>
         </div>
       </div>
 
-      {/* Hero Section: Tailored for First-Time Clients */}
-      <section className="px-5 pt-6 pb-8 max-w-md mx-auto text-center">
-        {/* Open Status & Rating Pill */}
-        <div className="inline-flex items-center gap-2 border border-black/[0.08] dark:border-white/[0.1] bg-white dark:bg-[#161719] rounded-full px-3.5 py-1 mb-5 shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
+      {/* HERO SECTION: World-Class Mobile-First */}
+      <section className="px-4 sm:px-6 pt-6 pb-8 max-w-lg mx-auto text-center">
+        {/* Open Status & Dewas Location Pill */}
+        <div className="inline-flex flex-wrap items-center justify-center gap-2 border border-black/[0.08] dark:border-white/[0.1] bg-white dark:bg-[#161719] rounded-full px-4 py-1.5 mb-5 shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
           <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
           <span className="text-xs font-medium text-neutral-700 dark:text-neutral-300">
             {t.openToday}
@@ -88,48 +188,41 @@ export default function HomePage() {
           </span>
         </div>
 
-        <h2 className="text-3xl font-[510] tracking-[-0.025em] text-neutral-950 dark:text-white mb-3 leading-tight">
+        {/* Master Headline: Your Style. Your Confidence. Your Page 3. */}
+        <h2 className="text-3xl sm:text-4xl font-[510] tracking-[-0.03em] text-neutral-950 dark:text-white mb-3 leading-[1.15]">
           {t.heroTitle} <br />
           <span className="text-neutral-500 dark:text-neutral-400">{t.heroSubtitle}</span>
         </h2>
 
-        <p className="text-neutral-600 dark:text-neutral-400 text-sm mb-7 max-w-xs mx-auto leading-relaxed">
+        <p className="text-neutral-600 dark:text-neutral-400 text-sm mb-7 max-w-sm mx-auto leading-relaxed">
           {t.heroDescription}
         </p>
 
-        {/* PRIMARY CALL-TO-ACTION: Rightfit.so Authentic Chroma Button */}
+        {/* PRIMARY CALL-TO-ACTIONS */}
         <div className="space-y-3 max-w-xs mx-auto">
           <Link href="/book" className="block w-full">
             <button
               type="button"
-              tabIndex={0}
-              data-slot="button"
-              className="inline-flex shrink-0 transform-gpu items-center justify-center gap-2 rounded-2xl text-sm font-[510] tracking-[-0.011em] whitespace-nowrap transition-all duration-200 outline-none focus-visible:ring-[3px] focus-visible:ring-neutral-400/50 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 chroma-text-animate-parent border border-black/[0.08] dark:border-white/[0.12] bg-white dark:bg-[#18191c] text-[#1c1d1f] dark:text-[#f4f4f5] shadow-[0_1px_2px_rgba(0,0,0,0.05),0_4px_12px_-2px_rgba(0,0,0,0.05)] [--foreground:#1c1d1f] dark:[--foreground:#f4f4f5] hover:shadow-[0_2px_6px_rgba(0,0,0,0.08),0_8px_20px_-4px_rgba(0,0,0,0.08)] h-11 px-6 py-2.5 has-[>svg]:px-4 w-full"
+              className="inline-flex shrink-0 items-center justify-center gap-2 rounded-2xl text-sm font-[510] tracking-[-0.011em] border border-black/[0.08] dark:border-white/[0.12] bg-white dark:bg-[#18191c] text-[#1c1d1f] dark:text-[#f4f4f5] shadow-[0_1px_2px_rgba(0,0,0,0.05),0_4px_12px_-2px_rgba(0,0,0,0.05)] hover:shadow-[0_2px_6px_rgba(0,0,0,0.08),0_8px_20px_-4px_rgba(0,0,0,0.08)] h-12 px-6 py-2.5 w-full chroma-text-animate-parent"
             >
               <span className="chroma-text-out chroma-text-out-animate font-bold">
                 {t.bookNow}
               </span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="tabler-icon tabler-icon-arrow-right"
-              >
-                <path d="M5 12l14 0" />
-                <path d="M13 18l6 -6" />
-                <path d="M13 6l6 6" />
-              </svg>
+              <span className="text-sm">→</span>
             </button>
           </Link>
 
-          {/* Secondary Quick Contact */}
-          <div className="flex gap-2">
+          <Link href="/services" className="block w-full">
+            <button
+              type="button"
+              className="inline-flex shrink-0 items-center justify-center gap-2 rounded-2xl text-xs font-semibold border border-black/[0.08] dark:border-white/[0.12] bg-white dark:bg-[#18191c] text-neutral-800 dark:text-neutral-200 hover:bg-neutral-50 dark:hover:bg-white/[0.06] h-10 px-4 w-full transition-colors shadow-2xs"
+            >
+              <span>Explore Services &amp; Pricing</span>
+            </button>
+          </Link>
+
+          {/* Direct Quick Contact Buttons */}
+          <div className="flex gap-2 pt-1">
             <a
               href={`tel:${SALON_INFO.phone}`}
               className="flex-1 inline-flex items-center justify-center gap-1.5 h-10 px-3 rounded-2xl border border-black/[0.08] dark:border-white/[0.12] bg-white dark:bg-[#18191c] hover:bg-neutral-50 dark:hover:bg-white/[0.06] text-xs font-semibold text-neutral-800 dark:text-neutral-200 transition-colors shadow-2xs"
@@ -139,7 +232,7 @@ export default function HomePage() {
             </a>
 
             <a
-              href={`https://wa.me/${SALON_INFO.whatsapp}`}
+              href={whatsappGeneralUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="flex-1 inline-flex items-center justify-center gap-1.5 h-10 px-3 rounded-2xl border border-black/[0.08] dark:border-white/[0.12] bg-white dark:bg-[#18191c] hover:bg-neutral-50 dark:hover:bg-white/[0.06] text-xs font-semibold text-neutral-800 dark:text-neutral-200 transition-colors shadow-2xs"
@@ -150,8 +243,17 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* 3 Value Pillars for New Clients */}
-        <div className="grid grid-cols-3 gap-2 mt-7 text-left">
+        {/* Short Trust Statement */}
+        <div className="mt-5 text-[11px] text-neutral-500 dark:text-neutral-400 font-medium flex items-center justify-center gap-1.5">
+          <span>🔒 Guaranteed Zero-Wait Slot</span>
+          <span>•</span>
+          <span>100% Sanitised Tools</span>
+          <span>•</span>
+          <span>Dewas MP</span>
+        </div>
+
+        {/* 3 Value Pillars */}
+        <div className="grid grid-cols-3 gap-2 mt-6 text-left">
           <div className="bg-white dark:bg-[#161719] p-3 rounded-2xl border border-black/[0.06] dark:border-white/[0.08] shadow-2xs">
             <span className="text-base">⚡</span>
             <div className="text-xs font-bold text-neutral-900 dark:text-white mt-1">Zero Waiting</div>
@@ -170,23 +272,94 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* WHY CHOOSE PAGE 3? (Master Differentiators Section) */}
+      <section className="px-4 sm:px-6 py-8 max-w-lg mx-auto border-t border-black/[0.06] dark:border-white/[0.08]">
+        <div className="text-center mb-6">
+          <span className="text-[10px] font-bold uppercase tracking-widest text-neutral-400 dark:text-neutral-500 bg-white dark:bg-[#161719] border border-black/[0.08] dark:border-white/[0.08] px-3 py-1 rounded-full shadow-2xs">
+            The Page 3 Standard
+          </span>
+          <h3 className="text-xl font-[510] tracking-tight text-neutral-950 dark:text-white mt-2">
+            Why Dewas Chooses Page 3
+          </h3>
+          <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-1">
+            A luxury salon experience built on trust, craft, and care for the whole family.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div className="rf-card p-4 bg-white dark:bg-[#161719] border border-black/[0.08] dark:border-white/[0.08] rounded-2xl">
+            <div className="w-8 h-8 rounded-xl bg-neutral-100 dark:bg-white/[0.08] flex items-center justify-center text-sm mb-2.5">
+              👨‍👩‍👧‍👦
+            </div>
+            <h4 className="text-xs font-bold text-neutral-900 dark:text-white">Complete Family Salon</h4>
+            <p className="text-[11px] text-neutral-500 dark:text-neutral-400 mt-1 leading-relaxed">
+              Dedicated expert stylists for men, women, and children with private styling stations.
+            </p>
+          </div>
+
+          <div className="rf-card p-4 bg-white dark:bg-[#161719] border border-black/[0.08] dark:border-white/[0.08] rounded-2xl">
+            <div className="w-8 h-8 rounded-xl bg-neutral-100 dark:bg-white/[0.08] flex items-center justify-center text-sm mb-2.5">
+              🧴
+            </div>
+            <h4 className="text-xs font-bold text-neutral-900 dark:text-white">Hospital-Grade Hygiene</h4>
+            <p className="text-[11px] text-neutral-500 dark:text-neutral-400 mt-1 leading-relaxed">
+              Single-use disposable capes, fresh towels, and UV-sterilized tools for every appointment.
+            </p>
+          </div>
+
+          <div className="rf-card p-4 bg-white dark:bg-[#161719] border border-black/[0.08] dark:border-white/[0.08] rounded-2xl">
+            <div className="w-8 h-8 rounded-xl bg-neutral-100 dark:bg-white/[0.08] flex items-center justify-center text-sm mb-2.5">
+              💎
+            </div>
+            <h4 className="text-xs font-bold text-neutral-900 dark:text-white">Transparent Pricing</h4>
+            <p className="text-[11px] text-neutral-500 dark:text-neutral-400 mt-1 leading-relaxed">
+              Clear upfront rates with zero surprise charges. What you see is what you pay.
+            </p>
+          </div>
+
+          <div className="rf-card p-4 bg-white dark:bg-[#161719] border border-black/[0.08] dark:border-white/[0.08] rounded-2xl">
+            <div className="w-8 h-8 rounded-xl bg-neutral-100 dark:bg-white/[0.08] flex items-center justify-center text-sm mb-2.5">
+              📱
+            </div>
+            <h4 className="text-xs font-bold text-neutral-900 dark:text-white">Instant 60s Booking</h4>
+            <p className="text-[11px] text-neutral-500 dark:text-neutral-400 mt-1 leading-relaxed">
+              Book live slots in seconds without forced app downloads or complex passwords.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* SECTION 1: INTERACTIVE WORK GALLERY WITH CLICK-TO-PLAY VIDEOS */}
       <section className="py-10 border-t border-black/[0.06] dark:border-white/[0.08] bg-white/50 dark:bg-white/[0.02]">
         <VideoGallery />
       </section>
 
       {/* SECTION 2: 3-ROW CONTINUOUS MOVING REVIEWS TICKER */}
-      <ReviewsMarquee />
+      <section className="border-t border-black/[0.06] dark:border-white/[0.08]">
+        <ReviewsMarquee />
+        <div className="text-center pb-6">
+          <a
+            href={SALON_INFO.googleReviewUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 text-xs font-bold text-neutral-700 dark:text-neutral-300 hover:text-neutral-950 dark:hover:text-white border border-black/[0.08] dark:border-white/[0.12] bg-white dark:bg-[#18191c] px-4 py-2 rounded-xl shadow-2xs hover:shadow-xs transition-all"
+          >
+            <span>✍️</span>
+            <span>Leave a Google Review</span>
+            <span>→</span>
+          </a>
+        </div>
+      </section>
 
       {/* SECTION 3: POPULAR SERVICES QUICK BOOK */}
-      <section className="px-5 py-6 max-w-md mx-auto border-t border-black/[0.06] dark:border-white/[0.08]">
+      <section className="px-4 sm:px-6 py-8 max-w-lg mx-auto border-t border-black/[0.06] dark:border-white/[0.08]">
         <div className="flex items-center justify-between mb-4">
           <div>
             <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 dark:text-neutral-500">
               Menu Highlights
             </span>
             <h3 className="text-lg font-[510] tracking-tight text-neutral-950 dark:text-white mt-0.5">
-              Popular Services
+              Popular Services in Dewas
             </h3>
           </div>
           <Link
@@ -198,7 +371,7 @@ export default function HomePage() {
         </div>
 
         <div className="space-y-2.5">
-          {DEMO_SERVICES.slice(0, 4).map((service) => (
+          {DEMO_SERVICES.slice(0, 5).map((service) => (
             <div
               key={service.id}
               className="rf-card p-3.5 flex items-center justify-between bg-white dark:bg-[#161719] border border-black/[0.08] dark:border-white/[0.08]"
@@ -219,9 +392,7 @@ export default function HomePage() {
                 <Link href={`/book?service=${service.id}`}>
                   <button
                     type="button"
-                    tabIndex={0}
-                    data-slot="button"
-                    className="inline-flex shrink-0 transform-gpu items-center justify-center gap-1 rounded-xl text-xs font-semibold transition-all duration-200 outline-none border border-black/[0.08] dark:border-white/[0.12] bg-white dark:bg-[#18191c] text-[#1c1d1f] dark:text-[#f4f4f5] shadow-2xs hover:shadow-xs [--foreground:#1c1d1f] dark:[--foreground:#f4f4f5] h-8 px-3"
+                    className="inline-flex shrink-0 items-center justify-center gap-1 rounded-xl text-xs font-semibold border border-black/[0.08] dark:border-white/[0.12] bg-white dark:bg-[#18191c] text-[#1c1d1f] dark:text-[#f4f4f5] shadow-2xs hover:shadow-xs h-8 px-3 transition-all"
                   >
                     <span className="chroma-text-out chroma-text-out-animate">Book</span>
                   </button>
@@ -232,23 +403,26 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* SECTION 4: LOCATION & CONTACT WITH PHONE: 9111198911 */}
-      <section className="px-5 py-6 max-w-md mx-auto border-t border-black/[0.06] dark:border-white/[0.08]">
+      {/* SECTION 4: LOCATION & CONTACT IN DEWAS, MP */}
+      <section className="px-4 sm:px-6 py-8 max-w-lg mx-auto border-t border-black/[0.06] dark:border-white/[0.08]">
         <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 dark:text-neutral-500">
-          Find Us
+          Find Us in Dewas
         </span>
         <h3 className="text-lg font-[510] tracking-tight text-neutral-950 dark:text-white mt-0.5 mb-3">
           Salon Location &amp; Hours
         </h3>
 
-        <div className="rf-card p-4 space-y-3 bg-white dark:bg-[#161719] border border-black/[0.08] dark:border-white/[0.08] text-xs">
+        <div className="rf-card p-4 space-y-3 bg-white dark:bg-[#161719] border border-black/[0.08] dark:border-white/[0.08] text-xs rounded-2xl">
           <div>
-            <p className="font-bold text-neutral-900 dark:text-white">{SALON_INFO.name}</p>
-            <p className="text-neutral-500 dark:text-neutral-400 leading-relaxed mt-0.5">{SALON_INFO.address}</p>
+            <p className="font-bold text-neutral-900 dark:text-white text-sm">{SALON_INFO.name}</p>
+            <p className="text-neutral-500 dark:text-neutral-400 leading-relaxed mt-0.5">{SALON_INFO.fullAddress}</p>
+            <p className="text-[11px] text-emerald-600 dark:text-emerald-400 font-medium mt-1 flex items-center gap-1">
+              <span>🚗</span> Dedicated customer parking available in front of salon
+            </p>
           </div>
 
           <div className="pt-2 border-t border-black/[0.06] dark:border-white/[0.06] flex items-center justify-between">
-            <span className="text-neutral-500 dark:text-neutral-400">Direct Contact:</span>
+            <span className="text-neutral-500 dark:text-neutral-400">Direct Phone:</span>
             <a
               href={`tel:${SALON_INFO.phone}`}
               className="font-bold text-neutral-900 dark:text-white hover:underline flex items-center gap-1"
@@ -259,11 +433,11 @@ export default function HomePage() {
 
           <div className="pt-2 border-t border-black/[0.06] dark:border-white/[0.06] text-neutral-500 dark:text-neutral-400 space-y-1">
             <div className="flex justify-between">
-              <span>Mon – Fri:</span>
+              <span>Monday – Friday:</span>
               <span className="font-medium text-neutral-800 dark:text-neutral-200">10:00 AM – 08:30 PM</span>
             </div>
             <div className="flex justify-between">
-              <span>Sat – Sun:</span>
+              <span>Saturday – Sunday:</span>
               <span className="font-medium text-neutral-800 dark:text-neutral-200">09:00 AM – 09:00 PM</span>
             </div>
           </div>
@@ -277,35 +451,62 @@ export default function HomePage() {
         >
           <button
             type="button"
-            className="w-full h-10 rounded-2xl border border-black/[0.08] dark:border-white/[0.12] bg-white dark:bg-[#18191c] text-neutral-800 dark:text-neutral-200 text-xs font-semibold hover:bg-neutral-50 dark:hover:bg-white/[0.06] transition-colors shadow-2xs"
+            className="w-full h-11 rounded-2xl border border-black/[0.08] dark:border-white/[0.12] bg-white dark:bg-[#18191c] text-neutral-800 dark:text-neutral-200 text-xs font-semibold hover:bg-neutral-50 dark:hover:bg-white/[0.06] transition-colors shadow-2xs flex items-center justify-center gap-2"
           >
-            {t.directions}
+            <span>🗺️</span>
+            <span>{t.directions}</span>
           </button>
         </a>
       </section>
 
-      {/* Bottom Sticky Booking CTA Bar */}
+      {/* FOOTER */}
+      <footer className="border-t border-black/[0.06] dark:border-white/[0.08] py-8 px-4 text-center text-xs text-neutral-400 dark:text-neutral-500">
+        <p className="font-semibold text-neutral-700 dark:text-neutral-300">
+          {SALON_INFO.name} • Dewas, Madhya Pradesh
+        </p>
+        <p className="mt-1 text-[11px]">
+          © {new Date().getFullYear()} Page 3 Salon. All rights reserved. • ISO 9001 Hygiene Certified
+        </p>
+      </footer>
+
+      {/* BOTTOM STICKY MOBILE ACTION BAR (Book Now + WhatsApp + Call) */}
       <div className="fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-[#121214]/95 backdrop-blur-md border-t border-black/[0.06] dark:border-white/[0.08] p-3 z-40 transition-colors duration-200">
-        <div className="max-w-md mx-auto flex items-center justify-between gap-3">
-          <div>
-            <div className="text-xs font-bold text-neutral-900 dark:text-white">Ready to transform?</div>
-            <div className="text-[10px] text-neutral-400 dark:text-neutral-500">Slots open for today</div>
-          </div>
-          <Link href="/book" className="flex-1 max-w-[200px]">
+        <div className="max-w-lg mx-auto flex items-center justify-between gap-2">
+          {/* One-tap Phone Call */}
+          <a
+            href={`tel:${SALON_INFO.phone}`}
+            className="h-11 px-3.5 rounded-2xl border border-black/[0.08] dark:border-white/[0.12] bg-white dark:bg-[#18191c] hover:bg-neutral-50 dark:hover:bg-white/[0.06] text-neutral-900 dark:text-white flex items-center justify-center text-sm font-semibold transition-colors shrink-0"
+            title="Call Salon"
+          >
+            <span>📞</span>
+          </a>
+
+          {/* One-tap WhatsApp */}
+          <a
+            href={whatsappGeneralUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="h-11 px-3.5 rounded-2xl border border-black/[0.08] dark:border-white/[0.12] bg-white dark:bg-[#18191c] hover:bg-neutral-50 dark:hover:bg-white/[0.06] text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-sm font-semibold transition-colors shrink-0"
+            title="Chat on WhatsApp"
+          >
+            <span>💬</span>
+          </a>
+
+          {/* Primary Booking CTA */}
+          <Link href="/book" className="flex-1">
             <button
               type="button"
-              tabIndex={0}
-              data-slot="button"
-              className="inline-flex shrink-0 transform-gpu items-center justify-center gap-1.5 rounded-2xl text-xs font-bold tracking-[-0.011em] whitespace-nowrap transition-all duration-200 outline-none border border-black/[0.08] dark:border-white/[0.12] bg-white dark:bg-[#18191c] text-[#1c1d1f] dark:text-[#f4f4f5] shadow-[0_1px_2px_rgba(0,0,0,0.05),0_4px_12px_-2px_rgba(0,0,0,0.05)] [--foreground:#1c1d1f] dark:[--foreground:#f4f4f5] hover:shadow-[0_2px_6px_rgba(0,0,0,0.08),0_8px_20px_-4px_rgba(0,0,0,0.08)] h-10 px-4 w-full chroma-text-animate-parent"
+              className="inline-flex shrink-0 items-center justify-center gap-1.5 rounded-2xl text-xs font-bold tracking-[-0.011em] border border-black/[0.08] dark:border-white/[0.12] bg-neutral-950 dark:bg-white text-white dark:text-neutral-950 shadow-sm hover:opacity-95 h-11 px-4 w-full transition-all"
             >
-              <span className="chroma-text-out chroma-text-out-animate">{t.bookNow}</span>
+              <span>{t.bookNow}</span>
               <span>→</span>
             </button>
           </Link>
         </div>
       </div>
 
-      <div className="h-16" />
+      {/* Bottom Spacing to ensure sticky bar never overlaps content */}
+      <div className="h-20" />
     </div>
   );
 }

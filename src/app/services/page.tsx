@@ -122,6 +122,41 @@ export default function ServicesPage() {
           ))}
         </div>
       </div>
+
+      {/* Sticky Bottom Action Bar */}
+      <div className="fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-[#121214]/95 backdrop-blur-md border-t border-black/[0.06] dark:border-white/[0.08] p-3 z-40 transition-colors duration-200">
+        <div className="max-w-md mx-auto flex items-center justify-between gap-2">
+          <a
+            href="tel:9111198911"
+            className="h-11 px-3.5 rounded-2xl border border-black/[0.08] dark:border-white/[0.12] bg-white dark:bg-[#18191c] hover:bg-neutral-50 dark:hover:bg-white/[0.06] text-neutral-900 dark:text-white flex items-center justify-center text-sm font-semibold transition-colors shrink-0"
+            title="Call Salon"
+          >
+            <span>📞</span>
+          </a>
+
+          <a
+            href="https://wa.me/919111198911?text=Hi%20Page%203%20Salon%20Dewas,%20I%20have%20a%20query%20about%20your%20services."
+            target="_blank"
+            rel="noopener noreferrer"
+            className="h-11 px-3.5 rounded-2xl border border-black/[0.08] dark:border-white/[0.12] bg-white dark:bg-[#18191c] hover:bg-neutral-50 dark:hover:bg-white/[0.06] text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-sm font-semibold transition-colors shrink-0"
+            title="Chat on WhatsApp"
+          >
+            <span>💬</span>
+          </a>
+
+          <Link href="/book" className="flex-1">
+            <button
+              type="button"
+              className="inline-flex shrink-0 items-center justify-center gap-1.5 rounded-2xl text-xs font-bold tracking-[-0.011em] border border-black/[0.08] dark:border-white/[0.12] bg-neutral-950 dark:bg-white text-white dark:text-neutral-950 shadow-sm hover:opacity-95 h-11 px-4 w-full transition-all"
+            >
+              <span>Book Any Service</span>
+              <span>→</span>
+            </button>
+          </Link>
+        </div>
+      </div>
+
+      <div className="h-12" />
     </div>
   );
 }

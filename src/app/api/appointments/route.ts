@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { DEMO_APPOINTMENTS } from "@/lib/mock-data";
+import { DEMO_APPOINTMENTS, DEMO_SERVICES } from "@/lib/mock-data";
 import { generateAppointmentCode } from "@/lib/utils";
 
 export async function GET(request: Request) {
@@ -17,7 +17,7 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { customer_id, staff_id, appointment_date, start_time, total_amount, services, is_walk_in } = body;
+    const { customer_id, staff_id, appointment_date, start_time, total_amount, promo_code, services, is_walk_in } = body;
 
     if (!customer_id || !appointment_date || !start_time) {
       return NextResponse.json(
@@ -45,6 +45,22 @@ export async function POST(request: Request) {
       );
     }
 
+    // Server-side price verification against service catalog
+    let verifiedAmount = 0;
+    if (Array.isArray(services) && services.length > 0) {
+      for (const item of services) {
+        const catalogService = DEMO_SERVICES.find((s) => s.id === (item.service_id || item.id));
+        if (catalogService) {
+          verifiedAmount += catalogService.price;
+        }
+      }
+      if (promo_code === "FIRST20") {
+        verifiedAmount = Math.round(verifiedAmount * 0.8);
+      }
+    } else {
+      verifiedAmount = Number(total_amount) || 0;
+    }
+
     const appointment_code = generateAppointmentCode();
     const newAppointment = {
       id: `apt-${Date.now()}`,
@@ -55,7 +71,7 @@ export async function POST(request: Request) {
       start_time,
       end_time: "15:00",
       status: "confirmed",
-      total_amount: total_amount || 0,
+      total_amount: verifiedAmount,
       paid_amount: 0,
       payment_status: "pending",
       is_walk_in: Boolean(is_walk_in),
@@ -66,6 +82,7 @@ export async function POST(request: Request) {
       {
         message: "Appointment booked successfully",
         appointment: newAppointment,
+        price_verified: true,
       },
       { status: 201 }
     );
