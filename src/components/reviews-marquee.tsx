@@ -144,40 +144,40 @@ const ROW_3_REVIEWS: ReviewItem[] = [
 
 function ReviewCard({ review }: { review: ReviewItem }) {
   return (
-    <div className="w-[320px] sm:w-[350px] h-[175px] shrink-0 p-4 rounded-2xl bg-white border border-black/[0.08] shadow-[0_1px_3px_rgba(0,0,0,0.03),0_4px_16px_-2px_rgba(0,0,0,0.04)] flex flex-col justify-between hover:border-black/[0.2] hover:shadow-md transition-all">
+    <div className="w-[320px] sm:w-[350px] h-[175px] shrink-0 p-4 rounded-2xl bg-white dark:bg-[#161719] border border-black/[0.08] dark:border-white/[0.08] shadow-[0_1px_3px_rgba(0,0,0,0.03),0_4px_16px_-2px_rgba(0,0,0,0.04)] flex flex-col justify-between hover:border-black/[0.2] dark:hover:border-white/[0.2] hover:shadow-md transition-all">
       {/* Top Header */}
       <div>
         <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-2.5 min-w-0">
-            <div className="w-8 h-8 rounded-full bg-neutral-900 text-white font-bold text-xs flex items-center justify-center shrink-0">
+            <div className="w-8 h-8 rounded-full bg-neutral-900 dark:bg-white text-white dark:text-neutral-950 font-bold text-xs flex items-center justify-center shrink-0 shadow-xs">
               {review.avatar}
             </div>
             <div className="min-w-0">
-              <div className="text-xs font-bold text-neutral-900 truncate flex items-center gap-1.5">
+              <div className="text-xs font-bold text-neutral-900 dark:text-white truncate flex items-center gap-1.5">
                 <span>{review.name}</span>
-                <span className="text-[9px] bg-emerald-50 text-emerald-700 border border-emerald-100 px-1.5 py-0.2 rounded-full font-medium shrink-0">
+                <span className="text-[9px] bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border border-emerald-100 dark:border-emerald-800/40 px-1.5 py-0.2 rounded-full font-medium shrink-0">
                   Google Verified
                 </span>
               </div>
-              <p className="text-[10px] text-neutral-400 truncate mt-0.5">{review.service}</p>
+              <p className="text-[10px] text-neutral-400 dark:text-neutral-500 truncate mt-0.5">{review.service}</p>
             </div>
           </div>
           <div className="text-right shrink-0">
             <div className="text-amber-500 text-[11px] font-bold tracking-tight">★★★★★</div>
-            <span className="text-[9px] text-neutral-400 font-mono">{review.date}</span>
+            <span className="text-[9px] text-neutral-400 dark:text-neutral-500 font-mono">{review.date}</span>
           </div>
         </div>
 
         {/* First 3 lines clearly visible */}
-        <p className="text-xs text-neutral-600 line-clamp-3 leading-relaxed mt-2.5 italic">
+        <p className="text-xs text-neutral-600 dark:text-neutral-300 line-clamp-3 leading-relaxed mt-2.5 italic">
           &ldquo;{review.text}&rdquo;
         </p>
       </div>
 
       {/* Subtle Bottom Accent */}
-      <div className="flex items-center justify-between text-[10px] text-neutral-400 pt-2 border-t border-black/[0.04]">
+      <div className="flex items-center justify-between text-[10px] text-neutral-400 dark:text-neutral-500 pt-2 border-t border-black/[0.04] dark:border-white/[0.06]">
         <span>Page 3 Salon Client</span>
-        <span className="text-emerald-600 font-medium">✓ Recommended</span>
+        <span className="text-emerald-600 dark:text-emerald-400 font-medium">✓ Recommended</span>
       </div>
     </div>
   );
@@ -193,19 +193,19 @@ export function ReviewsMarquee() {
     <section
       data-ground="ink"
       aria-label="What our clients say about Page 3 Salon"
-      className="relative overflow-hidden py-12 lg:py-16 bg-[#fafafa] border-t border-black/[0.06]"
+      className="relative overflow-hidden py-12 lg:py-16 bg-[#fafafa] dark:bg-[#0c0d0e] border-t border-black/[0.06] dark:border-white/[0.08] transition-colors duration-200"
     >
       {/* Header */}
       <div className="mx-auto max-w-xl text-center px-4 mb-8">
-        <div className="inline-flex items-center gap-2 border border-black/[0.08] bg-white rounded-full px-3.5 py-1 mb-3 shadow-2xs">
+        <div className="inline-flex items-center gap-2 border border-black/[0.08] dark:border-white/[0.1] bg-white dark:bg-[#161719] rounded-full px-3.5 py-1 mb-3 shadow-2xs">
           <span className="text-amber-500 font-bold text-xs">4.9 ★★★★★</span>
-          <span className="text-neutral-300">•</span>
-          <span className="text-xs font-semibold text-neutral-700">480+ Google Reviews</span>
+          <span className="text-neutral-300 dark:text-neutral-600">•</span>
+          <span className="text-xs font-semibold text-neutral-700 dark:text-neutral-300">480+ Google Reviews</span>
         </div>
-        <h2 className="text-2xl lg:text-3xl font-[510] tracking-tight text-neutral-950">
-          Loved by 500+ Happy Clients
+        <h2 className="text-2xl lg:text-3xl font-[510] tracking-tight text-neutral-950 dark:text-white">
+          Loved by 480+ Happy Clients
         </h2>
-        <p className="text-xs lg:text-sm text-neutral-500 mt-2 leading-relaxed">
+        <p className="text-xs lg:text-sm text-neutral-500 dark:text-neutral-400 mt-2 leading-relaxed">
           Hover over any review to pause and read. See how our community rates our master cuts and grooming.
         </p>
       </div>
