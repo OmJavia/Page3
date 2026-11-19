@@ -96,18 +96,14 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         tabIndex={0}
         data-slot="button"
         className={cn(
-          "inline-flex shrink-0 transform-gpu items-center justify-center gap-2 rounded-2xl text-sm font-[510] tracking-[-0.011em] whitespace-nowrap transition-all duration-200 outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 chroma-text-animate-parent",
+          "inline-flex shrink-0 transform-gpu items-center justify-center gap-2 rounded-2xl text-sm font-[510] tracking-[-0.011em] whitespace-nowrap transition-all duration-200 outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
           variantClasses[variant],
           sizeClasses[size],
           className
         )}
         {...props}
       >
-        {typeof children === "string" ? (
-          <span className="chroma-text-out chroma-text-out-animate">{children}</span>
-        ) : (
-          children
-        )}
+        {children}
         {withArrow && <ArrowRightIcon />}
       </button>
     );
