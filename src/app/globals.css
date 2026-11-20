@@ -96,72 +96,34 @@
   text-decoration: inherit !important;
   color: inherit;
   -webkit-text-fill-color: currentColor;
+  background: none;
+  background-image: none;
   transition: all 0.2s ease;
 }
 
-.chroma-text,
-.chroma-text-animate-repeat,
-.chroma-text-loading {
-  background-image: linear-gradient(
-    90deg,
-    currentColor 0%,
-    currentColor 33.33%,
-    #c679c4 40%,
-    #fa3d1d 45%,
-    #ffb005 50%,
-    #e1e1fe 55%,
-    #0358f7 60%,
-    currentColor 66.67%,
-    currentColor 100%
-  );
-  will-change: background-position;
-  background-position: 100% 0;
-  background-size: 300% 100%;
-}
-
-.chroma-text-out {
-  background-image:
-    linear-gradient(
-      90deg,
-      currentColor 0%,
-      currentColor 33.33%,
-      #c679c4 40%,
-      #fa3d1d 45%,
-      #ffb005 50%,
-      #e1e1fe 55%,
-      #0358f7 60%,
-      currentColor 66.67%,
-      currentColor 100%
-    );
-  background-blend-mode: normal;
-  will-change: background-position;
-  background-position: 100% 0;
-  background-size: 300% 100%;
-}
-
+/* Chroma rainbow prism sweep: active on hover or focus */
 .chroma-text-out-animate:hover,
 .chroma-text-out-animate:focus,
 .chroma-text-animate-parent:hover .chroma-text-out-animate,
 .chroma-text-animate-parent:focus .chroma-text-out-animate {
+  background-image: linear-gradient(
+    90deg,
+    currentColor 0%,
+    currentColor 20%,
+    #c679c4 35%,
+    #fa3d1d 45%,
+    #ffb005 55%,
+    #e1e1fe 65%,
+    #0358f7 75%,
+    currentColor 85%,
+    currentColor 100%
+  );
+  background-size: 250% 100%;
+  will-change: background-position;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: 2s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite chroma-expand-bidirectional-repeat;
-}
-
-@keyframes chroma-expand-bidirectional-repeat {
-  0% {
-    background-position: 100% 0, 100% 0;
-  }
-  50% {
-    background-position: 0 0, 0 0;
-  }
-  50.1% {
-    background-position: 100% 0, 100% 0;
-  }
-  to {
-    background-position: 100% 0, 100% 0;
-  }
+  animation: 1.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite chroma-sweep-repeat;
 }
 
 @keyframes chroma-sweep-repeat {
@@ -171,10 +133,7 @@
   50% {
     background-position: 0 0;
   }
-  50.1% {
-    background-position: 100% 0;
-  }
-  to {
+  100% {
     background-position: 100% 0;
   }
 }
