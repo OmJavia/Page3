@@ -53,46 +53,56 @@ export default function HomePage() {
       <div className="h-[2px] bg-neutral-900 dark:bg-white w-full" />
 
       {/* Header */}
-      <header className="sticky top-0 z-40 bg-white/90 dark:bg-[#121214]/90 backdrop-blur-md border-b border-black/[0.06] dark:border-white/[0.08] px-4 sm:px-6 py-3 transition-colors duration-200">
-        <div className="max-w-4xl mx-auto flex items-center justify-between">
-          <div>
+      <header className="sticky top-0 z-40 bg-white/90 dark:bg-[#121214]/90 backdrop-blur-md border-b border-black/[0.06] dark:border-white/[0.08] px-3.5 sm:px-6 py-2.5 sm:py-3 transition-colors duration-200">
+        <div className="max-w-4xl mx-auto flex items-center justify-between gap-2">
+          {/* Brand Logo & Location badge */}
+          <div className="min-w-0">
             <Link href="/" className="group block">
-              <h1 className="text-base sm:text-lg font-[510] tracking-tight text-neutral-900 dark:text-white group-hover:opacity-80 transition-opacity">
-                {t.brandTitle}
-              </h1>
+              <div className="flex items-center gap-1.5">
+                <h1 className="text-base sm:text-lg font-[510] tracking-tight text-neutral-900 dark:text-white group-hover:opacity-80 transition-opacity truncate">
+                  <span className="font-bold">Page 3</span>
+                  <span className="text-neutral-400 dark:text-neutral-500 font-normal ml-1 hidden xs:inline sm:inline">The Family Salon</span>
+                </h1>
+                <span className="inline-flex text-[9px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded-md bg-neutral-100 dark:bg-white/[0.08] text-neutral-600 dark:text-neutral-300">
+                  Dewas
+                </span>
+              </div>
               <p className="text-[10px] text-neutral-400 dark:text-neutral-500 uppercase tracking-widest font-semibold flex items-center gap-1.5">
                 <span>📍 Dewas, MP</span>
-                <span>•</span>
-                <span>The Family Salon</span>
+                <span className="hidden sm:inline">•</span>
+                <span className="hidden sm:inline">The Family Salon</span>
               </p>
             </Link>
           </div>
-          <div className="flex items-center gap-1.5 sm:gap-2">
+
+          {/* Header Action Controls */}
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
             {/* Language Switcher */}
             <LanguageToggle />
 
             {/* Theme Toggle Button */}
             <ThemeToggle size="sm" />
 
-            {/* Client Portal / Admin Portal */}
-            <Link href="/profile">
+            {/* Client Portal */}
+            <Link href="/profile" className="inline-flex">
               <button
                 type="button"
-                className="inline-flex shrink-0 items-center justify-center gap-1 rounded-xl text-xs font-[510] tracking-[-0.011em] border border-black/[0.08] dark:border-white/[0.12] bg-white dark:bg-[#18191c] text-[#1c1d1f] dark:text-[#f4f4f5] shadow-2xs hover:bg-neutral-50 dark:hover:bg-white/[0.06] h-8 px-2.5 transition-all"
-                title="Client Portal"
+                className="inline-flex shrink-0 items-center justify-center gap-1 rounded-xl text-xs font-[510] tracking-[-0.011em] border border-black/[0.08] dark:border-white/[0.12] bg-white dark:bg-[#18191c] text-[#1c1d1f] dark:text-[#f4f4f5] shadow-2xs hover:bg-neutral-50 dark:hover:bg-white/[0.06] h-8 px-2 sm:px-2.5 transition-all"
+                title="Client Portal & Appointments"
               >
                 <span>👤</span>
                 <span className="hidden sm:inline">Profile</span>
               </button>
             </Link>
 
-            <Link href="/admin">
+            {/* Staff / Admin Login (Full button on desktop, hidden on small mobile) */}
+            <Link href="/admin" className="hidden sm:inline-flex">
               <button
                 type="button"
-                className="inline-flex shrink-0 items-center justify-center gap-1 rounded-xl text-xs font-[510] tracking-[-0.011em] border border-black/[0.08] dark:border-white/[0.12] bg-white dark:bg-[#18191c] text-[#1c1d1f] dark:text-[#f4f4f5] shadow-2xs hover:bg-neutral-50 dark:hover:bg-white/[0.06] h-8 px-2.5 transition-all"
+                className="inline-flex shrink-0 items-center justify-center gap-1 rounded-xl text-xs font-[510] tracking-[-0.011em] border border-black/[0.08] dark:border-white/[0.12] bg-white dark:bg-[#18191c] text-[#1c1d1f] dark:text-[#f4f4f5] shadow-2xs hover:bg-neutral-50 dark:hover:bg-white/[0.06] h-8 px-2.5 transition-all chroma-text-animate-parent"
                 title="Management Console"
               >
-                <span>{t.staffLogin}</span>
+                <span className="chroma-text-out chroma-text-out-animate">{t.staffLogin}</span>
               </button>
             </Link>
           </div>
@@ -193,24 +203,26 @@ export default function HomePage() {
           {t.heroDescription}
         </p>
 
-        {/* PRIMARY CALL-TO-ACTIONS */}
+        {/* PRIMARY CALL-TO-ACTIONS WITH RIGHTFIT.SO CHROMA PRISM HOVER */}
         <div className="space-y-3 max-w-xs mx-auto">
           <Link href="/book" className="block w-full">
             <button
               type="button"
-              className="inline-flex shrink-0 items-center justify-center gap-2 rounded-2xl text-sm font-bold tracking-[-0.011em] bg-neutral-950 dark:bg-white text-white dark:text-neutral-950 hover:bg-neutral-800 dark:hover:bg-neutral-100 shadow-[0_2px_8px_rgba(0,0,0,0.15)] h-12 px-6 py-2.5 w-full transition-all cursor-pointer"
+              className="inline-flex shrink-0 items-center justify-center gap-2 rounded-2xl text-sm font-bold tracking-[-0.011em] bg-neutral-950 dark:bg-white text-white dark:text-neutral-950 hover:bg-neutral-800 dark:hover:bg-neutral-100 shadow-[0_2px_8px_rgba(0,0,0,0.15)] h-12 px-6 py-2.5 w-full transition-all cursor-pointer chroma-text-animate-parent"
             >
-              <span>{t.bookNow}</span>
-              <span className="text-sm">→</span>
+              <span className="chroma-text-out chroma-text-out-animate">
+                {t.bookNow}
+              </span>
+              <span className="text-sm tabler-icon-arrow-right transition-transform">→</span>
             </button>
           </Link>
 
           <Link href="/services" className="block w-full">
             <button
               type="button"
-              className="inline-flex shrink-0 items-center justify-center gap-2 rounded-2xl text-xs font-semibold border border-black/[0.08] dark:border-white/[0.12] bg-white dark:bg-[#18191c] text-neutral-800 dark:text-neutral-200 hover:bg-neutral-50 dark:hover:bg-white/[0.06] h-10 px-4 w-full transition-colors shadow-2xs cursor-pointer"
+              className="inline-flex shrink-0 items-center justify-center gap-2 rounded-2xl text-xs font-semibold border border-black/[0.08] dark:border-white/[0.12] bg-white dark:bg-[#18191c] text-neutral-800 dark:text-neutral-200 hover:bg-neutral-50 dark:hover:bg-white/[0.06] h-10 px-4 w-full transition-colors shadow-2xs cursor-pointer chroma-text-animate-parent"
             >
-              <span>Explore Services &amp; Pricing</span>
+              <span className="chroma-text-out chroma-text-out-animate">Explore Services &amp; Pricing</span>
             </button>
           </Link>
 
@@ -373,9 +385,9 @@ export default function HomePage() {
                 <Link href={`/book?service=${service.id}`}>
                   <button
                     type="button"
-                    className="inline-flex shrink-0 items-center justify-center gap-1 rounded-xl text-xs font-semibold bg-neutral-900 dark:bg-white text-white dark:text-neutral-950 hover:bg-black dark:hover:bg-neutral-100 shadow-2xs h-8 px-3 transition-all cursor-pointer"
+                    className="inline-flex shrink-0 items-center justify-center gap-1 rounded-xl text-xs font-semibold bg-neutral-900 dark:bg-white text-white dark:text-neutral-950 hover:bg-black dark:hover:bg-neutral-100 shadow-2xs h-8 px-3 transition-all cursor-pointer chroma-text-animate-parent"
                   >
-                    <span>Book</span>
+                    <span className="chroma-text-out chroma-text-out-animate">Book</span>
                   </button>
                 </Link>
               </div>

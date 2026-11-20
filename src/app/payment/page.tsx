@@ -281,6 +281,17 @@ function PaymentContent() {
 
           {/* Fast actions */}
           <div className="space-y-3 mt-6">
+            <button
+              type="button"
+              className="w-full h-11 rounded-2xl bg-neutral-900 hover:bg-black dark:bg-white dark:hover:bg-neutral-100 text-white dark:text-neutral-950 font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-sm cursor-pointer"
+              onClick={() => {
+                if (typeof window !== "undefined") window.print();
+              }}
+            >
+              <span>🖨️</span>
+              <span>Download / Print Tax Invoice (Bill)</span>
+            </button>
+
             <Button
               variant="default"
               className="w-full h-11"

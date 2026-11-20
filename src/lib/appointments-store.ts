@@ -1,7 +1,7 @@
 "use client";
 
 import { DEMO_APPOINTMENTS, DEMO_CUSTOMERS } from "@/lib/mock-data";
-import { Appointment, Customer, Service, Staff, AppointmentStatus } from "@/lib/types";
+import { Appointment, Customer, Service, Staff, AppointmentStatus, PaymentMethod } from "@/lib/types";
 import { generateAppointmentCode } from "@/lib/utils";
 
 export interface OwnerNotification {
@@ -121,6 +121,10 @@ export function createAndPersistAppointment(params: {
   date: string;
   slot: { start: string; end: string };
   totalAmount: number;
+  paidAmount?: number;
+  paymentMethod?: PaymentMethod;
+  paymentStatus?: "pending" | "partial" | "paid";
+  txnId?: string;
 }): { appointment: Appointment; notification: OwnerNotification; ownerWhatsAppUrl: string } {
   const code = generateAppointmentCode();
   const list = getStoredAppointments();
@@ -158,8 +162,10 @@ export function createAndPersistAppointment(params: {
     end_time: params.slot.end || `${params.slot.start.slice(0, 2)}:45`,
     status: "confirmed",
     total_amount: params.totalAmount,
-    paid_amount: 0,
-    payment_status: "pending",
+    paid_amount: params.paidAmount !== undefined ? params.paidAmount : 0,
+    payment_method: params.paymentMethod || "upi",
+    payment_status: params.paymentStatus || (params.paidAmount && params.paidAmount >= params.totalAmount ? "paid" : params.paidAmount && params.paidAmount > 0 ? "partial" : "pending"),
+    notes: params.txnId ? `Transaction: ${params.txnId}` : undefined,
     is_walk_in: false,
     services: params.services.map((svc) => ({
       id: `as-${Date.now()}-${svc.id}`,

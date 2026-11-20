@@ -227,3 +227,53 @@ test.describe('Double-booking Prevention', () => {
     expect(body.error).toMatch(/double-booking/i);
   });
 });
+
+// ── Full End-to-End Payment-First Journey ─────────────────────────────────────
+
+test.describe('Full Payment-First Booking Flow & Printable Tax Invoice', () => {
+  test('completes 5 steps: services -> stylist -> slot -> details -> payment -> invoice', async ({
+    page,
+  }) => {
+    await page.goto('/book');
+    await clearStorage(page);
+    await page.reload();
+
+    // Step 1: Select Service
+    const firstCard = page.locator('.rf-card').first();
+    await expect(firstCard).toBeVisible();
+    await firstCard.click();
+    await page.getByRole('button', { name: /stylist/i }).first().click();
+
+    // Step 2: Choose Stylist
+    await page.getByText(/any.*stylist/i).first().click();
+    await page.getByRole('button', { name: /slot|date/i }).first().click();
+
+    // Step 3: Choose Slot
+    const slotBtn = page.getByRole('button', { name: /:\d{2}|AM|PM/i }).first();
+    await expect(slotBtn).toBeVisible();
+    await slotBtn.click();
+    await page.getByRole('button', { name: /details/i }).first().click();
+
+    // Step 4: Fill Customer Details
+    await page.locator('input[placeholder*="9876"]').fill('9111222333');
+    await page.locator('input[placeholder*="Rahul"]').fill('Harish Verma');
+    await page.getByRole('button', { name: /payment/i }).first().click();
+
+    // Step 5: Payment Page
+    await expect(page.getByText(/payment.*bill|choose payment/i).first()).toBeVisible();
+
+    // Select "Pay at Salon Reception"
+    const receptionOption = page.getByText(/pay at salon/i).first();
+    await receptionOption.click();
+
+    // Confirm Appointment
+    const confirmBtn = page.getByRole('button', { name: /confirm/i }).first();
+    await confirmBtn.click();
+
+    // Final Screen: Merged Confirmation + Printable Tax Invoice
+    await expect(page.getByText(/appointment confirmed/i).first()).toBeVisible({ timeout: 10_000 });
+    await expect(page.locator('#printable-invoice')).toBeVisible();
+    await expect(page.getByText(/TAX INVOICE/i).first()).toBeVisible();
+    await expect(page.getByText(/Download \/ Print Bill/i).first()).toBeVisible();
+  });
+});

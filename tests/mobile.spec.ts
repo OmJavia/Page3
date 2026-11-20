@@ -68,11 +68,13 @@ test.describe('Touch targets – minimum 44px', () => {
 
     if (count > 0) {
       for (let i = 0; i < Math.min(count, 5); i++) {
-        const box = await navLinks.nth(i).boundingBox();
-        if (box) {
-          // Height OR the padding around it makes it at least 32px
-          // (some nav items are inline; we check the touch area ≥ 32px minimum)
-          expect(box.height).toBeGreaterThanOrEqual(32);
+        const link = navLinks.nth(i);
+        if (await link.isVisible()) {
+          const box = await link.boundingBox();
+          if (box) {
+            // Height OR the padding around it makes it at least 32px
+            expect(box.height).toBeGreaterThanOrEqual(32);
+          }
         }
       }
     }

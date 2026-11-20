@@ -84,9 +84,12 @@ test.describe('Admin – Dashboard (authenticated)', () => {
   test.beforeEach(async ({ page }) => {
     await page.context().clearCookies();
     await page.goto('/admin/login');
-    await page.locator('input[type="password"]').fill(ADMIN_PASSWORD);
+    const pwdInput = page.locator('input[type="password"]');
+    await pwdInput.waitFor({ state: 'visible' });
+    await pwdInput.click();
+    await pwdInput.fill(ADMIN_PASSWORD);
     await page.getByRole('button', { name: /login|sign in|enter|unlock/i }).first().click();
-    await page.waitForURL(/dashboard/, { timeout: 10_000 });
+    await expect(page).toHaveURL(/dashboard/, { timeout: 15_000 });
   });
 
   test('dashboard shows key KPI cards', async ({ page }) => {

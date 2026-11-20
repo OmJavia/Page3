@@ -83,8 +83,6 @@
 .chroma-text-animate-repeat,
 .chroma-text-loading,
 .pro-chroma-heading {
-  -webkit-text-fill-color: currentColor;
-  color: inherit;
   font: inherit;
   z-index: 1;
   display: inline;
@@ -96,6 +94,9 @@
   text-transform: inherit !important;
   -webkit-text-decoration: inherit !important;
   text-decoration: inherit !important;
+  color: inherit;
+  -webkit-text-fill-color: currentColor;
+  transition: all 0.2s ease;
 }
 
 .chroma-text,
@@ -103,15 +104,15 @@
 .chroma-text-loading {
   background-image: linear-gradient(
     90deg,
-    var(--foreground, #1c1d1f) 0%,
-    var(--foreground, #1c1d1f) 33.33%,
+    currentColor 0%,
+    currentColor 33.33%,
     #c679c4 40%,
     #fa3d1d 45%,
     #ffb005 50%,
     #e1e1fe 55%,
     #0358f7 60%,
-    var(--foreground, #1c1d1f) 66.67%,
-    var(--foreground, #1c1d1f) 100%
+    currentColor 66.67%,
+    currentColor 100%
   );
   will-change: background-position;
   background-position: 100% 0;
@@ -122,38 +123,29 @@
   background-image:
     linear-gradient(
       90deg,
-      transparent 0%,
-      transparent 33.33%,
+      currentColor 0%,
+      currentColor 33.33%,
       #c679c4 40%,
       #fa3d1d 45%,
       #ffb005 50%,
       #e1e1fe 55%,
       #0358f7 60%,
-      var(--foreground, #1c1d1f) 66.67%,
-      var(--foreground, #1c1d1f) 100%
-    ),
-    linear-gradient(
-      270deg,
-      transparent 0%,
-      transparent 33.33%,
-      #c679c4 40%,
-      #fa3d1d 45%,
-      #ffb005 50%,
-      #e1e1fe 55%,
-      #0358f7 60%,
-      var(--foreground, #1c1d1f) 66.67%,
-      var(--foreground, #1c1d1f) 100%
+      currentColor 66.67%,
+      currentColor 100%
     );
   background-blend-mode: normal;
   will-change: background-position;
-  background-position: 100% 0, 100% 0;
-  background-size: 300% 100%, 300% 100%;
+  background-position: 100% 0;
+  background-size: 300% 100%;
 }
 
 .chroma-text-out-animate:hover,
 .chroma-text-out-animate:focus,
 .chroma-text-animate-parent:hover .chroma-text-out-animate,
 .chroma-text-animate-parent:focus .chroma-text-out-animate {
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
   animation: 2s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite chroma-expand-bidirectional-repeat;
 }
 
@@ -281,3 +273,30 @@ html {
 ::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.15); border-radius: 9999px; }
+
+/* ==========================================================================
+   OFFICIAL SALON INVOICE PRINT STYLES
+   ========================================================================== */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #printable-invoice, #printable-invoice * {
+    visibility: visible;
+  }
+  #printable-invoice {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    padding: 16px;
+    background: #ffffff !important;
+    color: #000000 !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+}
