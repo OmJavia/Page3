@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { DEMO_APPOINTMENTS, DEMO_SERVICES } from "@/lib/mock-data";
+import { DEMO_APPOINTMENTS, DEMO_SERVICES, DEMO_CUSTOMERS } from "@/lib/mock-data";
 import { generateAppointmentCode } from "@/lib/utils";
 
 export async function GET(request: Request) {
@@ -55,6 +55,13 @@ export async function POST(request: Request) {
         }
       }
       if (promo_code === "FIRST20") {
+        const existingCust = DEMO_CUSTOMERS.find((c) => c.id === customer_id);
+        if (existingCust && existingCust.total_visits > 0) {
+          return NextResponse.json(
+            { error: "Promo FIRST20 is only valid for first-time customer visits." },
+            { status: 400 }
+          );
+        }
         verifiedAmount = Math.round(verifiedAmount * 0.8);
       }
     } else {

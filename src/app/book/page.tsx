@@ -207,6 +207,11 @@ function BookingContent() {
 
   const handleApplyPromo = () => {
     if (promoCode.trim() === "FIRST20") {
+      if (existingCustomer && existingCustomer.total_visits > 0) {
+        setPromoApplied(false);
+        setPromoMessage("FIRST20 is reserved for first-time guests. You can redeem your loyalty points!");
+        return;
+      }
       setPromoApplied(true);
       setPromoMessage("20% First-Time discount applied!");
     } else if (promoCode.trim() === "DEWAS10") {

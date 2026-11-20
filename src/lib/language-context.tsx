@@ -58,6 +58,13 @@ export interface Translations {
   promoPlaceholder: string;
   applyPromo: string;
   promoApplied: string;
+  // Reviews & Portfolio
+  reviewsHeading: string;
+  reviewsSubtitle: string;
+  shareExperience: string;
+  viewOnGoogle: string;
+  portfolioHeading: string;
+  portfolioSubtitle: string;
 }
 
 const TRANSLATIONS: Record<Language, Translations> = {
@@ -77,6 +84,13 @@ const TRANSLATIONS: Record<Language, Translations> = {
     workGallery: "Our Work Gallery",
     verifiedReviews: "Verified Google Reviews",
     specialOffers: "Exclusive Offers",
+
+    reviewsHeading: "Loved by 480+ Happy Clients",
+    reviewsSubtitle: "Genuine feedback curated from verified salon visits and Google Business reviews in Dewas.",
+    shareExperience: "Visited Page 3? Share Your Experience",
+    viewOnGoogle: "View on Google Maps",
+    portfolioHeading: "Page 3 Craft & Styling Portfolio",
+    portfolioSubtitle: "Explore actual haircut silhouettes, dimensional colouring, and grooming transformations created in Dewas.",
 
     heroTitle: "Your Style. Your Confidence.",
     heroSubtitle: "Your Page 3.",
@@ -130,6 +144,13 @@ const TRANSLATIONS: Record<Language, Translations> = {
     workGallery: "हमारा वर्क गैलरी",
     verifiedReviews: "सत्यापित गूगल समीक्षाएं",
     specialOffers: "विशेष ऑफर्स",
+
+    reviewsHeading: "480+ संतुष्ट ग्राहकों का भरोसा",
+    reviewsSubtitle: "देवास में सत्यापित सैलून विज़िट और गूगल बिजनेस समीक्षाओं से एकत्रित वास्तविक प्रतिक्रिया।",
+    shareExperience: "पेज 3 पर आए थे? अपना अनुभव साझा करें",
+    viewOnGoogle: "गूगल मैप्स पर देखें",
+    portfolioHeading: "पेज 3 स्टाइलिंग और ग्रूमिंग पोर्टफोलियो",
+    portfolioSubtitle: "देवास में की गई वास्तविक हेयरकट, कलरिंग और ग्रूमिंग ट्रांसफॉर्मेशन देखें।",
 
     heroTitle: "आपका स्टाइल। आपका आत्मविश्वास।",
     heroSubtitle: "आपका पेज 3।",

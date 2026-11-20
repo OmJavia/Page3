@@ -30,7 +30,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Page 3 – The Family Salon | Best Salon in Dewas",
     description:
-      "Your Style. Your Confidence. Your Page 3. Book your appointment online with zero waiting time.",
+      "Your Style. Your Confidence. Your Page 3. Book your appointment online with confirmed slot allocation in Dewas.",
     type: "website",
     locale: "en_IN",
     siteName: "Page 3 Salon",

@@ -79,7 +79,7 @@ export default function ServiceDetailPage({
             </span>
             <span className="text-neutral-300 dark:text-neutral-600">•</span>
             <span className="text-xs text-emerald-600 dark:text-emerald-400 font-semibold">
-              Guaranteed Zero Wait
+              Confirmed Reserved Slot
             </span>
           </div>
         </div>

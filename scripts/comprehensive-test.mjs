@@ -127,6 +127,34 @@ async function runTests() {
     results.push({ feature: "Price Verification", tested: true, pass: false, notes: e.message });
   }
 
+  // 6. Test FIRST20 Restriction for Returning Customers
+  try {
+    const returningBody = {
+      customer_id: "cust-1", // Rahul Sharma (total_visits: 8)
+      staff_id: "staff-2",
+      appointment_date: "2024-12-02",
+      start_time: "12:00",
+      services: [{ service_id: "s-1" }],
+      promo_code: "FIRST20",
+    };
+    const res = await fetch(`${BASE_URL}/api/appointments`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(returningBody),
+    });
+    const data = await res.json();
+    const correctlyBlocked = res.status === 400 && data.error.includes("first-time customer");
+
+    results.push({
+      feature: "Promo Eligibility Protection (FIRST20 blocked for returning customers)",
+      tested: true,
+      pass: correctlyBlocked,
+      notes: `HTTP 400: Correctly rejected FIRST20 for returning client with past visits`,
+    });
+  } catch (e) {
+    results.push({ feature: "Promo Eligibility", tested: true, pass: false, notes: e.message });
+  }
+
   // 6. Test Returning Customer Recognition & PII Masking
   try {
     const res = await fetch(`${BASE_URL}/api/customers?phone=9876500001`);

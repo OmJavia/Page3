@@ -37,13 +37,6 @@ export default function HomePage() {
           (a) => a.customer?.phone?.replace(/\D/g, "").slice(-10) === cleanPhone
         );
         if (matchedApt) setLastAppointment(matchedApt);
-      } else if (appointments.length > 0) {
-        // Fallback to most recent booked appointment
-        const latest = appointments[0];
-        if (latest && latest.customer) {
-          setReturningCustomer(latest.customer);
-          setLastAppointment(latest);
-        }
       }
     } catch (e) {
       console.error("Error retrieving returning customer", e);
@@ -151,28 +144,30 @@ export default function HomePage() {
         </div>
       )}
 
-      {/* FIRST-TIME CUSTOMER OFFER BANNER */}
-      <div className="px-4 sm:px-6 pt-3 max-w-lg mx-auto">
-        <div className="bg-neutral-900 dark:bg-white/[0.08] text-white p-3.5 rounded-2xl border border-black/[0.1] dark:border-white/[0.12] shadow-sm flex items-center justify-between gap-3">
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-1.5">
-              <span className="text-[9px] font-bold uppercase tracking-wider bg-white/20 text-white px-2 py-0.5 rounded-md">
-                {t.firstTimeOfferBadge}
-              </span>
-              <span className="text-xs font-bold text-amber-300">FLAT 20% OFF</span>
+      {/* FIRST-TIME CUSTOMER OFFER BANNER - Only shown to new / anonymous guests */}
+      {!returningCustomer && (
+        <div className="px-4 sm:px-6 pt-3 max-w-lg mx-auto">
+          <div className="bg-neutral-900 dark:bg-white/[0.08] text-white p-3.5 rounded-2xl border border-black/[0.1] dark:border-white/[0.12] shadow-sm flex items-center justify-between gap-3">
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-1.5">
+                <span className="text-[9px] font-bold uppercase tracking-wider bg-white/20 text-white px-2 py-0.5 rounded-md">
+                  {t.firstTimeOfferBadge}
+                </span>
+                <span className="text-xs font-bold text-amber-300">FLAT 20% OFF</span>
+              </div>
+              <p className="text-xs text-neutral-200 dark:text-neutral-300 font-medium mt-1 leading-snug">
+                {t.firstTimeOfferText}
+              </p>
             </div>
-            <p className="text-xs text-neutral-200 dark:text-neutral-300 font-medium mt-1 leading-snug">
-              {t.firstTimeOfferText}
-            </p>
+            <Link
+              href="/book?promo=FIRST20"
+              className="shrink-0 bg-white text-neutral-950 hover:bg-neutral-100 font-bold text-xs px-3.5 py-2 rounded-xl transition-all shadow-xs"
+            >
+              {t.claimOffer} →
+            </Link>
           </div>
-          <Link
-            href="/book?promo=FIRST20"
-            className="shrink-0 bg-white text-neutral-950 hover:bg-neutral-100 font-bold text-xs px-3.5 py-2 rounded-xl transition-all shadow-xs"
-          >
-            {t.claimOffer} →
-          </Link>
         </div>
-      </div>
+      )}
 
       {/* HERO SECTION: World-Class Mobile-First */}
       <section className="px-4 sm:px-6 pt-6 pb-8 max-w-lg mx-auto text-center">
@@ -243,19 +238,19 @@ export default function HomePage() {
 
         {/* Short Trust Statement */}
         <div className="mt-5 text-[11px] text-neutral-500 dark:text-neutral-400 font-medium flex items-center justify-center gap-1.5">
-          <span>🔒 Guaranteed Zero-Wait Slot</span>
+          <span>🔒 Reserved Appointment Slot</span>
           <span>•</span>
-          <span>100% Sanitised Tools</span>
+          <span>Sterilised Tools &amp; Stations</span>
           <span>•</span>
-          <span>Dewas MP</span>
+          <span>Dewas, MP</span>
         </div>
 
         {/* 3 Value Pillars */}
         <div className="grid grid-cols-3 gap-2 mt-6 text-left">
           <div className="bg-white dark:bg-[#161719] p-3 rounded-2xl border border-black/[0.06] dark:border-white/[0.08] shadow-2xs">
             <span className="text-base">⚡</span>
-            <div className="text-xs font-bold text-neutral-900 dark:text-white mt-1">Zero Waiting</div>
-            <div className="text-[10px] text-neutral-400 dark:text-neutral-500 mt-0.5">Guaranteed reserved slot</div>
+            <div className="text-xs font-bold text-neutral-900 dark:text-white mt-1">Reserved Seat</div>
+            <div className="text-[10px] text-neutral-400 dark:text-neutral-500 mt-0.5">Pre-allocated time slot</div>
           </div>
           <div className="bg-white dark:bg-[#161719] p-3 rounded-2xl border border-black/[0.06] dark:border-white/[0.08] shadow-2xs">
             <span className="text-base">✂️</span>
@@ -299,9 +294,9 @@ export default function HomePage() {
             <div className="w-8 h-8 rounded-xl bg-neutral-100 dark:bg-white/[0.08] flex items-center justify-center text-sm mb-2.5">
               🧴
             </div>
-            <h4 className="text-xs font-bold text-neutral-900 dark:text-white">Hospital-Grade Hygiene</h4>
+            <h4 className="text-xs font-bold text-neutral-900 dark:text-white">High Hygiene Standards</h4>
             <p className="text-[11px] text-neutral-500 dark:text-neutral-400 mt-1 leading-relaxed">
-              Single-use disposable capes, fresh towels, and UV-sterilized tools for every appointment.
+              Single-use disposable capes, freshly disinfected stations, and sterilized tools for every client.
             </p>
           </div>
 
@@ -332,21 +327,9 @@ export default function HomePage() {
         <VideoGallery />
       </section>
 
-      {/* SECTION 2: 3-ROW CONTINUOUS MOVING REVIEWS TICKER */}
+      {/* SECTION 2: VERIFIED REVIEWS SHOWCASE (Mobile Swipeable Carousel & Grid) */}
       <section className="border-t border-black/[0.06] dark:border-white/[0.08]">
         <ReviewsMarquee />
-        <div className="text-center pb-6">
-          <a
-            href={SALON_INFO.googleReviewUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 text-xs font-bold text-neutral-700 dark:text-neutral-300 hover:text-neutral-950 dark:hover:text-white border border-black/[0.08] dark:border-white/[0.12] bg-white dark:bg-[#18191c] px-4 py-2 rounded-xl shadow-2xs hover:shadow-xs transition-all"
-          >
-            <span>✍️</span>
-            <span>Leave a Google Review</span>
-            <span>→</span>
-          </a>
-        </div>
       </section>
 
       {/* SECTION 3: POPULAR SERVICES QUICK BOOK */}
@@ -442,7 +425,7 @@ export default function HomePage() {
         </div>
 
         <a
-          href={SALON_INFO.googleMapsUrl}
+          href={SALON_INFO.googleMapsDirectionsUrl}
           target="_blank"
           rel="noopener noreferrer"
           className="block mt-3"
@@ -463,7 +446,7 @@ export default function HomePage() {
           {SALON_INFO.name} • Dewas, Madhya Pradesh
         </p>
         <p className="mt-1 text-[11px]">
-          © {new Date().getFullYear()} Page 3 Salon. All rights reserved. • ISO 9001 Hygiene Certified
+          © {new Date().getFullYear()} Page 3 Salon. All rights reserved. • Dedicated Family Grooming Care
         </p>
       </footer>
 
