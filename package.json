@@ -6,7 +6,14 @@
     "dev": "next dev",
     "build": "node scripts/build-css.js && next build --webpack",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test": "playwright test --project='Desktop Chrome'",
+    "test:all": "playwright test",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:desktop": "playwright test --project='Desktop Chrome'",
+    "test:e2e:mobile": "playwright test --project='Mobile – iPhone 14 (390px)'",
+    "test:custom": "node scripts/comprehensive-test.mjs"
   },
   "dependencies": {
     "@radix-ui/react-label": "^2.1.17",
@@ -27,6 +34,7 @@
     "zustand": "^5.1.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.65.1",
     "@tailwindcss/turbopack": "4.3.3",
     "@types/node": "^20",
     "@types/react": "^19",

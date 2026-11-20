@@ -63,6 +63,13 @@ export async function POST(request: Request) {
           );
         }
         verifiedAmount = Math.round(verifiedAmount * 0.8);
+      } else if (promo_code === "DEWAS10") {
+        verifiedAmount = Math.round(verifiedAmount * 0.9);
+      } else if (promo_code) {
+        return NextResponse.json(
+          { error: "Invalid promo code provided." },
+          { status: 400 }
+        );
       }
     } else {
       verifiedAmount = Number(total_amount) || 0;

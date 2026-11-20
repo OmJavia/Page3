@@ -48,7 +48,7 @@ export default function HomePage() {
   )}`;
 
   return (
-    <div className="min-h-screen bg-[#fafafa] dark:bg-[#0c0d0e] text-[#1c1d1f] dark:text-[#f4f4f5] transition-colors duration-200 selection:bg-neutral-900 selection:text-white dark:selection:bg-white dark:selection:text-black">
+    <div className="min-h-screen overflow-x-hidden bg-[#fafafa] dark:bg-[#0c0d0e] text-[#1c1d1f] dark:text-[#f4f4f5] transition-colors duration-200 selection:bg-neutral-900 selection:text-white dark:selection:bg-white dark:selection:text-black">
       {/* Top Hairline Indicator */}
       <div className="h-[2px] bg-neutral-900 dark:bg-white w-full" />
 
