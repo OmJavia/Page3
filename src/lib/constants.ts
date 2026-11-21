@@ -19,18 +19,21 @@ export const SALON_INFO = {
   pincode: "455001",
   googleMapsUrl: "https://www.google.com/maps/search/?api=1&query=Page+3+The+Family+Salon+Dewas+Madhya+Pradesh+455001",
   googleMapsDirectionsUrl: "https://www.google.com/maps/dir/?api=1&destination=Page+3+The+Family+Salon+Dewas+Madhya+Pradesh+455001",
-  googleReviewUrl: "https://search.google.com/local/writereview?placeid=ChIJPage3SalonDewas",
+  googleReviewUrl: "https://www.google.com/maps/search/?api=1&query=Page+3+The+Family+Salon+Dewas+Madhya+Pradesh+455001",
   websiteUrl: "https://page3-dewas.vercel.app",
   rating: 4.9,
   reviewCount: 214,
+  // Hours Configuration:
+  // Active Customer-Facing Schedule: Mon-Fri 10:00 AM - 08:30 PM, Sat-Sun 09:00 AM - 09:00 PM
+  // Alternate Public Listing: 10:00 AM - 08:30 PM daily (Pending owner confirmation).
   hours: {
     monday: { open: "10:00", close: "20:30", closed: false, label: "10:00 AM – 08:30 PM" },
     tuesday: { open: "10:00", close: "20:30", closed: false, label: "10:00 AM – 08:30 PM" },
     wednesday: { open: "10:00", close: "20:30", closed: false, label: "10:00 AM – 08:30 PM" },
     thursday: { open: "10:00", close: "20:30", closed: false, label: "10:00 AM – 08:30 PM" },
     friday: { open: "10:00", close: "20:30", closed: false, label: "10:00 AM – 08:30 PM" },
-    saturday: { open: "10:00", close: "20:30", closed: false, label: "10:00 AM – 08:30 PM" },
-    sunday: { open: "10:00", close: "20:30", closed: false, label: "10:00 AM – 08:30 PM" },
+    saturday: { open: "09:00", close: "21:00", closed: false, label: "09:00 AM – 09:00 PM" },
+    sunday: { open: "09:00", close: "21:00", closed: false, label: "09:00 AM – 09:00 PM" },
   },
 };
 

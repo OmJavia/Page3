@@ -340,10 +340,10 @@ function BookingContent() {
   };
 
   // FINAL PAYMENT EXECUTION & APPOINTMENT CONFIRMATION
-  const handleFinalBookingWithPayment = () => {
+  const handleFinalBookingWithPayment = async () => {
     const activeDate = selectedDate || availableDates[0].iso;
 
-    // Strict double-booking check right before persisting
+    // Strict local double-booking check right before persisting
     if (isSlotBooked(activeDate, selectedSlot!.start, selectedStaff?.id)) {
       alert("This slot was just reserved by another client. Please select another slot.");
       setStep(3);
@@ -356,6 +356,45 @@ function BookingContent() {
         ? "Confirming slot reservation at salon desk..."
         : "Authorizing payment via RBI/NPCI Banking Gateway..."
     );
+
+    const paymentMethodType: PaymentMethod =
+      paymentMethod === "counter" ? "cash" : paymentMethod === "card" ? "card" : "upi";
+
+    // Server-side double booking and price tampering check
+    try {
+      const serverRes = await fetch("/api/appointments", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          customer_id: customerPhone || "cust-guest",
+          customer_name: customerName.trim() || (existingCustomer ? existingCustomer.full_name : "Guest Client"),
+          customer_phone: customerPhone,
+          staff_id: selectedStaff?.id || null,
+          appointment_date: activeDate,
+          start_time: selectedSlot!.start,
+          end_time: selectedSlot!.end,
+          services: selectedServices.map((s) => ({
+            service_id: s.id,
+            name: s.name,
+            price: s.price,
+          })),
+          total_amount: totalPrice,
+          paid_amount: payableAmount,
+          payment_method: paymentMethodType,
+          promo_code: promoCode || null,
+        }),
+      });
+
+      if (serverRes.status === 409) {
+        setIsProcessingPayment(false);
+        alert("This slot was just reserved by another client on the server. Please choose another time slot.");
+        setStep(3);
+        return;
+      }
+    } catch (e) {
+      // Continue to local client storage if offline
+      console.warn("Server booking verification fallback to local client store", e);
+    }
 
     setTimeout(() => {
       setIsProcessingPayment(false);
@@ -371,9 +410,6 @@ function BookingContent() {
           : paymentMethod === "card"
           ? "Card Payment (2-Factor Verified)"
           : `UPI (${upiSubApp.toUpperCase()})`;
-
-      const paymentMethodType: PaymentMethod =
-        paymentMethod === "counter" ? "cash" : paymentMethod === "card" ? "card" : "upi";
 
       const { appointment, ownerWhatsAppUrl } = createAndPersistAppointment({
         customerName: customerName.trim() || (existingCustomer ? existingCustomer.full_name : "Guest Client"),
