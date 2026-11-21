@@ -126,4 +126,23 @@ test.describe('Homepage', () => {
     const clientWidth = await page.evaluate(() => document.documentElement.clientWidth);
     expect(scrollWidth).toBeLessThanOrEqual(clientWidth + 2);
   });
+
+  // ── SEO & Discoverability ─────────────────────────────────────
+  test('robots.txt returns valid crawling directives and sitemap reference', async ({ request }) => {
+    const res = await request.get('/robots.txt');
+    expect(res.status()).toBe(200);
+    const text = await res.text();
+    expect(text.toLowerCase()).toContain('user-agent: *');
+    expect(text).toContain('Disallow: /admin');
+    expect(text).toContain('sitemap.xml');
+  });
+
+  test('sitemap.xml returns valid XML sitemap with salon pages', async ({ request }) => {
+    const res = await request.get('/sitemap.xml');
+    expect(res.status()).toBe(200);
+    const xml = await res.text();
+    expect(xml).toContain('<urlset');
+    expect(xml).toContain('https://page3-dewas.vercel.app/services');
+    expect(xml).toContain('https://page3-dewas.vercel.app/book');
+  });
 });
