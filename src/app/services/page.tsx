@@ -3,11 +3,12 @@
 import { useState } from "react";
 import Link from "next/link";
 import { DEMO_SERVICES, DEMO_CATEGORIES } from "@/lib/mock-data";
-import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { LanguageToggle } from "@/components/language-toggle";
+import { useLanguage } from "@/lib/language-context";
 
 export default function ServicesPage() {
+  const { t, language } = useLanguage();
   const [activeCategory, setActiveCategory] = useState("all");
   const [gender, setGender] = useState<"all" | "male" | "female">("all");
 
@@ -25,9 +26,9 @@ export default function ServicesPage() {
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
               <Link href="/" className="text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white text-xs font-bold">
-                ← Back
+                {t.back}
               </Link>
-              <h1 className="text-base font-[510] tracking-tight text-neutral-950 dark:text-white">Services Menu</h1>
+              <h1 className="text-base font-[510] tracking-tight text-neutral-950 dark:text-white">{t.servicesMenuTitle}</h1>
             </div>
             <div className="flex items-center gap-2">
               <LanguageToggle />
@@ -47,7 +48,7 @@ export default function ServicesPage() {
                     : "border-black/[0.08] dark:border-white/[0.12] bg-white dark:bg-[#18191c] text-neutral-600 dark:text-neutral-400 hover:bg-neutral-50 dark:hover:bg-white/[0.06]"
                 }`}
               >
-                {g === "all" ? "All Genders" : g === "male" ? "👨 Gents" : "👩 Ladies"}
+                {g === "all" ? t.allGenders : g === "male" ? t.gents : t.ladies}
               </button>
             ))}
           </div>
@@ -66,7 +67,7 @@ export default function ServicesPage() {
                 : "border border-black/[0.08] dark:border-white/[0.12] bg-white dark:bg-[#18191c] text-neutral-600 dark:text-neutral-400 hover:bg-neutral-50 dark:hover:bg-white/[0.06]"
             }`}
           >
-            All Services
+            {t.allServicesTab}
           </button>
           {DEMO_CATEGORIES.filter((c) => c.is_active).map((cat) => (
             <button
@@ -87,17 +88,45 @@ export default function ServicesPage() {
 
         {/* Services List */}
         <div className="space-y-3">
-          {filtered.map((service) => (
-            <div key={service.id} className="rf-card bg-white dark:bg-[#161719] border border-black/[0.08] dark:border-white/[0.08] p-4 transition-all">
-              <div className="flex items-start justify-between gap-3">
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-1">
-                    <Link href={`/services/${service.id}`} className="hover:underline">
-                      <h3 className="font-semibold text-neutral-900 dark:text-white text-sm tracking-tight">{service.name}</h3>
-                    </Link>
-                    <span className="text-[10px] text-neutral-500 dark:text-neutral-400 bg-neutral-100 dark:bg-white/[0.08] border border-neutral-200 dark:border-white/[0.1] px-2 py-0.5 rounded-md whitespace-nowrap font-mono">
-                      {service.duration_minutes} min
-                    </span>
+          {filtered.length === 0 ? (
+            <div className="p-8 text-center text-xs text-neutral-500 dark:text-neutral-400">
+              {t.noServicesFound}
+            </div>
+          ) : (
+            filtered.map((service) => (
+              <div key={service.id} className="rf-card bg-white dark:bg-[#161719] border border-black/[0.08] dark:border-white/[0.08] p-4 transition-all">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <Link href={`/services/${service.id}`} className="hover:underline">
+                        <h3 className="font-semibold text-neutral-900 dark:text-white text-sm tracking-tight">{service.name}</h3>
+                      </Link>
+                      <span className="text-[10px] text-neutral-500 dark:text-neutral-400 bg-neutral-100 dark:bg-white/[0.08] border border-neutral-200 dark:border-white/[0.1] px-2 py-0.5 rounded-md whitespace-nowrap font-mono">
+                        {service.duration_minutes} {t.minuteUnit}
+                      </span>
+                    </div>
+                    <p className="text-xs text-neutral-500 dark:text-neutral-400 line-clamp-2 leading-relaxed">{service.description}</p>
+                    <div className="mt-3 flex items-center justify-between">
+                      <span className="text-base font-bold text-neutral-900 dark:text-white font-mono">₹{service.price}</span>
+                      <Link href={`/book?service=${service.id}`}>
+                        <button
+                          type="button"
+                          className="inline-flex shrink-0 items-center justify-center gap-1 rounded-xl text-xs font-semibold bg-neutral-900 dark:bg-white text-white dark:text-neutral-950 hover:bg-neutral-800 dark:hover:bg-neutral-100 shadow-2xs h-8 px-3.5 transition-all cursor-pointer chroma-text-animate-parent"
+                        >
+                          <span className="chroma-text-out chroma-text-out-animate">{t.bookNow.split(" ")[0] || "Book"}</span>
+                        </button>
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
                   </div>
                   <p className="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed">{service.description}</p>
                 </div>

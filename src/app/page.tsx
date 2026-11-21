@@ -61,16 +61,16 @@ export default function HomePage() {
               <div className="flex items-center gap-1.5">
                 <h1 className="text-base sm:text-lg font-[510] tracking-tight text-neutral-900 dark:text-white group-hover:opacity-80 transition-opacity truncate">
                   <span className="font-bold">Page 3</span>
-                  <span className="text-neutral-400 dark:text-neutral-500 font-normal ml-1 hidden xs:inline sm:inline">The Family Salon</span>
+                  <span className="text-neutral-400 dark:text-neutral-500 font-normal ml-1 hidden xs:inline sm:inline">{t.familySalonSubtitle}</span>
                 </h1>
                 <span className="inline-flex text-[9px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded-md bg-neutral-100 dark:bg-white/[0.08] text-neutral-600 dark:text-neutral-300">
                   Dewas
                 </span>
               </div>
               <p className="text-[10px] text-neutral-400 dark:text-neutral-500 uppercase tracking-widest font-semibold flex items-center gap-1.5">
-                <span>📍 Dewas, MP</span>
+                <span>📍 {t.dewasLocation}</span>
                 <span className="hidden sm:inline">•</span>
-                <span className="hidden sm:inline">The Family Salon</span>
+                <span className="hidden sm:inline">{t.familySalonSubtitle}</span>
               </p>
             </Link>
           </div>
@@ -91,7 +91,7 @@ export default function HomePage() {
                 title="Client Portal & Appointments"
               >
                 <span>👤</span>
-                <span className="hidden sm:inline">Profile</span>
+                <span className="hidden sm:inline">{t.profile}</span>
               </button>
             </Link>
 
@@ -116,19 +116,19 @@ export default function HomePage() {
             <div className="flex items-start justify-between gap-3">
               <div>
                 <span className="text-[9px] font-bold uppercase tracking-wider bg-white/20 text-white px-2 py-0.5 rounded-md inline-block mb-1">
-                  Welcome Back
+                  {t.welcomeBack}
                 </span>
                 <h3 className="text-sm font-bold text-white">
-                  Welcome back, {returningCustomer.full_name}!
+                  {t.welcomeBackUser}, {returningCustomer.full_name}!
                 </h3>
                 <p className="text-xs text-neutral-300 mt-0.5">
                   {lastAppointment && lastAppointment.services && lastAppointment.services.length > 0
-                    ? `Your last visit was for ${lastAppointment.services[0].service?.name || "Styling"}`
-                    : "Ready for your next fresh look at Page 3?"}
+                    ? `${t.lastVisitWas} ${lastAppointment.services[0].service?.name || "Styling"}`
+                    : t.readyNextLook}
                 </p>
               </div>
               <span className="text-xs bg-amber-400/20 text-amber-300 font-mono font-bold px-2 py-1 rounded-lg">
-                ★ {returningCustomer.loyalty_points || 50} pts
+                ★ {returningCustomer.loyalty_points || 50} {t.loyaltyPointsLabel}
               </span>
             </div>
 
@@ -141,13 +141,13 @@ export default function HomePage() {
                 }`}
                 className="flex-1 bg-white hover:bg-neutral-100 text-neutral-950 font-bold text-xs py-2 px-3 rounded-xl text-center transition-all shadow-xs"
               >
-                ⚡ Book Same Service
+                {t.bookSameService}
               </Link>
               <Link
                 href="/services"
                 className="flex-1 bg-white/10 hover:bg-white/20 text-white font-medium text-xs py-2 px-3 rounded-xl text-center border border-white/15 transition-all"
               >
-                Explore Menu
+                {t.exploreMenu}
               </Link>
             </div>
           </div>
@@ -163,7 +163,7 @@ export default function HomePage() {
                 <span className="text-[9px] font-bold uppercase tracking-wider bg-white/20 text-white px-2 py-0.5 rounded-md">
                   {t.firstTimeOfferBadge}
                 </span>
-                <span className="text-xs font-bold text-amber-300">FLAT 20% OFF</span>
+                <span className="text-xs font-bold text-amber-300">{t.flat20Off}</span>
               </div>
               <p className="text-xs text-neutral-200 dark:text-neutral-300 font-medium mt-1 leading-snug">
                 {t.firstTimeOfferText}
@@ -222,7 +222,7 @@ export default function HomePage() {
               type="button"
               className="inline-flex shrink-0 items-center justify-center gap-2 rounded-2xl text-xs font-semibold border border-black/[0.08] dark:border-white/[0.12] bg-white dark:bg-[#18191c] text-neutral-800 dark:text-neutral-200 hover:bg-neutral-50 dark:hover:bg-white/[0.06] h-10 px-4 w-full transition-colors shadow-2xs cursor-pointer chroma-text-animate-parent"
             >
-              <span className="chroma-text-out chroma-text-out-animate">Explore Services &amp; Pricing</span>
+              <span className="chroma-text-out chroma-text-out-animate">{t.exploreServicesAndPricing}</span>
             </button>
           </Link>
 
@@ -250,29 +250,29 @@ export default function HomePage() {
 
         {/* Short Trust Statement */}
         <div className="mt-5 text-[11px] text-neutral-500 dark:text-neutral-400 font-medium flex items-center justify-center gap-1.5">
-          <span>🔒 Reserved Appointment Slot</span>
+          <span>{t.reservedSlotBadge}</span>
           <span>•</span>
-          <span>Sterilised Tools &amp; Stations</span>
+          <span>{t.sterilizedToolsBadge}</span>
           <span>•</span>
-          <span>Dewas, MP</span>
+          <span>{t.dewasLocation}</span>
         </div>
 
         {/* 3 Value Pillars */}
         <div className="grid grid-cols-3 gap-2 mt-6 text-left">
           <div className="bg-white dark:bg-[#161719] p-3 rounded-2xl border border-black/[0.06] dark:border-white/[0.08] shadow-2xs">
             <span className="text-base">⚡</span>
-            <div className="text-xs font-bold text-neutral-900 dark:text-white mt-1">Reserved Seat</div>
-            <div className="text-[10px] text-neutral-400 dark:text-neutral-500 mt-0.5">Pre-allocated time slot</div>
+            <div className="text-xs font-bold text-neutral-900 dark:text-white mt-1">{t.reservedSeatTitle}</div>
+            <div className="text-[10px] text-neutral-400 dark:text-neutral-500 mt-0.5">{t.reservedSeatDesc}</div>
           </div>
           <div className="bg-white dark:bg-[#161719] p-3 rounded-2xl border border-black/[0.06] dark:border-white/[0.08] shadow-2xs">
             <span className="text-base">✂️</span>
-            <div className="text-xs font-bold text-neutral-900 dark:text-white mt-1">Master Artists</div>
-            <div className="text-[10px] text-neutral-400 dark:text-neutral-500 mt-0.5">10+ yrs expert styling</div>
+            <div className="text-xs font-bold text-neutral-900 dark:text-white mt-1">{t.masterArtistsTitle}</div>
+            <div className="text-[10px] text-neutral-400 dark:text-neutral-500 mt-0.5">{t.masterArtistsDesc}</div>
           </div>
           <div className="bg-white dark:bg-[#161719] p-3 rounded-2xl border border-black/[0.06] dark:border-white/[0.08] shadow-2xs">
             <span className="text-base">🔖</span>
-            <div className="text-xs font-bold text-neutral-900 dark:text-white mt-1">Style Memory</div>
-            <div className="text-[10px] text-neutral-400 dark:text-neutral-500 mt-0.5">We remember your cut</div>
+            <div className="text-xs font-bold text-neutral-900 dark:text-white mt-1">{t.styleMemoryTitle}</div>
+            <div className="text-[10px] text-neutral-400 dark:text-neutral-500 mt-0.5">{t.styleMemoryDesc}</div>
           </div>
         </div>
       </section>
@@ -281,13 +281,13 @@ export default function HomePage() {
       <section className="px-4 sm:px-6 py-8 max-w-lg mx-auto border-t border-black/[0.06] dark:border-white/[0.08]">
         <div className="text-center mb-6">
           <span className="text-[10px] font-bold uppercase tracking-widest text-neutral-400 dark:text-neutral-500 bg-white dark:bg-[#161719] border border-black/[0.08] dark:border-white/[0.08] px-3 py-1 rounded-full shadow-2xs">
-            The Page 3 Standard
+            {t.thePage3Standard}
           </span>
           <h3 className="text-xl font-[510] tracking-tight text-neutral-950 dark:text-white mt-2">
-            Why Dewas Chooses Page 3
+            {t.whyDewasChooses}
           </h3>
           <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-1">
-            A luxury salon experience built on trust, craft, and care for the whole family.
+            {t.whyDewasSubtitle}
           </p>
         </div>
 
@@ -296,9 +296,9 @@ export default function HomePage() {
             <div className="w-8 h-8 rounded-xl bg-neutral-100 dark:bg-white/[0.08] flex items-center justify-center text-sm mb-2.5">
               👨‍👩‍👧‍👦
             </div>
-            <h4 className="text-xs font-bold text-neutral-900 dark:text-white">Complete Family Salon</h4>
+            <h4 className="text-xs font-bold text-neutral-900 dark:text-white">{t.familySalonTitle}</h4>
             <p className="text-[11px] text-neutral-500 dark:text-neutral-400 mt-1 leading-relaxed">
-              Dedicated expert stylists for men, women, and children with private styling stations.
+              {t.familySalonDesc}
             </p>
           </div>
 
@@ -306,9 +306,9 @@ export default function HomePage() {
             <div className="w-8 h-8 rounded-xl bg-neutral-100 dark:bg-white/[0.08] flex items-center justify-center text-sm mb-2.5">
               🧴
             </div>
-            <h4 className="text-xs font-bold text-neutral-900 dark:text-white">High Hygiene Standards</h4>
+            <h4 className="text-xs font-bold text-neutral-900 dark:text-white">{t.hygieneTitle}</h4>
             <p className="text-[11px] text-neutral-500 dark:text-neutral-400 mt-1 leading-relaxed">
-              Single-use disposable capes, freshly disinfected stations, and sterilized tools for every client.
+              {t.hygieneDesc}
             </p>
           </div>
 
@@ -316,9 +316,9 @@ export default function HomePage() {
             <div className="w-8 h-8 rounded-xl bg-neutral-100 dark:bg-white/[0.08] flex items-center justify-center text-sm mb-2.5">
               💎
             </div>
-            <h4 className="text-xs font-bold text-neutral-900 dark:text-white">Transparent Pricing</h4>
+            <h4 className="text-xs font-bold text-neutral-900 dark:text-white">{t.transparentPricingTitle}</h4>
             <p className="text-[11px] text-neutral-500 dark:text-neutral-400 mt-1 leading-relaxed">
-              Clear upfront rates with zero surprise charges. What you see is what you pay.
+              {t.transparentPricingDesc}
             </p>
           </div>
 
@@ -326,9 +326,9 @@ export default function HomePage() {
             <div className="w-8 h-8 rounded-xl bg-neutral-100 dark:bg-white/[0.08] flex items-center justify-center text-sm mb-2.5">
               📱
             </div>
-            <h4 className="text-xs font-bold text-neutral-900 dark:text-white">Instant 60s Booking</h4>
+            <h4 className="text-xs font-bold text-neutral-900 dark:text-white">{t.instantBookingTitle}</h4>
             <p className="text-[11px] text-neutral-500 dark:text-neutral-400 mt-1 leading-relaxed">
-              Book live slots in seconds without forced app downloads or complex passwords.
+              {t.instantBookingDesc}
             </p>
           </div>
         </div>
@@ -349,17 +349,17 @@ export default function HomePage() {
         <div className="flex items-center justify-between mb-4">
           <div>
             <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 dark:text-neutral-500">
-              Menu Highlights
+              {t.menuHighlights}
             </span>
             <h3 className="text-lg font-[510] tracking-tight text-neutral-950 dark:text-white mt-0.5">
-              Popular Services in Dewas
+              {t.popularServicesDewas}
             </h3>
           </div>
           <Link
             href="/services"
             className="text-xs font-semibold text-neutral-700 dark:text-neutral-300 hover:text-neutral-950 dark:hover:text-white"
           >
-            Full Menu →
+            {t.fullMenu}
           </Link>
         </div>
 
@@ -375,7 +375,7 @@ export default function HomePage() {
                     {service.name}
                   </h4>
                   <span className="text-[9px] text-neutral-500 dark:text-neutral-400 bg-neutral-100 dark:bg-white/[0.08] px-1.5 py-0.2 rounded font-mono">
-                    {service.duration_minutes}m
+                    {service.duration_minutes} {t.minuteUnit}
                   </span>
                 </div>
                 <p className="text-[11px] text-neutral-500 dark:text-neutral-400 truncate">{service.description}</p>
@@ -387,7 +387,7 @@ export default function HomePage() {
                     type="button"
                     className="inline-flex shrink-0 items-center justify-center gap-1 rounded-xl text-xs font-semibold bg-neutral-900 dark:bg-white text-white dark:text-neutral-950 hover:bg-black dark:hover:bg-neutral-100 shadow-2xs h-8 px-3 transition-all cursor-pointer chroma-text-animate-parent"
                   >
-                    <span className="chroma-text-out chroma-text-out-animate">Book</span>
+                    <span className="chroma-text-out chroma-text-out-animate">{t.bookNow.split(" ")[0] || "Book"}</span>
                   </button>
                 </Link>
               </div>
@@ -399,10 +399,10 @@ export default function HomePage() {
       {/* SECTION 4: LOCATION & CONTACT IN DEWAS, MP */}
       <section className="px-4 sm:px-6 py-8 max-w-lg mx-auto border-t border-black/[0.06] dark:border-white/[0.08]">
         <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 dark:text-neutral-500">
-          Find Us in Dewas
+          {t.findUsDewas}
         </span>
         <h3 className="text-lg font-[510] tracking-tight text-neutral-950 dark:text-white mt-0.5 mb-3">
-          Salon Location &amp; Hours
+          {t.locationAndHours}
         </h3>
 
         <div className="rf-card p-4 space-y-3 bg-white dark:bg-[#161719] border border-black/[0.08] dark:border-white/[0.08] text-xs rounded-2xl">
@@ -410,12 +410,12 @@ export default function HomePage() {
             <p className="font-bold text-neutral-900 dark:text-white text-sm">{SALON_INFO.name}</p>
             <p className="text-neutral-500 dark:text-neutral-400 leading-relaxed mt-0.5">{SALON_INFO.fullAddress}</p>
             <p className="text-[11px] text-emerald-600 dark:text-emerald-400 font-medium mt-1 flex items-center gap-1">
-              <span>🚗</span> Dedicated customer parking available in front of salon
+              <span>🚗</span> {t.customerParkingNotice}
             </p>
           </div>
 
           <div className="pt-2 border-t border-black/[0.06] dark:border-white/[0.06] flex items-center justify-between">
-            <span className="text-neutral-500 dark:text-neutral-400">Direct Phone:</span>
+            <span className="text-neutral-500 dark:text-neutral-400">{t.directPhone}</span>
             <a
               href={`tel:${SALON_INFO.phone}`}
               className="font-bold text-neutral-900 dark:text-white hover:underline flex items-center gap-1"
@@ -426,11 +426,11 @@ export default function HomePage() {
 
           <div className="pt-2 border-t border-black/[0.06] dark:border-white/[0.06] text-neutral-500 dark:text-neutral-400 space-y-1">
             <div className="flex justify-between">
-              <span>Monday – Friday:</span>
+              <span>{t.monToFri}</span>
               <span className="font-medium text-neutral-800 dark:text-neutral-200">10:00 AM – 08:30 PM</span>
             </div>
             <div className="flex justify-between">
-              <span>Saturday – Sunday:</span>
+              <span>{t.satToSun}</span>
               <span className="font-medium text-neutral-800 dark:text-neutral-200">09:00 AM – 09:00 PM</span>
             </div>
           </div>
@@ -455,10 +455,10 @@ export default function HomePage() {
       {/* FOOTER */}
       <footer className="border-t border-black/[0.06] dark:border-white/[0.08] py-8 px-4 text-center text-xs text-neutral-400 dark:text-neutral-500">
         <p className="font-semibold text-neutral-700 dark:text-neutral-300">
-          {SALON_INFO.name} • Dewas, Madhya Pradesh
+          {SALON_INFO.name} • {t.dewasLocation}
         </p>
         <p className="mt-1 text-[11px]">
-          © {new Date().getFullYear()} Page 3 Salon. All rights reserved. • Dedicated Family Grooming Care
+          © {new Date().getFullYear()} {SALON_INFO.name}. {t.allRightsReserved}
         </p>
       </footer>
 

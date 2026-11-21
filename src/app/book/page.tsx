@@ -23,7 +23,7 @@ import { SALON_INFO } from "@/lib/constants";
 
 function StepIndicator({ current, total }: { current: number; total: number }) {
   const { t } = useLanguage();
-  const steps = [t.stepServices, t.stepStylist, t.stepSlot, t.stepDetails, "Payment"];
+  const steps = [t.stepServices, t.stepStylist, t.stepSlot, t.stepDetails, t.stepPayment];
   return (
     <div className="bg-white dark:bg-[#121214] px-4 py-3 border-b border-black/[0.06] dark:border-white/[0.08] transition-colors duration-200">
       <div className="flex items-center justify-between max-w-lg mx-auto">
@@ -609,14 +609,14 @@ function BookingContent() {
             }`}
           >
             {confirmedBooking.status === "cancelled"
-              ? "Appointment Cancelled"
-              : "Appointment Confirmed & Locked"}
+              ? (t.cancelAction || "Appointment Cancelled")
+              : (t.appointmentConfirmedTitle || "Appointment Confirmed & Locked")}
           </span>
 
           <h1 className="text-2xl font-[510] tracking-tight mt-2 text-neutral-950 dark:text-white">
             {confirmedBooking.status === "cancelled"
               ? "Your slot has been released"
-              : "We look forward to styling you!"}
+              : t.appointmentConfirmedTitle}
           </h1>
 
           <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-1 max-w-xs mx-auto">
@@ -633,7 +633,7 @@ function BookingContent() {
               className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold bg-neutral-900 hover:bg-black dark:bg-white dark:hover:bg-neutral-100 text-white dark:text-neutral-950 transition-all shadow-xs cursor-pointer"
             >
               <span>🖨️</span>
-              <span>Download / Print Bill</span>
+              <span>{t.downloadPrintBill}</span>
             </button>
 
             <a
@@ -643,7 +643,7 @@ function BookingContent() {
               className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold bg-white dark:bg-[#161719] border border-black/[0.1] dark:border-white/[0.12] text-emerald-600 dark:text-emerald-400 hover:bg-neutral-50 dark:hover:bg-white/[0.04] transition-all shadow-xs"
             >
               <span>💬</span>
-              <span>WhatsApp Invoice</span>
+              <span>WhatsApp</span>
             </a>
           </div>
         </div>
@@ -668,7 +668,7 @@ function BookingContent() {
             </div>
             <div className="text-right">
               <span className="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-neutral-100 dark:bg-white/[0.08] text-neutral-800 dark:text-neutral-200">
-                TAX INVOICE
+                {t.taxInvoiceTitle}
               </span>
               <p className="text-xs font-mono font-bold mt-1 text-neutral-900 dark:text-white">
                 INV-{confirmedBooking.code}
@@ -692,7 +692,7 @@ function BookingContent() {
             </div>
             <div className="text-right">
               <span className="text-[10px] uppercase font-semibold text-neutral-400 dark:text-neutral-500">
-                Appointment Slot:
+                {t.slotLabel}:
               </span>
               <p className="font-bold text-neutral-900 dark:text-white mt-0.5">
                 {confirmedBooking.slot.start} (30 mins)
@@ -708,9 +708,9 @@ function BookingContent() {
             <table className="w-full text-xs">
               <thead>
                 <tr className="border-b border-black/[0.06] dark:border-white/[0.06] text-neutral-400 dark:text-neutral-500 text-[10px] uppercase">
-                  <th className="text-left py-1.5 font-semibold">Service Description</th>
-                  <th className="text-center py-1.5 font-semibold">Duration</th>
-                  <th className="text-right py-1.5 font-semibold">Amount (₹)</th>
+                  <th className="text-left py-1.5 font-semibold">{t.serviceDescription}</th>
+                  <th className="text-center py-1.5 font-semibold">{t.durationLabel}</th>
+                  <th className="text-right py-1.5 font-semibold">{t.amountInr}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-black/[0.04] dark:divide-white/[0.04]">
@@ -751,25 +751,25 @@ function BookingContent() {
           {/* Pricing & GST Breakdown */}
           <div className="space-y-1.5 text-xs border-b border-black/[0.06] dark:border-white/[0.06] pb-3">
             <div className="flex justify-between text-neutral-600 dark:text-neutral-300">
-              <span>Gross Services Total</span>
+              <span>{t.grossServicesTotal}</span>
               <span>{formatCurrency(confirmedBooking.rawTotal)}</span>
             </div>
             {confirmedBooking.discountAmount > 0 && (
               <div className="flex justify-between text-emerald-600 dark:text-emerald-400 font-medium">
-                <span>Promotional Discount (FIRST20)</span>
+                <span>{t.promotionalDiscount}</span>
                 <span>- {formatCurrency(confirmedBooking.discountAmount)}</span>
               </div>
             )}
             <div className="flex justify-between text-neutral-400 dark:text-neutral-500 text-[11px]">
-              <span>Taxable Value of Supply</span>
+              <span>{t.taxableValue}</span>
               <span>{formatCurrency(taxableSupply)}</span>
             </div>
             <div className="flex justify-between text-neutral-400 dark:text-neutral-500 text-[11px]">
-              <span>Applicable GST (CGST 9% + SGST 9%)</span>
+              <span>{t.applicableGst}</span>
               <span>{formatCurrency(totalGst)}</span>
             </div>
             <div className="flex justify-between text-sm font-bold text-neutral-950 dark:text-white pt-1.5 border-t border-black/[0.06] dark:border-white/[0.06]">
-              <span>Total Bill (Incl. All Taxes)</span>
+              <span>{t.totalBillWithTax}</span>
               <span>{formatCurrency(confirmedBooking.total)}</span>
             </div>
           </div>
@@ -777,33 +777,33 @@ function BookingContent() {
           {/* Payment Settlement Information */}
           <div className="space-y-1.5 text-xs pt-1">
             <div className="flex justify-between">
-              <span className="text-neutral-500 dark:text-neutral-400">Payment Tender</span>
+              <span className="text-neutral-500 dark:text-neutral-400">{t.paymentTender}</span>
               <span className="font-medium text-neutral-900 dark:text-white">{confirmedBooking.paymentMethod}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-neutral-500 dark:text-neutral-400">Payment Reference / UTR</span>
+              <span className="text-neutral-500 dark:text-neutral-400">{t.paymentRefUtr}</span>
               <span className="font-mono text-neutral-700 dark:text-neutral-300">{confirmedBooking.txnId}</span>
             </div>
             <div className="flex justify-between font-bold text-emerald-600 dark:text-emerald-400">
-              <span>Amount Paid Online</span>
+              <span>{t.amountPaidOnline}</span>
               <span>{formatCurrency(confirmedBooking.paidAmount)}</span>
             </div>
             {confirmedBooking.balanceDue > 0 ? (
               <div className="flex justify-between font-bold text-amber-600 dark:text-amber-400">
-                <span>Balance Due at Salon Reception</span>
+                <span>{t.balanceDueAtSalon}</span>
                 <span>{formatCurrency(confirmedBooking.balanceDue)}</span>
               </div>
             ) : (
               <div className="flex justify-between text-[11px] text-emerald-600 dark:text-emerald-400 font-semibold">
-                <span>Payment Status</span>
-                <span>Fully Settled (₹0 Balance)</span>
+                <span>{t.paymentStatus}</span>
+                <span>{t.fullySettled}</span>
               </div>
             )}
           </div>
 
           {/* Computer Generated Disclaimer */}
           <div className="pt-2 text-center text-[10px] text-neutral-400 dark:text-neutral-500 border-t border-black/[0.04] dark:border-white/[0.04]">
-            Official Computer-Generated Tax Invoice • Page 3 – The Family Salon, Dewas
+            {t.computerGeneratedNotice}
           </div>
         </div>
 
@@ -811,21 +811,21 @@ function BookingContent() {
         <div className="space-y-3 mt-4 no-print">
           <div className="rf-card p-4 bg-white dark:bg-[#161719] border border-black/[0.08] dark:border-white/[0.08] text-left rounded-2xl">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-neutral-900 dark:text-white">Need to Reschedule?</span>
+              <span className="text-xs font-bold text-neutral-900 dark:text-white">{t.needToReschedule}</span>
               <div className="flex gap-2">
                 <button
                   type="button"
                   onClick={() => setIsRescheduling(!isRescheduling)}
                   className="text-xs font-semibold px-2.5 py-1 rounded-lg border border-black/[0.08] dark:border-white/[0.1] bg-neutral-50 dark:bg-white/[0.04] text-neutral-800 dark:text-neutral-200 hover:bg-neutral-100"
                 >
-                  {isRescheduling ? "Close" : "Reschedule"}
+                  {isRescheduling ? t.close : t.rescheduleBtn}
                 </button>
                 <button
                   type="button"
                   onClick={handlePerformCancel}
                   className="text-xs font-semibold px-2.5 py-1 rounded-lg border border-rose-200 dark:border-rose-900/40 text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/20"
                 >
-                  Cancel
+                  {t.cancelBtn}
                 </button>
               </div>
             </div>
@@ -880,7 +880,7 @@ function BookingContent() {
                   className="w-full text-xs h-9"
                   onClick={handlePerformReschedule}
                 >
-                  Confirm New Slot
+                  {t.confirmNewSlot}
                 </Button>
                 {rescheduleFeedback && (
                   <p className="text-[11px] text-emerald-600 dark:text-emerald-400 text-center font-medium">
@@ -912,13 +912,13 @@ function BookingContent() {
 
           <Link href="/profile" className="block w-full">
             <Button variant="rightfit" className="w-full h-11 text-xs font-semibold">
-              View in My Appointments Portal →
+              {t.viewInAppointmentsPortal}
             </Button>
           </Link>
 
           <Link href="/" className="block w-full">
             <Button variant="ghost" className="w-full h-10 text-xs text-neutral-500">
-              Return to Homepage
+              {t.returnToHomepage}
             </Button>
           </Link>
         </div>
@@ -1009,7 +1009,7 @@ function BookingContent() {
 
           <div className="mb-4">
             <h2 className="text-base font-[510] tracking-tight text-neutral-950 dark:text-white">
-              Select Services
+              {t.selectServicesTitle}
             </h2>
             <p className="text-xs text-neutral-500 dark:text-neutral-400">
               {t.chooseServicesSubtitle}
@@ -1027,7 +1027,7 @@ function BookingContent() {
                   : "border border-black/[0.08] dark:border-white/[0.08] bg-white dark:bg-[#161719] text-neutral-600 dark:text-neutral-300 hover:bg-neutral-50 dark:hover:bg-white/[0.04]"
               }`}
             >
-              All Services
+              {t.allServicesTab}
             </button>
             {DEMO_CATEGORIES.map((c) => (
               <button
@@ -1098,10 +1098,10 @@ function BookingContent() {
         <main className="p-4 max-w-lg mx-auto pb-28">
           <div className="mb-4">
             <h2 className="text-base font-[510] tracking-tight text-neutral-950 dark:text-white">
-              Select Preferred Stylist
+              {t.selectStylistTitle}
             </h2>
             <p className="text-xs text-neutral-500 dark:text-neutral-400">
-              Pick your trusted artist or let us assign the best expert on duty.
+              {t.selectStylistSubtitle}
             </p>
           </div>
 

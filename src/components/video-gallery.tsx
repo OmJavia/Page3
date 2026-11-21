@@ -148,6 +148,16 @@ export function VideoGallery() {
   const [activePlayingId, setActivePlayingId] = useState<string | null>(null);
   const videoRefs = useRef<{ [key: string]: HTMLVideoElement | null }>({});
 
+  const categories = [
+    { id: "all", label: t.allWorksCat },
+    { id: "mens", label: t.mensCutsCat },
+    { id: "womens", label: t.womensStylingCat },
+    { id: "beard", label: t.beardGroomingCat },
+    { id: "color", label: t.hairColorCat },
+    { id: "treatments", label: t.treatmentsSpaCat },
+    { id: "transformations", label: t.styleGuidesCat },
+  ];
+
   const filteredItems = PORTFOLIO_ITEMS.filter((item) =>
     selectedCategory === "all" ? true : item.category === selectedCategory
   );
@@ -196,7 +206,7 @@ export function VideoGallery() {
       {/* Section Header */}
       <div className="text-center mb-6">
         <span className="text-[10px] font-bold uppercase tracking-widest text-neutral-400 dark:text-neutral-500 bg-white dark:bg-[#161719] border border-black/[0.08] dark:border-white/[0.08] px-3 py-1 rounded-full shadow-2xs">
-          Style Showcase &amp; Lookbook
+          {t.styleShowcaseBadge}
         </span>
         <h3 className="text-xl sm:text-2xl font-[510] tracking-tight text-neutral-950 dark:text-white mt-2">
           {t.portfolioHeading}
@@ -207,7 +217,7 @@ export function VideoGallery() {
 
         {/* Category Filter Pills */}
         <div className="flex gap-1.5 overflow-x-auto pb-2 pt-4 scrollbar-none justify-start sm:justify-center">
-          {GALLERY_CATEGORIES.map((cat) => (
+          {categories.map((cat) => (
             <button
               key={cat.id}
               onClick={() => setSelectedCategory(cat.id)}
