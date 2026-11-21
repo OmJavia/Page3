@@ -15,7 +15,7 @@ export interface ReviewItem {
   source: string;
 }
 
-// 8 distinct, verified customer reviews (no duplicates, genuine Dewas salon context)
+// 8 distinct customer reviews reflecting Dewas salon experiences
 const VERIFIED_REVIEWS: ReviewItem[] = [
   {
     id: "rev-1",
@@ -25,7 +25,7 @@ const VERIFIED_REVIEWS: ReviewItem[] = [
     date: "2 days ago",
     text: "First time visiting Page 3 after moving here. Cleanest low skin fade I've had all year. Booked in 30 seconds online. Definitely my regular salon in Dewas!",
     rating: 5,
-    source: "Google Verified",
+    source: "Client Review",
   },
   {
     id: "rev-2",
@@ -35,7 +35,7 @@ const VERIFIED_REVIEWS: ReviewItem[] = [
     date: "4 days ago",
     text: "Got balayage & spa done with Priya. The color depth and softness are exceptional. They understand hair texture and gave great post-care advice.",
     rating: 5,
-    source: "Google Verified",
+    source: "Client Review",
   },
   {
     id: "rev-3",
@@ -45,7 +45,7 @@ const VERIFIED_REVIEWS: ReviewItem[] = [
     date: "1 week ago",
     text: "Modern monochrome vibe, impeccably clean, respectful staff, and they actually remember your haircut preferences from previous visits.",
     rating: 5,
-    source: "Google Verified",
+    source: "Client Review",
   },
   {
     id: "rev-4",
@@ -55,7 +55,7 @@ const VERIFIED_REVIEWS: ReviewItem[] = [
     date: "1 week ago",
     text: "Warm team and smooth online booking. Instant WhatsApp confirmation with map directions. Glossy, long-lasting salon results!",
     rating: 5,
-    source: "Google Verified",
+    source: "Client Review",
   },
   {
     id: "rev-5",
@@ -65,7 +65,7 @@ const VERIFIED_REVIEWS: ReviewItem[] = [
     date: "2 weeks ago",
     text: "Top tier hospitality! No pushy product sales, just genuine styling expertise and great consultation. Best haircut experience in town.",
     rating: 5,
-    source: "Google Verified",
+    source: "Client Review",
   },
   {
     id: "rev-6",
@@ -75,7 +75,7 @@ const VERIFIED_REVIEWS: ReviewItem[] = [
     date: "2 weeks ago",
     text: "Razor sharp lines and relaxing warm towel treatment. Attention to detail is noticeable. Feels like a luxury lounge with transparent pricing.",
     rating: 5,
-    source: "Google Verified",
+    source: "Client Review",
   },
   {
     id: "rev-7",
@@ -85,7 +85,7 @@ const VERIFIED_REVIEWS: ReviewItem[] = [
     date: "3 weeks ago",
     text: "Walked out feeling amazing! Blowdry stayed bouncy for 3 days straight. The online appointment system was so convenient and fast.",
     rating: 5,
-    source: "Google Verified",
+    source: "Client Review",
   },
   {
     id: "rev-8",
@@ -93,9 +93,9 @@ const VERIFIED_REVIEWS: ReviewItem[] = [
     avatar: "KS",
     service: "Skin Fade & Scissor Crop",
     date: "1 month ago",
-    text: "Finally a stylist in Dewas who blends thick hair properly. Ravi takes his time and gets the symmetry spot on every single visit.",
+    text: "Finally a stylist in Dewas who blends thick hair properly. Staff takes their time and gets the symmetry spot on every single visit.",
     rating: 5,
-    source: "Google Verified",
+    source: "Client Review",
   },
 ];
 
@@ -112,8 +112,8 @@ function ContinuousReviewCard({ review }: { review: ReviewItem }) {
           <div className="min-w-0">
             <div className="text-xs font-bold text-neutral-900 dark:text-white truncate flex items-center gap-1.5">
               <span>{review.name}</span>
-              <span className="text-[9px] bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border border-emerald-100 dark:border-emerald-800/40 px-1 py-0.2 rounded-full font-medium shrink-0">
-                ✓
+              <span className="text-[9px] bg-neutral-100 dark:bg-white/[0.08] text-neutral-600 dark:text-neutral-300 border border-neutral-200 dark:border-white/[0.1] px-1.5 py-0.2 rounded-full font-medium shrink-0">
+                {review.source}
               </span>
             </div>
           </div>
@@ -146,14 +146,14 @@ export function ReviewsMarquee() {
   return (
     <section
       data-ground="ink"
-      aria-label="Verified Customer Reviews for Page 3 Salon"
+      aria-label="Customer Reviews for Page 3 Salon"
       className="relative overflow-hidden py-10 lg:py-14 bg-[#fafafa] dark:bg-[#0c0d0e] border-t border-black/[0.06] dark:border-white/[0.08] transition-colors duration-200"
     >
       <div className="mx-auto max-w-2xl text-center px-4 mb-6">
         {/* Rating Pill */}
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white dark:bg-[#161719] border border-black/[0.08] dark:border-white/[0.08] shadow-2xs mb-3">
           <span className="text-xs font-semibold text-neutral-900 dark:text-white">
-            4.9 ★ Google (480+ Reviews)
+            {t.googleRating}
           </span>
           <span className="text-[10px] text-neutral-400 dark:text-neutral-500">•</span>
           <span className="text-[11px] text-neutral-500 dark:text-neutral-400">
@@ -162,7 +162,7 @@ export function ReviewsMarquee() {
         </div>
 
         <h2 className="text-xl sm:text-2xl lg:text-3xl font-[510] tracking-tight text-neutral-950 dark:text-white">
-          Loved by 480+ Happy Clients
+          {t.reviewsHeading}
         </h2>
         <p className="mt-1.5 text-xs text-neutral-500 dark:text-neutral-400 max-w-md mx-auto">
           {t.reviewsSubtitle}
@@ -191,7 +191,7 @@ export function ReviewsMarquee() {
       {/* Call to Action Bar */}
       <div className="mt-6 text-center px-4 flex flex-col sm:flex-row items-center justify-center gap-3">
         <a
-          href={SALON_INFO.googleMapsUrl}
+          href={SALON_INFO.googleReviewUrl || SALON_INFO.googleMapsUrl}
           target="_blank"
           rel="noreferrer"
           className="inline-flex items-center gap-1.5 text-xs font-semibold text-neutral-700 dark:text-neutral-300 hover:text-neutral-950 dark:hover:text-white transition-colors"
@@ -201,9 +201,15 @@ export function ReviewsMarquee() {
           <span className="text-[10px]">↗</span>
         </a>
         <span className="hidden sm:inline text-neutral-300 dark:text-neutral-700">•</span>
-        <span className="text-[11px] text-neutral-500 dark:text-neutral-400">
-          Independent reviews verified from Google Business Profile
-        </span>
+        <a
+          href={SALON_INFO.googleMapsUrl}
+          target="_blank"
+          rel="noreferrer"
+          className="text-[11px] text-neutral-500 dark:text-neutral-400 hover:underline inline-flex items-center gap-1"
+        >
+          <span>View on Google Maps</span>
+          <span className="text-[10px]">↗</span>
+        </a>
       </div>
     </section>
   );

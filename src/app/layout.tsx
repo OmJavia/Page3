@@ -88,7 +88,7 @@ const jsonLdData = {
   "aggregateRating": {
     "@type": "AggregateRating",
     "ratingValue": "4.9",
-    "reviewCount": "480",
+    "reviewCount": "214",
     "bestRating": "5",
     "worstRating": "1",
   },

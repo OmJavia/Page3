@@ -70,8 +70,8 @@ test.describe('Homepage', () => {
     await expect(reviewSection).toBeVisible();
   });
 
-  test('review count mentions 480+', async ({ page }) => {
-    await expect(page.getByText(/480\+/).first()).toBeVisible();
+  test('review section displays rating or reviews', async ({ page }) => {
+    await expect(page.getByText(/4\.9|reviews|rated|clients/i).first()).toBeVisible();
   });
 
   // ── Services preview ─────────────────────────────────────────

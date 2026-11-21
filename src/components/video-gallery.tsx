@@ -28,7 +28,7 @@ export const GALLERY_CATEGORIES = [
   { id: "beard", label: "Beard Grooming" },
   { id: "color", label: "Hair Colouring" },
   { id: "treatments", label: "Treatments & Spa" },
-  { id: "transformations", label: "Before & After" },
+  { id: "transformations", label: "Style Guides" },
 ] as const;
 
 export const PORTFOLIO_ITEMS: GalleryItem[] = [
@@ -37,7 +37,7 @@ export const PORTFOLIO_ITEMS: GalleryItem[] = [
     title: "Precision Skin Fade & Textured Crop",
     category: "mens",
     categoryLabel: "Men's Cuts",
-    stylist: "Ravi Kumar (Master Stylist)",
+    stylist: "Page 3 Styling Team",
     serviceName: "Signature Haircut & Styling",
     serviceId: "s-1",
     coverImage: "https://images.unsplash.com/photo-1622286342621-4bd786c2447c?w=900&auto=format&fit=crop&q=80",
@@ -51,7 +51,7 @@ export const PORTFOLIO_ITEMS: GalleryItem[] = [
     title: "Dimensional Honey Balayage & Blowout",
     category: "color",
     categoryLabel: "Hair Colouring",
-    stylist: "Priya Sharma (Color Specialist)",
+    stylist: "Page 3 Color Specialist",
     serviceName: "Balayage / Ombre Colouring",
     serviceId: "s-7",
     coverImage: "https://images.unsplash.com/photo-1560869713-7d0a29430803?w=900&auto=format&fit=crop&q=80",
@@ -65,7 +65,7 @@ export const PORTFOLIO_ITEMS: GalleryItem[] = [
     title: "Beard Sculpt & Warm Towel Razor Edge",
     category: "beard",
     categoryLabel: "Beard Grooming",
-    stylist: "Ravi Kumar (Master Stylist)",
+    stylist: "Page 3 Barber Team",
     serviceName: "Beard Trim & Sculpting",
     serviceId: "s-4",
     coverImage: "https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=900&auto=format&fit=crop&q=80",
@@ -78,8 +78,8 @@ export const PORTFOLIO_ITEMS: GalleryItem[] = [
     id: "gal-4",
     title: "Frizz-to-Silk Keratin Transformation",
     category: "transformations",
-    categoryLabel: "Before & After",
-    stylist: "Priya Sharma (Color Specialist)",
+    categoryLabel: "Style Guides",
+    stylist: "Page 3 Texture Specialist",
     serviceName: "Moroccan Keratin Treatment",
     serviceId: "s-9",
     coverImage: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=900&auto=format&fit=crop&q=80",
@@ -92,7 +92,7 @@ export const PORTFOLIO_ITEMS: GalleryItem[] = [
     title: "Signature Layers & Butterfly Cut",
     category: "womens",
     categoryLabel: "Women's Styling",
-    stylist: "Priya Sharma (Color Specialist)",
+    stylist: "Page 3 Styling Team",
     serviceName: "Women's Cut & Blowdry",
     serviceId: "s-3",
     coverImage: "https://images.unsplash.com/photo-1595476108010-b4d1f102b1b1?w=900&auto=format&fit=crop&q=80",
@@ -106,7 +106,7 @@ export const PORTFOLIO_ITEMS: GalleryItem[] = [
     title: "Intense Argan Restorative Hair Spa",
     category: "treatments",
     categoryLabel: "Treatments & Spa",
-    stylist: "Amit Verma (Spa Specialist)",
+    stylist: "Page 3 Spa Team",
     serviceName: "Deep Conditioning Hair Spa",
     serviceId: "s-8",
     coverImage: "https://images.unsplash.com/photo-1519699047748-de8e457a634e?w=900&auto=format&fit=crop&q=80",
@@ -118,7 +118,7 @@ export const PORTFOLIO_ITEMS: GalleryItem[] = [
     title: "Classic Gentleman Taper & Side Part",
     category: "mens",
     categoryLabel: "Men's Cuts",
-    stylist: "Ravi Kumar (Master Stylist)",
+    stylist: "Page 3 Styling Team",
     serviceName: "Signature Haircut & Styling",
     serviceId: "s-1",
     coverImage: "https://images.unsplash.com/photo-1517832606589-7629c3397143?w=900&auto=format&fit=crop&q=80",
@@ -129,8 +129,8 @@ export const PORTFOLIO_ITEMS: GalleryItem[] = [
     id: "gal-8",
     title: "Extreme Volume & Curl Reformation",
     category: "transformations",
-    categoryLabel: "Before & After",
-    stylist: "Priya Sharma (Color Specialist)",
+    categoryLabel: "Style Guides",
+    stylist: "Page 3 Styling Team",
     serviceName: "Women's Cut & Blowdry",
     serviceId: "s-3",
     coverImage: "https://images.unsplash.com/photo-1562322140-8baeececf3df?w=900&auto=format&fit=crop&q=80",
@@ -196,7 +196,7 @@ export function VideoGallery() {
       {/* Section Header */}
       <div className="text-center mb-6">
         <span className="text-[10px] font-bold uppercase tracking-widest text-neutral-400 dark:text-neutral-500 bg-white dark:bg-[#161719] border border-black/[0.08] dark:border-white/[0.08] px-3 py-1 rounded-full shadow-2xs">
-          Real Salon Transformations
+          Style Showcase &amp; Lookbook
         </span>
         <h3 className="text-xl sm:text-2xl font-[510] tracking-tight text-neutral-950 dark:text-white mt-2">
           {t.portfolioHeading}

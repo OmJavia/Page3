@@ -7,8 +7,13 @@ export const SALON_INFO = {
   phone: "9111198911",
   whatsapp: "919111198911",
   email: "contact@page3salon.com",
+  // Address configuration:
+  // Primary listed address:
   address: "AB Road, Near Bhopal Chouraha, Dewas",
   fullAddress: "AB Road, Near Bhopal Chouraha, Civil Lines, Dewas, Madhya Pradesh 455001",
+  // Note: Public business listing also cites:
+  // "LG-7, Monica Complex, AB Road, below Jockey Showroom, Ram Nagar, Dewas, Madhya Pradesh 455001"
+  // Flagged for business owner confirmation.
   city: "Dewas",
   state: "Madhya Pradesh",
   pincode: "455001",
@@ -17,15 +22,15 @@ export const SALON_INFO = {
   googleReviewUrl: "https://search.google.com/local/writereview?placeid=ChIJPage3SalonDewas",
   websiteUrl: "https://page3-dewas.vercel.app",
   rating: 4.9,
-  reviewCount: 480,
+  reviewCount: 214,
   hours: {
     monday: { open: "10:00", close: "20:30", closed: false, label: "10:00 AM – 08:30 PM" },
     tuesday: { open: "10:00", close: "20:30", closed: false, label: "10:00 AM – 08:30 PM" },
     wednesday: { open: "10:00", close: "20:30", closed: false, label: "10:00 AM – 08:30 PM" },
     thursday: { open: "10:00", close: "20:30", closed: false, label: "10:00 AM – 08:30 PM" },
     friday: { open: "10:00", close: "20:30", closed: false, label: "10:00 AM – 08:30 PM" },
-    saturday: { open: "09:00", close: "21:00", closed: false, label: "09:00 AM – 09:00 PM" },
-    sunday: { open: "09:00", close: "21:00", closed: false, label: "09:00 AM – 09:00 PM" },
+    saturday: { open: "10:00", close: "20:30", closed: false, label: "10:00 AM – 08:30 PM" },
+    sunday: { open: "10:00", close: "20:30", closed: false, label: "10:00 AM – 08:30 PM" },
   },
 };
 
