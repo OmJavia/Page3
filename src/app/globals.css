@@ -237,23 +237,66 @@ html {
    OFFICIAL SALON INVOICE PRINT STYLES
    ========================================================================== */
 @media print {
+  html, body {
+    background: #ffffff !important;
+    color: #111111 !important;
+  }
   body * {
     visibility: hidden;
   }
-  #printable-invoice, #printable-invoice * {
-    visibility: visible;
+  #printable-invoice,
+  #printable-invoice * {
+    visibility: visible !important;
+    color: #111111 !important;
+    -webkit-text-fill-color: #111111 !important;
+    background: transparent !important;
+    border-color: #d4d4d8 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
   }
   #printable-invoice {
     position: absolute;
     left: 0;
     top: 0;
-    width: 100%;
-    margin: 0;
-    padding: 16px;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 24px !important;
     background: #ffffff !important;
-    color: #000000 !important;
-    border: none !important;
-    box-shadow: none !important;
+    border: 1px solid #e4e4e7 !important;
+    border-radius: 8px !important;
+  }
+  #printable-invoice th {
+    color: #3f3f46 !important;
+    -webkit-text-fill-color: #3f3f46 !important;
+    font-weight: 700 !important;
+    border-bottom: 2px solid #27272a !important;
+  }
+  #printable-invoice td {
+    color: #18181b !important;
+    -webkit-text-fill-color: #18181b !important;
+    border-bottom: 1px solid #e4e4e7 !important;
+  }
+  #printable-invoice td.font-medium,
+  #printable-invoice td.font-semibold,
+  #printable-invoice h1,
+  #printable-invoice h2,
+  #printable-invoice h3,
+  #printable-invoice h4,
+  #printable-invoice b,
+  #printable-invoice strong,
+  #printable-invoice [class*="font-bold"],
+  #printable-invoice [class*="font-semibold"] {
+    color: #09090b !important;
+    -webkit-text-fill-color: #09090b !important;
+    font-weight: 700 !important;
+  }
+  #printable-invoice .text-neutral-400,
+  #printable-invoice .text-neutral-500,
+  #printable-invoice [class*="text-neutral-400"],
+  #printable-invoice [class*="text-neutral-500"] {
+    color: #52525b !important;
+    -webkit-text-fill-color: #52525b !important;
   }
   .no-print {
     display: none !important;

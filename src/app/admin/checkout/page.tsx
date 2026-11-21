@@ -514,7 +514,8 @@ export default function AdminCheckoutPage() {
           onClick={() => setShowReceiptModal(false)}
         >
           <div
-            className="w-full max-w-sm bg-white dark:bg-[#161719] border border-black/[0.1] dark:border-white/[0.1] rounded-2xl p-6 shadow-2xl text-neutral-900 dark:text-white space-y-4 font-mono text-xs animate-in zoom-in-95 duration-150"
+            id="printable-invoice"
+            className="w-full max-w-sm bg-white dark:bg-[#161719] border border-black/[0.1] dark:border-white/[0.1] rounded-2xl p-6 shadow-2xl text-neutral-900 dark:text-white space-y-4 font-mono text-xs animate-in zoom-in-95 duration-150 print:border-none print:shadow-none"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Salon Header */}
@@ -535,15 +536,15 @@ export default function AdminCheckoutPage() {
             <div className="space-y-0.5 text-[11px] text-neutral-600 dark:text-neutral-400">
               <div className="flex justify-between">
                 <span>Guest:</span>
-                <span className="font-bold text-neutral-900 dark:text-white">{selectedCustomer.full_name}</span>
+                <span className="font-bold text-neutral-900 dark:text-white print:text-black">{selectedCustomer.full_name}</span>
               </div>
               <div className="flex justify-between">
                 <span>Phone:</span>
-                <span>+91 {selectedCustomer.phone}</span>
+                <span className="print:text-black">+91 {selectedCustomer.phone}</span>
               </div>
               <div className="flex justify-between">
                 <span>Date:</span>
-                <span>{new Date().toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}</span>
+                <span className="print:text-black">{new Date().toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}</span>
               </div>
             </div>
 
@@ -552,59 +553,62 @@ export default function AdminCheckoutPage() {
               {lineItems.map((item) => (
                 <div key={item.id} className="flex justify-between items-start">
                   <div>
-                    <span className="block font-medium">{item.name}</span>
-                    <span className="text-[9px] text-neutral-400 dark:text-neutral-500">
+                    <span className="block font-medium text-neutral-900 dark:text-white print:text-black">{item.name}</span>
+                    <span className="text-[9px] text-neutral-400 dark:text-neutral-500 print:text-neutral-600">
                       By {item.staffName}
                     </span>
                   </div>
-                  <span className="font-bold">{formatCurrency(item.price)}</span>
+                  <span className="font-bold text-neutral-900 dark:text-white print:text-black">{formatCurrency(item.price)}</span>
                 </div>
               ))}
             </div>
 
             {/* Financial summary */}
             <div className="space-y-1 text-[11px]">
-              <div className="flex justify-between text-neutral-500 dark:text-neutral-400">
+              <div className="flex justify-between text-neutral-500 dark:text-neutral-400 print:text-neutral-600">
                 <span>Subtotal:</span>
-                <span>{formatCurrency(subtotal)}</span>
+                <span className="print:text-black">{formatCurrency(subtotal)}</span>
               </div>
-              <div className="flex justify-between text-emerald-700 dark:text-emerald-400">
+              <div className="flex justify-between text-emerald-700 dark:text-emerald-400 print:text-emerald-800">
                 <span>Discount ({discountPercent}%):</span>
                 <span>−{formatCurrency(discountAmount)}</span>
               </div>
-              <div className="flex justify-between text-neutral-500 dark:text-neutral-400">
+              <div className="flex justify-between text-neutral-500 dark:text-neutral-400 print:text-neutral-600">
                 <span>GST (5%):</span>
-                <span>{formatCurrency(gstAmount)}</span>
+                <span className="print:text-black">{formatCurrency(gstAmount)}</span>
               </div>
-              <div className="flex justify-between font-bold text-sm text-neutral-900 dark:text-white pt-1 border-t border-black/[0.08] dark:border-white/[0.08]">
+              <div className="flex justify-between font-bold text-sm text-neutral-900 dark:text-white print:text-black pt-1 border-t border-black/[0.08] dark:border-white/[0.08]">
                 <span>Total Paid:</span>
-                <span>{formatCurrency(grandTotal)}</span>
+                <span className="print:text-black">{formatCurrency(grandTotal)}</span>
               </div>
-              <div className="flex justify-between text-[10px] text-neutral-400 dark:text-neutral-500 pt-0.5">
+              <div className="flex justify-between text-[10px] text-neutral-400 dark:text-neutral-500 print:text-neutral-600 pt-0.5">
                 <span>Tender Mode:</span>
-                <span className="uppercase font-semibold text-neutral-700 dark:text-neutral-300">
+                <span className="uppercase font-semibold text-neutral-700 dark:text-neutral-300 print:text-black">
                   {paymentMode === "split" ? `Cash ${formatCurrency(splitCash)} + UPI ${formatCurrency(splitUpi)}` : paymentMode}
                 </span>
               </div>
             </div>
 
             {/* Actions */}
-            <div className="pt-2 flex items-center gap-2">
+            <div className="pt-2 flex items-center gap-2 no-print">
               <button
+                type="button"
                 onClick={() => {
-                  alert("Thermal Receipt Sent to Bluetooth POS Printer!");
-                  setShowReceiptModal(false);
+                  if (typeof window !== "undefined") {
+                    window.print();
+                  }
                 }}
-                className="flex-1 py-2 rounded-xl bg-neutral-900 dark:bg-white text-white dark:text-neutral-950 font-sans font-[510] text-xs text-center shadow-xs"
+                className="flex-1 py-2 rounded-xl bg-neutral-900 dark:bg-white text-white dark:text-neutral-950 font-sans font-[510] text-xs text-center shadow-xs cursor-pointer hover:bg-black dark:hover:bg-neutral-100 transition-all"
               >
                 🖨️ Print Receipt
               </button>
               <button
+                type="button"
                 onClick={() => {
                   alert(`Digital bill sent to WhatsApp (+91 ${selectedCustomer.phone})!`);
                   setShowReceiptModal(false);
                 }}
-                className="px-3 py-2 rounded-xl border border-black/[0.1] dark:border-white/[0.1] font-sans text-xs text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-white/[0.06]"
+                className="px-3 py-2 rounded-xl border border-black/[0.1] dark:border-white/[0.1] font-sans text-xs text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-white/[0.06] cursor-pointer"
               >
                 WhatsApp 📲
               </button>

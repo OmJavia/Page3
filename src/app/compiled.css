@@ -28,6 +28,7 @@
     --color-amber-400: oklch(82.8% 0.189 84.429);
     --color-amber-500: oklch(76.9% 0.188 70.08);
     --color-amber-600: oklch(66.6% 0.179 58.318);
+    --color-amber-700: oklch(55.5% 0.163 48.998);
     --color-amber-800: oklch(47.3% 0.137 46.201);
     --color-amber-900: oklch(41.4% 0.112 45.904);
     --color-amber-950: oklch(27.9% 0.077 45.635);
@@ -3185,6 +3186,38 @@
   .dark\:focus\:ring-neutral-500:where(.dark, .dark *):focus {
     --tw-ring-color: var(--color-neutral-500);
   }
+  @media print {
+    .print\:border-b {
+      border-bottom-style: var(--tw-border-style);
+      border-bottom-width: 1px;
+    }
+    .print\:border-none {
+      --tw-border-style: none;
+      border-style: none;
+    }
+    .print\:border-neutral-200 {
+      border-color: var(--color-neutral-200);
+    }
+    .print\:text-amber-700 {
+      color: var(--color-amber-700);
+    }
+    .print\:text-black {
+      color: var(--color-black);
+    }
+    .print\:text-emerald-800 {
+      color: var(--color-emerald-800);
+    }
+    .print\:text-neutral-600 {
+      color: var(--color-neutral-600);
+    }
+    .print\:text-neutral-700 {
+      color: var(--color-neutral-700);
+    }
+    .print\:shadow-none {
+      --tw-shadow: 0 0 #0000;
+      box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+    }
+  }
   .\[\&_svg\]\:pointer-events-none svg {
     pointer-events: none;
   }
@@ -3405,23 +3438,66 @@ html {
   border-radius: 9999px;
 }
 @media print {
+  html, body {
+    background: #ffffff !important;
+    color: #111111 !important;
+  }
   body * {
     visibility: hidden;
   }
-  #printable-invoice, #printable-invoice * {
-    visibility: visible;
+  #printable-invoice,
+  #printable-invoice * {
+    visibility: visible !important;
+    color: #111111 !important;
+    -webkit-text-fill-color: #111111 !important;
+    background: transparent !important;
+    border-color: #d4d4d8 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
   }
   #printable-invoice {
     position: absolute;
     left: 0;
     top: 0;
-    width: 100%;
-    margin: 0;
-    padding: 16px;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 24px !important;
     background: #ffffff !important;
-    color: #000000 !important;
-    border: none !important;
-    box-shadow: none !important;
+    border: 1px solid #e4e4e7 !important;
+    border-radius: 8px !important;
+  }
+  #printable-invoice th {
+    color: #3f3f46 !important;
+    -webkit-text-fill-color: #3f3f46 !important;
+    font-weight: 700 !important;
+    border-bottom: 2px solid #27272a !important;
+  }
+  #printable-invoice td {
+    color: #18181b !important;
+    -webkit-text-fill-color: #18181b !important;
+    border-bottom: 1px solid #e4e4e7 !important;
+  }
+  #printable-invoice td.font-medium,
+  #printable-invoice td.font-semibold,
+  #printable-invoice h1,
+  #printable-invoice h2,
+  #printable-invoice h3,
+  #printable-invoice h4,
+  #printable-invoice b,
+  #printable-invoice strong,
+  #printable-invoice [class*="font-bold"],
+  #printable-invoice [class*="font-semibold"] {
+    color: #09090b !important;
+    -webkit-text-fill-color: #09090b !important;
+    font-weight: 700 !important;
+  }
+  #printable-invoice .text-neutral-400,
+  #printable-invoice .text-neutral-500,
+  #printable-invoice [class*="text-neutral-400"],
+  #printable-invoice [class*="text-neutral-500"] {
+    color: #52525b !important;
+    -webkit-text-fill-color: #52525b !important;
   }
   .no-print {
     display: none !important;

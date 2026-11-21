@@ -228,52 +228,55 @@ function PaymentContent() {
           </p>
 
           {/* Receipt card */}
-          <div className="rf-card p-6 mt-6 text-left space-y-4 bg-white dark:bg-[#161719] border border-black/[0.08] dark:border-white/[0.08] rounded-2xl">
-            <div className="flex justify-between items-center pb-3 border-b border-black/[0.06] dark:border-white/[0.06]">
+          <div
+            id="printable-invoice"
+            className="rf-card p-6 mt-6 text-left space-y-4 bg-white dark:bg-[#161719] border border-black/[0.08] dark:border-white/[0.08] rounded-2xl print:border-none print:shadow-none"
+          >
+            <div className="flex justify-between items-center pb-3 border-b border-black/[0.06] dark:border-white/[0.06] print:border-neutral-200">
               <div>
-                <span className="text-xs text-neutral-400 dark:text-neutral-500">Appointment Code</span>
-                <p className="text-sm font-mono font-bold text-neutral-900 dark:text-white">{appointmentCode}</p>
+                <span className="text-xs text-neutral-400 dark:text-neutral-500 print:text-neutral-600">Appointment Code</span>
+                <p className="text-sm font-mono font-bold text-neutral-900 dark:text-white print:text-black">{appointmentCode}</p>
               </div>
               <div className="text-right">
-                <span className="text-xs text-neutral-400 dark:text-neutral-500">Time & Date</span>
-                <p className="text-xs font-medium text-neutral-800 dark:text-neutral-200">{dateStr} • {timeSlot}</p>
+                <span className="text-xs text-neutral-400 dark:text-neutral-500 print:text-neutral-600">Time & Date</span>
+                <p className="text-xs font-medium text-neutral-800 dark:text-neutral-200 print:text-black">{dateStr} • {timeSlot}</p>
               </div>
             </div>
 
             <div className="space-y-2 text-xs">
               <div className="flex justify-between">
-                <span className="text-neutral-500 dark:text-neutral-400">Salon Name</span>
-                <span className="font-medium text-neutral-800 dark:text-neutral-200">Page 3 – The Family Salon, Dewas</span>
+                <span className="text-neutral-500 dark:text-neutral-400 print:text-neutral-600">Salon Name</span>
+                <span className="font-medium text-neutral-800 dark:text-neutral-200 print:text-black">Page 3 – The Family Salon, Dewas</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-neutral-500 dark:text-neutral-400">Client</span>
-                <span className="font-medium text-neutral-800 dark:text-neutral-200">{customerName} (+91 {customerPhone})</span>
+                <span className="text-neutral-500 dark:text-neutral-400 print:text-neutral-600">Client</span>
+                <span className="font-medium text-neutral-800 dark:text-neutral-200 print:text-black">{customerName} (+91 {customerPhone})</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-neutral-500 dark:text-neutral-400">Service</span>
-                <span className="font-medium text-neutral-800 dark:text-neutral-200">{serviceName}</span>
+                <span className="text-neutral-500 dark:text-neutral-400 print:text-neutral-600">Service</span>
+                <span className="font-bold text-neutral-900 dark:text-white print:text-black">{serviceName || "Signature Haircut + Beard Grooming"}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-neutral-500 dark:text-neutral-400">Stylist</span>
-                <span className="font-medium text-neutral-800 dark:text-neutral-200">{stylistName}</span>
+                <span className="text-neutral-500 dark:text-neutral-400 print:text-neutral-600">Stylist</span>
+                <span className="font-medium text-neutral-800 dark:text-neutral-200 print:text-black">{stylistName}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-neutral-500 dark:text-neutral-400">Payment Mode</span>
-                <span className="font-medium text-neutral-800 dark:text-neutral-200">{paymentSuccess.method}</span>
+                <span className="text-neutral-500 dark:text-neutral-400 print:text-neutral-600">Payment Mode</span>
+                <span className="font-medium text-neutral-800 dark:text-neutral-200 print:text-black">{paymentSuccess.method}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-neutral-500 dark:text-neutral-400">Bank RRN / UTR</span>
-                <span className="font-mono text-neutral-700 dark:text-neutral-300">{paymentSuccess.rrn}</span>
+                <span className="text-neutral-500 dark:text-neutral-400 print:text-neutral-600">Bank RRN / UTR</span>
+                <span className="font-mono text-neutral-700 dark:text-neutral-300 print:text-black">{paymentSuccess.rrn}</span>
               </div>
               {paymentSuccess.balanceDue > 0 && (
-                <div className="flex justify-between pt-2 border-t border-black/[0.06] dark:border-white/[0.06] text-amber-600 dark:text-amber-400 font-medium">
+                <div className="flex justify-between pt-2 border-t border-black/[0.06] dark:border-white/[0.06] text-amber-600 dark:text-amber-400 font-medium print:text-amber-700">
                   <span>Balance Due at Reception</span>
                   <span>{formatCurrency(paymentSuccess.balanceDue)}</span>
                 </div>
               )}
             </div>
 
-            <div className="pt-3 border-t border-black/[0.06] dark:border-white/[0.06] flex justify-between items-center text-sm font-bold text-neutral-900 dark:text-white">
+            <div className="pt-3 border-t border-black/[0.06] dark:border-white/[0.06] flex justify-between items-center text-sm font-bold text-neutral-900 dark:text-white print:text-black">
               <span>Amount Paid Now</span>
               <span>{formatCurrency(paymentSuccess.amountPaid)}</span>
             </div>
